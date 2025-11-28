@@ -3,7 +3,7 @@ package Jest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Joueur {
+public class Joueur implements Visitable{
 
 	private String nom;
 	private List<Carte> collection;
@@ -20,7 +20,26 @@ public class Joueur {
 		offre.add(c1);
 		offre.add(c2);
 	}
-
+	
+	public void faireUneOffre () {
+		
+	}
+	
+	//Trouver comment faire retourner 2 objets, on a aussi besoin du numéro de la Carte
+	public void choisirUneCarte (List<Joueur> Player){
+		
+	}
+	
+	public void accept ( Visitor visiteur) {
+		
+	}
+	
+	public Carte recupererCarte () {
+		Carte carte = new Carte("Dame de Coeur");
+		return carte;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Joueur :\n     nom=" + nom + ", \n     collection=" + collection + ", \n     offre=" + offre + ", \n     score=" + score;
