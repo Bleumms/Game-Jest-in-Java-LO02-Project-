@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Jest.Carte.Regle;
+
 public class Jeu {
 
 	private List<Carte> cartes;
@@ -43,5 +45,13 @@ public class Jeu {
 		res.add(t);
 		res.add(p);
 		return res;
+	}
+	
+	public void ajouterRegle( Regle r) {
+		this.ref.ajouterRegle(r);
+	}
+	
+	public List<Regle> getRegles(){
+		return ref.getRegles();
 	}
 }
