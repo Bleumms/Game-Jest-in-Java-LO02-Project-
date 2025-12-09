@@ -7,8 +7,10 @@ public class CalculateurScore implements Visitor{
 	}
 	
 	@Override
-	public void visit(Joueur player) {
+	public void visit(Joueur player, Reference ref) {
 		
 	}
+	
+	
 
 }

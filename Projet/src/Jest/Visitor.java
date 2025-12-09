@@ -1,5 +1,5 @@
 package Jest;
 
 public interface Visitor {
-	void visit (Joueur player);
+	void visit (Joueur player, Reference ref);
 }
