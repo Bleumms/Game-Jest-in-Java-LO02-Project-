@@ -8,7 +8,6 @@ public class CalculateurScore implements Visitor{
 	
 	@Override
 	public void visit(Joueur player) {
-		// TODO Auto-generated method stub
 		
 	}
 
