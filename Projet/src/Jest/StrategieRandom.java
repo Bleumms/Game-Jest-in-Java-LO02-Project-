@@ -6,7 +6,7 @@ public class StrategieRandom implements Strategie{
 
 	@Override
 	public List<Carte> executeOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
