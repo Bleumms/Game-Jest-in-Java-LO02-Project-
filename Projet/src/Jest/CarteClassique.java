@@ -1,8 +1,5 @@
 package Jest;
 
-import Jest.Carte.Carte;
-import Jest.Carte.Symbole;
-
 public class CarteClassique extends Carte {
 		
 		@Override

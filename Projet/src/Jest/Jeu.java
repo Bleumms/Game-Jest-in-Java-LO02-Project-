@@ -1,7 +1,6 @@
 package Jest;
 
 import java.util.ArrayList;
-//test
 import java.util.Collections;
 import java.util.List;
 
@@ -9,33 +8,43 @@ public class Jeu {
 
 	private List<Carte> cartes;
 	private Reference ref;
-	
+
 	public Jeu() {
 		this.cartes = new ArrayList<Carte>();
 	}
 
-	public void ajouterCarte(Carte c ) {
+	public void ajouterCarte(Carte c) {
 		this.cartes.add(c);
 	}
+
+	public void ajouterDesCartes(List<Carte> c) {
+		for (int i = 0; i < c.size(); i++) {
+			this.cartes.add(c.get(i));
+		}
+	}
 	
-	@Override
-	public String toString() {
-		return "Jeu [cartes=" + cartes + "]";
+	public Reference getReference() {
+		return this.ref;
 	}
 
-	public void ajouterReference( Reference r) {
-		this.ref=r;
+	@Override
+	public String toString() {
+		return "Jeu :  \n  Possède : " + cartes + "\n  Référence : "+ref;
 	}
-	
-	public List<ArrayList<Carte>> choisirTrophe(int nbTrophes){
+
+	public void ajouterReference(Reference r) {
+		this.ref = r;
+	}
+
+	public List<ArrayList<Carte>> choisirTrophe(int nbTrophes) {
 		Collections.shuffle(cartes);
 		ArrayList<Carte> t = new ArrayList<Carte>();
 		ArrayList<Carte> p = new ArrayList<Carte>();
-		for (int i=0; i<nbTrophes; i++) {
+		for (int i = 0; i < nbTrophes; i++) {
 			Carte c = this.cartes.get(i);
 			t.add(c);
 		}
-		for (int j=nbTrophes; j<cartes.size(); j++) {
+		for (int j = nbTrophes; j < cartes.size(); j++) {
 			Carte c = this.cartes.get(j);
 			p.add(c);
 		}
@@ -43,5 +52,13 @@ public class Jeu {
 		res.add(t);
 		res.add(p);
 		return res;
+	}
+
+	public void ajouterRegle(Regle r) {
+		this.ref.ajouterRegle(r);
+	}
+
+	public List<Regle> getRegles() {
+		return ref.getRegles();
 	}
 }
