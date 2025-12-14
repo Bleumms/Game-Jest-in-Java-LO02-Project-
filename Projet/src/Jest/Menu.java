@@ -40,7 +40,6 @@ public class Menu {
 		// Verifier que jeux non vide !!
 		boolean repValide = false;
 		int numero = 0;
-		String entree=null;
 		while (repValide == false) {
 			System.out.println("Voici la liste des jeux de cartes disponibles : ");
 			for (int i = 0; i < jeux.size(); i++) {

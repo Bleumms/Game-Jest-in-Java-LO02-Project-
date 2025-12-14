@@ -3,59 +3,44 @@ package Jest;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Test {
 
 	public static void main(String[] args) {
-		/*Menu m = new Menu();
-		Partie p = m.creerUnePartie();
-		Jeu jeu = new Jeu();
-		for (char j = 'A'; j < 'E'; j++) {
-			for (int i = 1; i < 5; i++) {
-				String n ="";
-				n=n+j;
-				n=n+i;
-				Carte c = new Carte(n);
-				jeu.ajouterCarte(c);
-			}
-		}
-		p.choisirUnJeu(jeu);
-		Joueur j1 = new Joueur("Nina");
-		Joueur j2 = new Joueur("Emeline");
-		p.ajouterUnJoueur(j1);
-		p.ajouterUnJoueur(j2);
-		System.out.println(p);
-		System.out.println();
-		p.choisirLesTrophes(2);
-		p.distribuer();
-		System.out.println(p);
-		System.out.println();*/
-		
+		/*
+		 * Menu m = new Menu(); Partie p = m.creerUnePartie(); Jeu jeu = new Jeu(); for
+		 * (char j = 'A'; j < 'E'; j++) { for (int i = 1; i < 5; i++) { String n ="";
+		 * n=n+j; n=n+i; Carte c = new Carte(n); jeu.ajouterCarte(c); } }
+		 * p.choisirUnJeu(jeu); Joueur j1 = new Joueur("Nina"); Joueur j2 = new
+		 * Joueur("Emeline"); p.ajouterUnJoueur(j1); p.ajouterUnJoueur(j2);
+		 * System.out.println(p); System.out.println(); p.choisirLesTrophes(2);
+		 * p.distribuer(); System.out.println(p); System.out.println();
+		 */
+
 		// Ce qui devrai etre stocké déjà de base : plusieurs jeux de cartes dispo
 		Carte c0 = new Jocker();
-		Carte c1 = new CarteClassique(1,Symbole.COEUR);
-		Carte c2 = new CarteClassique(2,Symbole.COEUR);
-		Carte c3 = new CarteClassique(3,Symbole.COEUR);
-		Carte c4 = new CarteClassique(4,Symbole.COEUR);
-		Carte c5 = new CarteClassique(1,Symbole.TREFLE);
-		Carte c6 = new CarteClassique(2,Symbole.TREFLE);
-		Carte c7 = new CarteClassique(3,Symbole.TREFLE);
-		Carte c8 = new CarteClassique(4,Symbole.TREFLE);
-		Carte c9 = new CarteClassique(1,Symbole.PIQUE);
-		Carte c10 = new CarteClassique(2,Symbole.PIQUE);
-		Carte c11 = new CarteClassique(3,Symbole.PIQUE);
-		Carte c12 = new CarteClassique(4,Symbole.PIQUE);
-		Carte c13 = new CarteClassique(1,Symbole.CARREAU);
-		Carte c14 = new CarteClassique(2,Symbole.CARREAU);
-		Carte c15 = new CarteClassique(3,Symbole.CARREAU);
-		Carte c16 = new CarteClassique(4,Symbole.CARREAU);
-		
+		Carte c1 = new CarteClassique(1, Symbole.COEUR);
+		Carte c2 = new CarteClassique(2, Symbole.COEUR);
+		Carte c3 = new CarteClassique(3, Symbole.COEUR);
+		Carte c4 = new CarteClassique(4, Symbole.COEUR);
+		Carte c5 = new CarteClassique(1, Symbole.TREFLE);
+		Carte c6 = new CarteClassique(2, Symbole.TREFLE);
+		Carte c7 = new CarteClassique(3, Symbole.TREFLE);
+		Carte c8 = new CarteClassique(4, Symbole.TREFLE);
+		Carte c9 = new CarteClassique(1, Symbole.PIQUE);
+		Carte c10 = new CarteClassique(2, Symbole.PIQUE);
+		Carte c11 = new CarteClassique(3, Symbole.PIQUE);
+		Carte c12 = new CarteClassique(4, Symbole.PIQUE);
+		Carte c13 = new CarteClassique(1, Symbole.CARREAU);
+		Carte c14 = new CarteClassique(2, Symbole.CARREAU);
+		Carte c15 = new CarteClassique(3, Symbole.CARREAU);
+		Carte c16 = new CarteClassique(4, Symbole.CARREAU);
+
 		ConditionVictoire v = new ConditionMaxScore();
 		c6.ajouterConditionVictoire(v);
 		c3.ajouterConditionVictoire(v);
 		c7.ajouterConditionVictoire(v);
 		c15.ajouterConditionVictoire(v);
-		
+
 		List<Carte> ToutesCartes = new ArrayList<Carte>();
 		ToutesCartes.add(c0);
 		ToutesCartes.add(c1);
@@ -74,8 +59,8 @@ public class Test {
 		ToutesCartes.add(c14);
 		ToutesCartes.add(c15);
 		ToutesCartes.add(c16);
-		
-		//Le jeu n°1: 
+
+		// Le jeu n°1:
 		Jeu jeu = new Jeu();
 		jeu.ajouterDesCartes(ToutesCartes);
 		Reference r = new Reference();
@@ -90,7 +75,7 @@ public class Test {
 		jeu.ajouterRegle(r3);
 		jeu.ajouterRegle(r4);
 		jeu.ajouterRegle(r5);
-		
+
 		List<Carte> MiniJeu = new ArrayList<Carte>();
 		ToutesCartes.add(c0);
 		ToutesCartes.add(c1);
@@ -101,30 +86,44 @@ public class Test {
 		ToutesCartes.add(c10);
 		ToutesCartes.add(c11);
 		ToutesCartes.add(c12);
-		
-		//Le jeu n°2 : 
+
+		// Le jeu n°2 :
 		Jeu jeu2 = new Jeu();
 		jeu.ajouterDesCartes(MiniJeu);
-		
+
 		List<Jeu> jeux = new ArrayList<Jeu>();
 		jeux.add(jeu);
 		jeux.add(jeu2);
-		
+
 		List<Strategie> str = new ArrayList<Strategie>();
 		str.add(new StrategieRandom());
 		str.add(new StrategieIntelligent());
-		
-		// Créer un menu 
+
+		// Créer un menu
+
 		Menu m = new Menu();
+
+		// Dans le menu utiliser la fonction Créer un partie
 		m.creerUnePartie(jeux, str);
-		System.out.print(m.getPartieEnCours());
-		// Dans le menu utiliser la fonction Créer un partie 
-			// Choisi le jeu et les joueurs 
-		
-		// Lancer la partie
-		
-		
-		
+		System.out.println(m.getPartieEnCours());
+		System.out.println();
+		System.out.println("----------------------------------------------------------");
+		System.out.println();
+
+		// Recuperer la partie pour pouvoir jouer
+		Partie p = m.getPartieEnCours();
+
+		// Commencer la partie
+		p.initialiserLaPartie();
+		System.out.println(p);
+		System.out.println();
+		System.out.println("----------------------------------------------------------");
+		System.out.println();
+
+		// Faire un tour de jeu
+		p.faireUnTourDeJeu();
+		System.out.println(p);
+
 	}
 
 }
