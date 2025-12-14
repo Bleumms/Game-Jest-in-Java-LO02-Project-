@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Jest.Carte.Carte;
-import Jest.Carte.CarteClassique;
-import Jest.Carte.Jocker;
-import Jest.Carte.Symbole;
-
 public class Jeu {
 
 	private List<Carte> cartes;

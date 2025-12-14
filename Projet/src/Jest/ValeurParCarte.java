@@ -1,8 +1,5 @@
 package Jest;
 
-import Jest.Carte.Carte;
-import Jest.Carte.CarteClassique;
-
 public class ValeurParCarte {
 
 	private Carte c;

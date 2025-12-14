@@ -3,8 +3,6 @@ package Jest;
 import java.util.ArrayList;
 import java.util.List;
 
-import Jest.Carte.Carte;
-
 public class Joueur implements Visitable{
 
 	private String nom;

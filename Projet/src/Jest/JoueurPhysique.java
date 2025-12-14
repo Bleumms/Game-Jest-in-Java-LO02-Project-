@@ -1,5 +1,9 @@
 package Jest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class JoueurPhysique extends Joueur{
 
 	public JoueurPhysique(String n) {
