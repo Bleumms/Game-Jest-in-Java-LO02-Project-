@@ -105,23 +105,18 @@ public class Test {
 
 		// Dans le menu utiliser la fonction Créer un partie
 		m.creerUnePartie(jeux, str);
-		System.out.println(m.getPartieEnCours());
-		System.out.println();
-		System.out.println("----------------------------------------------------------");
-		System.out.println();
 
 		// Recuperer la partie pour pouvoir jouer
 		Partie p = m.getPartieEnCours();
 
 		// Commencer la partie
 		p.initialiserLaPartie();
-		System.out.println(p);
-		System.out.println();
-		System.out.println("----------------------------------------------------------");
-		System.out.println();
 
 		// Faire un tour de jeu
-		p.faireUnTourDeJeu();
+		boolean fin =false;
+		while (fin == false){
+			fin = p.faireUnTourDeJeu();
+		}
 		System.out.println(p);
 
 	}

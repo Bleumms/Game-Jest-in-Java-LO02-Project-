@@ -20,9 +20,19 @@ public class Joueur implements Visitable{
 		score=0;
 	}
 	
-	public void assignerCarteDistribuees(Carte c1, Carte c2) {
-		this.cartesDistribuees.add(c1);
-		this.cartesDistribuees.add(c2);
+	public void assignerCarteDistribuees(Carte c) {
+		this.cartesDistribuees.add(c);
+	}
+
+	public void recupFinDePartie(){
+		if (this.carteVisible!=null) {
+			this.collection.add(this.carteVisible);
+			this.carteVisible=null;
+		}
+		if (this.carteCachee!=null) {
+			this.collection.add(this.carteCachee);
+			this.carteCachee=null;
+		}
 	}
 
 	@Override

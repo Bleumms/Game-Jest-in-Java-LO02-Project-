@@ -43,7 +43,11 @@ public class Partie {
 		if (this.pioche.size() >= 2*this.participants.size()) {
 			for (int i = 0; i < participants.size(); i++) {
 				Joueur j = participants.get(i);
-				j.assignerCarteDistribuees(pioche.remove(0), pioche.remove(0));
+				j.assignerCarteDistribuees(pioche.remove(0));
+			}
+			for (int i = 0; i < participants.size(); i++) {
+				Joueur j = participants.get(i);
+				j.assignerCarteDistribuees(pioche.remove(0));
 			}
 		}
 	}
@@ -58,6 +62,11 @@ public class Partie {
 		if (this.trophe.size() == 0) {
 			this.choisirLesTrophes(NombreTrophe);
 			this.melangerLaPioche();
+			System.out.println("\nLes trophées sont :   ");
+			for (int i=0; i<this.trophe.size();i++){
+				System.out.print(this.trophe.get(i)+"   ;   ");
+			}
+			System.out.println();
 		}
 	}
 
@@ -68,10 +77,7 @@ public class Partie {
 		}
 	}
 
-	public void faireUnTourDeJeu() {
-		// On gerera le cas de fin de partie apres mais on peut imaginer une methode IsFinDePartie():boolean
-		
-		
+	public boolean faireUnTourDeJeu() {
 		// INITIALISATION DES VARS
 		// créer la liste des joueur pour les quels on peut prendre une carte
 		List<Joueur> joueursDispo = new ArrayList<Joueur>(this.participants);
@@ -81,54 +87,36 @@ public class Partie {
 		//DISTRIBUER LES CARTES
 		this.distribuer();
 		
-		System.out.println("//////////////");
-		System.out.println("distribue");
-		for (int i=0;i<this.participants.size();i++) {
-			System.out.println(this.participants.get(i));
-		}
-		System.out.println("//////////////");
-		
 		// CHACUNS LEURS OFFRES
 		for (int i=0;i<this.participants.size();i++) {
 			this.participants.get(i).faireUneOffre();
 		}
 		
-		System.out.println("//////////////");
-		System.out.println("les offres ont été faites");
-		for (int i=0;i<this.participants.size();i++) {
-			System.out.println(this.participants.get(i));
-		}
-		System.out.println("//////////////");
+		// Affichage pour connaitre l'état de la table de jeu
+		this.affichageTable();
 				
 		while (joueursPasEncoreJoue.size()>0) {
 			// choisir le 1er joueur
 			if (jFaisSonChoix==null) {
 				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
 			} 
-			System.out.println("//////////////");
-			System.out.println("C'est "+ jFaisSonChoix.getNom()+" qui joue");
-			System.out.println("    a savoir : "+joueursDispo+"\n"+joueursPasEncoreJoue);
-			System.out.println("//////////////");
+			System.out.println("C'est à "+ jFaisSonChoix.getNom()+" de jouer");
 			
 			List<Integer> resultat = jFaisSonChoix.choisirUneCarte(joueursDispo);
 			int numJoueur = resultat.get(0);
 			int numCarte = resultat.get(1);
 			
-			System.out.println("//////////////");
-			System.out.println("il a choisi la "+numCarte+" de "+joueursDispo.get(numJoueur).getNom());
-			System.out.println("//////////////");
 			// Le joueur a qui on enleve une carte ne pourra pas avoir encore une autre carte de prise
 			Joueur joueurChoisi = joueursDispo.remove(numJoueur);
 			// on lui enlève la carte prise
 			Carte c = joueurChoisi.recupererCarte(numCarte);
+
+			System.out.print(jFaisSonChoix.getNom()+" a choisi la carte : ");
+			System.out.print(c+" de ");
+			System.out.println(joueurChoisi.getNom());
+
 			// et la donne a celui qui a fait son choix
 			jFaisSonChoix.ajouteASaCollection(c);
-			
-			System.out.println("//////////////");
-			System.out.println("Les changements ont été faits : ");
-			System.out.println(jFaisSonChoix);
-			System.out.println(joueurChoisi);
-			System.out.println("//////////////");
 			
 			// on retire de ceux qui n'ont pas encore joué
 			joueursPasEncoreJoue.remove(jFaisSonChoix);
@@ -147,9 +135,30 @@ public class Partie {
 		for (int i=0;i<this.participants.size();i++) {
 			recup.add(this.participants.get(i).remiseALaPioche());
 		}
-		this.remiseALaPioche(recup);
+
+		// on remet a la pioche seulement si on peut encore faire un tour
+		boolean finDePartie = false;
+		if (this.pioche.size()>=this.participants.size()){
+			this.remiseALaPioche(recup);
+		} else {
+			for (int i=0;i<this.participants.size();i++) {
+				this.participants.get(i).recupFinDePartie();
+			}
+			finDePartie=true;
+		}
+		return finDePartie;
 	}
 	
+	public void affichageTable(){
+		System.out.print( "\nEtat de la table de jeu : \n Trophes :   " );
+		for (int i=0; i<this.trophe.size();i++){
+			System.out.print(this.trophe.get(i)+"   ;   ");
+		}
+		System.out.println("\n Joueurs : ");
+		for (int j=0; j<this.participants.size();j++){
+			System.out.println(this.participants.get(j).getNom()+" :   carte visible = "+this.participants.get(j).getCarteVisible()+"   ;    nombre de carte dans sa collection = "+this.participants.get(j).getCollection().size());
+		}
+	}
 	
 	public void remiseALaPioche(List<Carte> cartes) {
 		Collections.shuffle(cartes);
