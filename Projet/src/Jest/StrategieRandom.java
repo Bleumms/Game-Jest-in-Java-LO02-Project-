@@ -13,7 +13,7 @@ public class StrategieRandom implements Strategie{
 	}
 
 	@Override
-	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, List <Carte> cartesEnCollection, Joueur moiMeme) {
+	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size() == 1 && joueurs.contains(moiMeme)) {
 			res.add(0); // de toute façon il y a qu'un joueur dans la liste donc c'est dans celui la qu'on prend la carte
@@ -40,7 +40,7 @@ public class StrategieRandom implements Strategie{
 		return res;
 	}
 
-	public int executeChoisiUneDeSesCartes(){
+	private int executeChoisiUneDeSesCartes(){
 		double alea = Math.random();
 		int res = 0;
 		if (alea>0.5){

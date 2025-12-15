@@ -102,7 +102,7 @@ public class Test {
 
 		// TEST JOUEUR VIRTUEL
 		// je crée mon joueur
-		Strategie s = new StrategieRandom();
+		Strategie s = new StrategieIntelligent();
 		Joueur jv = new JoueurVirtuel("robo", s);
 
 		// je crée des joueurs concurents
@@ -112,20 +112,24 @@ public class Test {
 		Joueur adv4 = new JoueurPhysique("Yassine");
 
 		// on lui distribue des cartes pour qu'il fasse son offre
-		jv.assignerCarteDistribuees(c7);
+		jv.assignerCarteDistribuees(c14);
 		jv.assignerCarteDistribuees(c13);
+		jv.addCollection(c1);
+		jv.addCollection(c3);
+		jv.addCollection(c4);
+		jv.addCollection(c0);
 		System.out.print(jv);
 		jv.faireUneOffre();
 		System.out.print(jv); // ça marche
 
 		//On attribut des cartes aux autres 
 		adv1.assignerCarteDistribuees(c2);
-		adv1.assignerCarteDistribuees(c0);
+		adv1.assignerCarteDistribuees(c9);
 		adv1.ChoisirCarteVisible(0);
 		adv2.assignerCarteDistribuees(c16);
 		adv2.assignerCarteDistribuees(c8);
 		adv2.ChoisirCarteVisible(0);
-		adv3.assignerCarteDistribuees(c3);
+		adv3.assignerCarteDistribuees(c14);
 		adv3.assignerCarteDistribuees(c6);
 		adv3.ChoisirCarteVisible(0);
 		adv4.assignerCarteDistribuees(c10);
@@ -134,18 +138,16 @@ public class Test {
 		List<Joueur> l = new ArrayList<Joueur>();
 		l.add(adv1);
 		l.add(adv2);
+		l.add(jv);
 		l.add(adv3);
 		l.add(adv4);
 		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
-		System.out.print(jv.choisirUneCarte(l));
 		
+		
+
+		List<Joueur> l2 = new ArrayList<Joueur>();
+		l2.add(jv);
+		System.out.print(jv.choisirUneCarte(l2)); //ça marche
 
 		/*
 		// Créer un menu

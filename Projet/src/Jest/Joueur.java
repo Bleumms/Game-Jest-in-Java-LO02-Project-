@@ -127,4 +127,8 @@ public class Joueur implements Visitable{
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
+	public void addCollection(Carte c){
+		this.collection.add(c);
+	}
 }

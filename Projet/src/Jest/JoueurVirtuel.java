@@ -31,7 +31,7 @@ public class JoueurVirtuel extends Joueur {
 	}
 
 	public List<Integer> choisirUneCarte (List<Joueur> j){
-		List<Integer> res = this.strat.executeChoisirUneCarte(j, getCollection(), this);
+		List<Integer> res = this.strat.executeChoisirUneCarte(j, this);
 		return res;
 	}
 }
