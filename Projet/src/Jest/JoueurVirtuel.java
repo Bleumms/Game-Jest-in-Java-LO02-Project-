@@ -1,5 +1,7 @@
 package Jest;
 
+import java.util.List;
+
 public class JoueurVirtuel extends Joueur {
 
 	private Strategie strat;
@@ -23,6 +25,13 @@ public class JoueurVirtuel extends Joueur {
 
 	// a changer avec strategie
 	public void faireUneOffre() {
-		this.ChoisirCarteVisible(0);
+		int numCarte = this.strat.executeFaireUneOffre(this.getCartesDistribuees(), this.getCollection());
+		this.ChoisirCarteVisible(numCarte);
+
+	}
+
+	public List<Integer> choisirUneCarte (List<Joueur> j){
+		List<Integer> res = this.strat.executeChoisirUneCarte(j, getCollection(), this);
+		return res;
 	}
 }

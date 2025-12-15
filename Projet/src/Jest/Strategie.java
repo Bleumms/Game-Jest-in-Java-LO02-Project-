@@ -4,7 +4,10 @@ import java.util.List;
 
 public interface Strategie {
 	
-	List <Carte> executeOffre (List <Carte> cartesDistribuées, List <Carte> cartesEnCollection);
-	Joueur executeChoix (List <Joueur> cartesAuChoix, List <Carte> cartesEnCollection, Joueur j, Carte c);
-	//Doit aussi renvoyer le num de la carte choisie...
+	int executeFaireUneOffre (List <Carte> cartesDistribuées, List <Carte> cartesEnCollection);
+	//renvoie l'index de la carte qui sera visible
+
+	List<Integer> executeChoisirUneCarte (List <Joueur> joueurs, List <Carte> cartesEnCollection, Joueur moiMeme);
+
+	int executeChoisiUneDeSesCartes();
 }

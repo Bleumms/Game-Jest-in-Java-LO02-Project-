@@ -37,25 +37,7 @@ public class Joueur implements Visitable{
 
 	@Override
 	public String toString() {
-		return this.nom + " : \n  collection=" + collection + ", \n  carte reçues =" + this.cartesDistribuees + ", \n  carte visible ="+this.carteVisible+", \n  carte cachée ="+this.carteCachee+", \n     score=" + score;
-	}
-	
-	// place en position 0 celle visible et en 1 celle qui ne l'es pas
-	public void faireUneOffre () {
-	}
-	
-	//Trouver comment faire retourner 2 objets, on a aussi besoin du numéro de la Carte
-	// juste retourner une liste d'entiers : l'index du joueur et l'index de la carte choisi.
-	// !!!!!!!! j'ai juste fait ça en attendant pour pas que ça bug
-	public List<Integer> choisirUneCarte (List<Joueur> j){
-		List<Integer> l = new ArrayList<Integer>();
-		l.add(0);
-		l.add(0);
-		return l;
-	}
-	
-	public int ChoisiUneDeSesCartes() {
-		return 0;
+		return this.nom + " : \n  collection=" + collection + ", \n  carte reçues =" + this.cartesDistribuees + ", \n  carte visible ="+this.carteVisible+", \n  carte cachée ="+this.carteCachee+", \n     score=" + score+"\n";
 	}
 	
 	public void accept ( Visitor visiteur) {
@@ -94,6 +76,21 @@ public class Joueur implements Visitable{
 			this.carteVisible = null;
 		}
 		return c;
+	}
+
+
+
+	// METHODES REDEFINIES ENSUITE
+	public void faireUneOffre () {
+
+	}
+	
+	public List<Integer> choisirUneCarte (List<Joueur> j){
+		return null;
+	}
+	
+	public int ChoisiUneDeSesCartes() {
+		return 0;
 	}
 	
 	

@@ -49,28 +49,6 @@ public class JoueurPhysique extends Joueur{
 		return reponse;
 	}
 
-	/*
-	 * VERSION 1 public List<Integer> choisirUneCarte (List<Joueur> joueurs){
-	 * List<String> valsAcceptees = new ArrayList<String>();
-	 * 
-	 * System.out.println("   "+this.getNom()+" : "); System.out.
-	 * println("Vous pouvez choisir une carte parmis celle disponibles :   "); for
-	 * (int i=0; i<joueurs.size();i++) { Joueur j = joueurs.get(i); if
-	 * (j.equals(this)==false) {
-	 * System.out.println((i+1)+". Cartes de "+j.getNom()+" :\n carte visible= "+j.
-	 * getCarteVisible()+"  ;  carte cachée= ???");
-	 * valsAcceptees.add(Integer.toString(i+1)); } } String numeroJoueur =
-	 * ReponseUtilisateur("Chez quel joueur voulez vous prendre une carte ? (1/2/...) : "
-	 * , valsAcceptees); valsAcceptees.clear(); valsAcceptees.add("V");
-	 * valsAcceptees.add("C"); String visOuCache =
-	 * ReponseUtilisateur("Quelle carte vous intéresse, celle visible ou celle cachée ? (V/C) : "
-	 * , valsAcceptees);
-	 * 
-	 * List<Integer> res = new ArrayList<Integer>();
-	 * res.add(Integer.parseInt(numeroJoueur)-1); if (visOuCache=="V") { res.add(0);
-	 * } else { res.add(1); } return res; }
-	 */
-
 	public List<Integer> choisirUneCarte(List<Joueur> joueurs) {
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size() == 1 && joueurs.contains(this)) {

@@ -5,15 +5,18 @@ import java.util.List;
 public class StrategieIntelligent implements Strategie{
 
 	@Override
-	public List<Carte> executeOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
+	public int executeFaireUneOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public Joueur executeChoix(List<Joueur> cartesAuChoix, List<Carte> cartesEnCollection, Joueur j, Carte c) {
+	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, List <Carte> cartesEnCollection, Joueur moiMeme) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public int executeChoisiUneDeSesCartes(){
+		return 0;
+	}
 }
