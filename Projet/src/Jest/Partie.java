@@ -100,7 +100,7 @@ public class Partie {
 			if (jFaisSonChoix==null) {
 				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
 			} 
-			System.out.println("C'est à "+ jFaisSonChoix.getNom()+" de jouer");
+			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
 			
 			List<Integer> resultat = jFaisSonChoix.choisirUneCarte(joueursDispo);
 			int numJoueur = resultat.get(0);
@@ -110,10 +110,16 @@ public class Partie {
 			Joueur joueurChoisi = joueursDispo.remove(numJoueur);
 			// on lui enlève la carte prise
 			Carte c = joueurChoisi.recupererCarte(numCarte);
-
-			System.out.print(jFaisSonChoix.getNom()+" a choisi la carte : ");
-			System.out.print(c+" de ");
-			System.out.println(joueurChoisi.getNom());
+			if (jFaisSonChoix instanceof JoueurPhysique){
+				System.out.println("Vous avez choisi la carte "+c.getNom()+" de "+joueurChoisi.getNom());
+			}
+			String affichage="";
+			if (numCarte==0){
+				affichage="visible";
+			} else {
+				affichage = "caché";
+			}
+			System.out.println("\n\n"+jFaisSonChoix.getNom()+" a choisi la carte "+affichage+" de "+joueurChoisi.getNom());
 
 			// et la donne a celui qui a fait son choix
 			jFaisSonChoix.ajouteASaCollection(c);
@@ -129,16 +135,15 @@ public class Partie {
 				jFaisSonChoix=null;
 			}
 		}
-		
-		// on récupère les cartes non choisies
-		List<Carte> recup = new ArrayList<Carte>();
-		for (int i=0;i<this.participants.size();i++) {
-			recup.add(this.participants.get(i).remiseALaPioche());
-		}
 
 		// on remet a la pioche seulement si on peut encore faire un tour
 		boolean finDePartie = false;
 		if (this.pioche.size()>=this.participants.size()){
+			// on récupère les cartes non choisies
+			List<Carte> recup = new ArrayList<Carte>();
+			for (int i=0;i<this.participants.size();i++) {
+				recup.add(this.participants.get(i).remiseALaPioche());
+			}
 			this.remiseALaPioche(recup);
 		} else {
 			for (int i=0;i<this.participants.size();i++) {
@@ -150,7 +155,7 @@ public class Partie {
 	}
 	
 	public void affichageTable(){
-		System.out.print( "\nEtat de la table de jeu : \n Trophes :   " );
+		System.out.print( "\n\nEtat de la table de jeu : \n Trophes :   " );
 		for (int i=0; i<this.trophe.size();i++){
 			System.out.print(this.trophe.get(i)+"   ;   ");
 		}

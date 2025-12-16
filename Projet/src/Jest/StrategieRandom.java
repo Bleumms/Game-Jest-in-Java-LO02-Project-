@@ -5,6 +5,11 @@ import java.util.List;
 
 public class StrategieRandom implements Strategie{
 
+	public String toString() {
+		return "Stratégie random";
+	}
+
+
 	@Override
 	public int executeFaireUneOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
 		double aleaCarte = Math.random()*2;

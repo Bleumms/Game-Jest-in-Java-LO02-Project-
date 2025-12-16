@@ -30,5 +30,9 @@ public class Carte {
 	public int JoueurGagnantCarte(List<Joueur> joueurs) {
 		return this.condition.VerificationVictoire(joueurs);
 	}
+
+	public String getNom(){
+		return this.nom;
+	}
 	
 }

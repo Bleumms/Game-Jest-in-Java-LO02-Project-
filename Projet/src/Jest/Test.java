@@ -100,6 +100,50 @@ public class Test {
 		str.add(new StrategieIntelligent());
 		
 
+		Strategie s = new StrategieIntelligent();
+		Joueur jv1 = new JoueurVirtuel("robo1", s);
+		Joueur jv2 = new JoueurVirtuel("robo2", s);
+		Joueur jv3 = new JoueurVirtuel("robo3", s);
+		Joueur jv4 = new JoueurVirtuel("robo4", s);
+		Joueur jv5 = new JoueurVirtuel("robo5", s);
+		Joueur jv6 = new JoueurVirtuel("robo6", s);
+		Joueur jv7 = new JoueurVirtuel("robo7", s);
+		Joueur jv8 = new JoueurVirtuel("robo8", s);
+
+		jv1.assignerCarteDistribuees(c0);
+		jv1.assignerCarteDistribuees(c13);
+		jv1.faireUneOffre();
+		System.out.println("\n"+jv1.getCarteVisible());
+		jv2.assignerCarteDistribuees(c10);
+		jv2.assignerCarteDistribuees(c0);
+		jv2.faireUneOffre();
+		System.out.println("\n"+jv2.getCarteVisible());
+		jv3.assignerCarteDistribuees(c10);
+		jv3.assignerCarteDistribuees(c5);
+		jv3.faireUneOffre();
+		System.out.println("\n"+jv3.getCarteVisible());
+		jv4.assignerCarteDistribuees(c9);
+		jv4.assignerCarteDistribuees(c14);
+		jv4.faireUneOffre();
+		System.out.println("\n"+jv4.getCarteVisible());
+		jv5.assignerCarteDistribuees(c2);
+		jv5.assignerCarteDistribuees(c6);
+		jv5.faireUneOffre();
+		System.out.println("\n"+jv5.getCarteVisible());
+		jv6.assignerCarteDistribuees(c2);
+		jv6.assignerCarteDistribuees(c14);
+		jv6.faireUneOffre();
+		System.out.println("\n"+jv6.getCarteVisible());
+		jv7.assignerCarteDistribuees(c15);
+		jv7.assignerCarteDistribuees(c3);
+		jv7.faireUneOffre();
+		System.out.println("\n"+jv7.getCarteVisible());
+		jv8.assignerCarteDistribuees(c15);
+		jv8.assignerCarteDistribuees(c14);
+		jv8.faireUneOffre();
+		System.out.println("\n"+jv8.getCarteVisible());
+
+		/*
 		// TEST JOUEUR VIRTUEL
 		// je crée mon joueur
 		Strategie s = new StrategieIntelligent();
@@ -108,7 +152,7 @@ public class Test {
 		// je crée des joueurs concurents
 		Joueur adv1 = new JoueurPhysique("Nina");
 		Joueur adv2 = new JoueurPhysique("Emeline");
-		Joueur adv3 = new JoueurVirtuel("robo2",s);
+		Joueur jv2 = new JoueurVirtuel("robo2",s);
 		Joueur adv4 = new JoueurPhysique("Yassine");
 
 		// on lui distribue des cartes pour qu'il fasse son offre
@@ -122,6 +166,7 @@ public class Test {
 		jv.faireUneOffre();
 		System.out.print(jv); // ça marche
 
+
 		//On attribut des cartes aux autres 
 		adv1.assignerCarteDistribuees(c2);
 		adv1.assignerCarteDistribuees(c9);
@@ -129,9 +174,9 @@ public class Test {
 		adv2.assignerCarteDistribuees(c16);
 		adv2.assignerCarteDistribuees(c8);
 		adv2.ChoisirCarteVisible(0);
-		adv3.assignerCarteDistribuees(c14);
-		adv3.assignerCarteDistribuees(c6);
-		adv3.ChoisirCarteVisible(0);
+		jv2.assignerCarteDistribuees(c14);
+		jv2.assignerCarteDistribuees(c6);
+		jv2.faireUneOffre();
 		adv4.assignerCarteDistribuees(c10);
 		adv4.assignerCarteDistribuees(c11);
 		adv4.ChoisirCarteVisible(0);
@@ -139,7 +184,7 @@ public class Test {
 		l.add(adv1);
 		l.add(adv2);
 		l.add(jv);
-		l.add(adv3);
+		l.add(jv2);
 		l.add(adv4);
 		System.out.print(jv.choisirUneCarte(l));
 		
@@ -148,7 +193,8 @@ public class Test {
 		List<Joueur> l2 = new ArrayList<Joueur>();
 		l2.add(jv);
 		System.out.print(jv.choisirUneCarte(l2)); //ça marche
-
+		*/
+		
 		/*
 		// Créer un menu
 
