@@ -7,8 +7,7 @@
 <img alt="last-commit" src="https://img.shields.io/github/last-commit/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&amp;logo=git&amp;logoColor=white&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
 <img alt="repo-top-language" src="https://img.shields.io/github/languages/top/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
 <img alt="repo-language-count" src="https://img.shields.io/github/languages/count/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
-<p><em>Built with the tools and technologies:</em></p>
-<img alt="Markdown" src="https://img.shields.io/badge/Markdown-000000.svg?style=flat&amp;logo=Markdown&amp;logoColor=white" class="inline-block mx-1" style="margin: 0px 2px;">
+
 </div>
 <br>
 <hr>
