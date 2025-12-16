@@ -65,22 +65,16 @@
 <p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
 <pre><code class="language-sh">❯ mvn install
 </code></pre>
-<p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
-<pre><code class="language-sh">❯ mvn install
-</code></pre>
+
 <h3>Usage</h3>
 <p>Run the project with:</p>
-<p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
-<pre><code class="language-sh">mvn exec:java
-</code></pre>
+
 <p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
 <pre><code class="language-sh">mvn exec:java
 </code></pre>
 <h3>Testing</h3>
 <p>Game-jest-in-java-lo02-project- uses the {<strong>test_framework</strong>} test framework. Run the test suite with:</p>
-<p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
-<pre><code class="language-sh">mvn test
-</code></pre>
+
 <p><strong>Using <a href="https://maven.apache.org/">maven</a>:</strong></p>
 <pre><code class="language-sh">mvn test
 </code></pre>
