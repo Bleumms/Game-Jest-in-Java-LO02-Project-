@@ -55,6 +55,8 @@ public class Menu {
 			if (repValide==false) {
 				System.out.println("Réponse invalide : " + numero);
 			}
+			clavier.close();
+
 		}
 		return jeux.get(numero);
 	}
@@ -110,6 +112,7 @@ public class Menu {
 					ajouter = true;
 				}
 			}
+		clavier.close();
 		}
 		return joueurs;
 	}
@@ -135,6 +138,7 @@ public class Menu {
 			if (repValide == false) {
 				System.out.println("Réponse invalide : " + rep);
 			}
+		clavier.close();
 		}
 		return reponse;
 	}
