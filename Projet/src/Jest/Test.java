@@ -149,6 +149,14 @@ public class Test {
 		l2.add(jv);
 		System.out.print(jv.choisirUneCarte(l2)); //ça marche
 
+
+
+		// TEST VISITOR
+		Joueur joueurTest = new Joueur("Test");
+		Visitor vis = new CalculateurScore();
+		joueurTest.accept(vis);
+		System.out.print(joueurTest.getScore());
+		
 		/*
 		// Créer un menu
 

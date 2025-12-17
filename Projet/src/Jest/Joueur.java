@@ -41,7 +41,7 @@ public class Joueur implements Visitable{
 	}
 	
 	public void accept ( Visitor visiteur) {
-		
+		visiteur.visit(this);		
 	}
 	
 	public Carte recupererCarte (int i) {
@@ -97,7 +97,6 @@ public class Joueur implements Visitable{
 	
 	// GETTER
 	public int getScore() {
-		// TODO Auto-generated method stub
 		return this.score;
 	}
 	
@@ -131,4 +130,10 @@ public class Joueur implements Visitable{
 	public void addCollection(Carte c){
 		this.collection.add(c);
 	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 }
+
