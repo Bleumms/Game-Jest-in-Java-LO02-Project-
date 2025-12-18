@@ -21,7 +21,7 @@ public class JoueurPhysique extends Joueur{
 		valsAcceptees.add("1");
 		String reponse = ReponseUtilisateur("Quelle carte souhaitez vous rendre visible aux autres joueurs ? (1/2) : ",
 				valsAcceptees);
-		this.ChoisirCarteVisible(Integer.parseInt(reponse) - 1);
+		this.choisirCarteVisible(Integer.parseInt(reponse) - 1);
 	}
 
 	private String ReponseUtilisateur(String question, List<String> valsAcceptees) {

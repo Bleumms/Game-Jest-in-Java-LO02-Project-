@@ -1,8 +1,11 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ConditionJocker implements ConditionVictoire {
+public class ConditionJocker implements ConditionVictoire, Serializable {
+    
+    private static final long serialVersionUID = 1L;
     
     public ConditionJocker() {
 

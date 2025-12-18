@@ -18,7 +18,7 @@ public class JoueurVirtuel extends Joueur {
 	// a changer avec strategie
 	public void faireUneOffre() {
 		int numCarte = this.strat.executeFaireUneOffre(this.getCartesDistribuees(), this.getCollection());
-		this.ChoisirCarteVisible(numCarte);
+		this.choisirCarteVisible(numCarte);
 
 	}
 

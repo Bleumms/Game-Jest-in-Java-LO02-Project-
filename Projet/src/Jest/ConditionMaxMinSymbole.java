@@ -1,9 +1,12 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ConditionMaxMinSymbole implements ConditionVictoire {
+public class ConditionMaxMinSymbole implements ConditionVictoire, Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private int maxMin; 
     private Symbole s;
 

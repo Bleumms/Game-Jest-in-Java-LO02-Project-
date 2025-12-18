@@ -1,10 +1,13 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConditionMaxScore implements ConditionVictoire {
+public class ConditionMaxScore implements ConditionVictoire, Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private boolean jockerAccepte; 
 
 	public ConditionMaxScore(boolean jockerAccepte) {

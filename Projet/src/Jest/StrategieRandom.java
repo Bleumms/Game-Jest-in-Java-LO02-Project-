@@ -1,10 +1,13 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StrategieRandom implements Strategie{
+public class StrategieRandom implements Strategie, Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	public String toString(){
 		return "Stratégie random";
 	}

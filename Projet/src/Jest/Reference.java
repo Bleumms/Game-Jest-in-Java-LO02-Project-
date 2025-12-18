@@ -1,11 +1,13 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reference {
+public class Reference implements Serializable {
 
-
+	private static final long serialVersionUID = 1L;
+	
 	public List<Regle> regles;
 
 	public Reference() {

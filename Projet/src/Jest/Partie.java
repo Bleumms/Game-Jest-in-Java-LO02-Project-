@@ -5,18 +5,32 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class Partie {
+import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
+public class Partie implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private Date dateHeureDeCreation;
 	private List<Joueur> participants; 
 	private Jeu jeu;
 	private List<Carte> pioche;
 	private List<Carte> trophe;
+	private static int compteur=0;
+	private int ID;
 
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
+		this.ID=compteur;
+		compteur++;
 	}
 
 	public void ajouterUnJoueur(Joueur j) {
@@ -49,7 +63,7 @@ public class Partie {
 				Joueur j = participants.get(i);
 				j.assignerCarteDistribuees(pioche.remove(0));
 			}
-		}
+		} 
 	}
 
 	@Override
@@ -75,6 +89,10 @@ public class Partie {
 			this.choisirLesTrophes(2);
 			this.melangerLaPioche();
 		}
+	}
+
+	public int getID(){
+		return this.ID;
 	}
 
 	public boolean faireUnTourDeJeu() {
@@ -152,6 +170,7 @@ public class Partie {
 			finDePartie=true;
 		}
 		calculScore();
+		Partie.sauvegarder(this, this.ID);
 		return finDePartie;
 	}
 	
@@ -247,4 +266,35 @@ public class Partie {
 			System.out.println(" ont un score de "+maxscore);
 		}
 	}
+
+
+	//SAUVEGARDE
+	public static void sauvegarder(Partie p, int ID) {
+		String titre = "Partie_"+ID+".obj";
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(titre))) {
+
+            oos.writeObject(p);
+            System.out.println("Partie sauvegardée avec succès");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+	public static Partie charger(int ID) {
+    	Partie p = null;
+		String titre = "Partie_"+ID+".obj";
+        try (ObjectInputStream ois =
+                     new ObjectInputStream(new FileInputStream(titre))) {
+
+            p = (Partie) ois.readObject();
+            System.out.println("Partie chargée avec succès");
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return p;
+    }
 }

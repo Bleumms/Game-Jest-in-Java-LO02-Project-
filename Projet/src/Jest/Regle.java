@@ -1,8 +1,11 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Regle {
+public class Regle implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {

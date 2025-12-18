@@ -1,9 +1,12 @@
 package Jest;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ConditonPlusCarteValeur implements ConditionVictoire {
+public class ConditonPlusCarteValeur implements ConditionVictoire, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int num;
     

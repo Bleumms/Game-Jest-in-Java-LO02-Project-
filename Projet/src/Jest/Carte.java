@@ -1,8 +1,12 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Carte {
+public class Carte implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
 	private String nom;
 	private ConditionVictoire condition;
 	

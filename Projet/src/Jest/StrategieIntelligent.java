@@ -1,10 +1,12 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StrategieIntelligent implements Strategie{
+public class StrategieIntelligent implements Strategie, Serializable{
 
+	private static final long serialVersionUID = 1L;
 	
 	public String toString(){
 		return "Stratégie intelligente";

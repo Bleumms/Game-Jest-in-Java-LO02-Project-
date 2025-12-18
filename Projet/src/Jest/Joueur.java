@@ -1,10 +1,13 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Joueur implements Visitable{
+public class Joueur implements Visitable, Serializable{
 
+    private static final long serialVersionUID = 1L;
+	
 	private String nom;
 	private List<Carte> collection;
 	private List<Carte> cartesDistribuees;
@@ -61,7 +64,7 @@ public class Joueur implements Visitable{
 		this.collection.add(c);
 	}
 	
-	public void ChoisirCarteVisible(int i) {
+	public void choisirCarteVisible(int i) {
 		this.carteVisible = this.cartesDistribuees.remove(i);
 		this.carteCachee = this.cartesDistribuees.remove(0);
 	}
