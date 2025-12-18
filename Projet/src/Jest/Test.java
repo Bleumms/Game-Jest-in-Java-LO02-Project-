@@ -274,7 +274,7 @@ public class Test {
 		while (fin == false){
 			fin = p.faireUnTourDeJeu();
 		}
-		p.calculScore();
+		p.finDePartie();
 		System.out.println(p);
 		
 	}

@@ -200,6 +200,7 @@ public class Partie {
 			int indexJ = c.JoueurGagnantCarte(this.participants);
 			if (indexJ>=0){
 				this.participants.get(indexJ).ajouteASaCollection(c);
+				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ) + "\n("+c.getConditionVictoire()+")");
 			}
 		}
 	}
@@ -209,6 +210,8 @@ public class Partie {
 		
 		// Attribuer les trophés
 		this.attribuerLesTrophes();
+
+		this.calculScore();
 
 		int maxscore = this.participants.get(0).getScore();
 		List<Joueur> jMaxScore= new ArrayList<Joueur>();

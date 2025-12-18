@@ -12,6 +12,16 @@ public class ConditionMaxMinSymbole implements ConditionVictoire {
         this.s = s;
     }
 
+    public String toString(){
+        String message="Le joueur qui a une carte de symbole "+this.s;
+        if (maxMin <0){
+            message=message+" la plus petite";
+        } else {
+            message=message+" la plus grande";
+        }
+        return message;
+    }
+
     public int VerificationVictoire(List<Joueur> joueurs){
 
         int extremum;

@@ -11,6 +11,10 @@ public class ConditonPlusCarteValeur implements ConditionVictoire {
         this.num=num;
     }
 
+    public String toString(){
+        return "Le joueur qui a le plus de fois une carte de numéro "+num;
+    }
+
     public int VerificationVictoire(List<Joueur> joueurs){
         List<Integer> nbCartesPossedes = new ArrayList<Integer>();
         for (int i=0; i<joueurs.size(); i++) {

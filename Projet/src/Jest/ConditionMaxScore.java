@@ -11,6 +11,14 @@ public class ConditionMaxScore implements ConditionVictoire {
 		this.jockerAccepte = jockerAccepte;
 	}
 
+	public String toString(){
+        String message="Le joueur qui a le score maximum";
+        if (jockerAccepte==false){
+            message=message+" sans Jocker";
+        }
+        return message;
+    }
+
 	// renvoie le numero du joueur avec le score max
 	// vérifié
 	@Override

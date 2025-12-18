@@ -8,6 +8,10 @@ public class ConditionJocker implements ConditionVictoire {
 
     }
 
+    public String toString(){
+        return "Le joueur qui a un Jocker gagne cette carte";
+    }
+
     public int VerificationVictoire(List<Joueur> joueurs){
         int indexJoueur=-1;
         for (int i=0; i<joueurs.size(); i++) {

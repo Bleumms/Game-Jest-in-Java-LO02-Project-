@@ -34,5 +34,9 @@ public class Carte {
 	public String getNom(){
 		return this.nom;
 	}
+
+	public ConditionVictoire getConditionVictoire(){
+		return this.condition;
+	}
 	
 }
