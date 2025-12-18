@@ -23,22 +23,97 @@ public class Test {
 
 	public static Carte creerCarte(int symb, int num){
 		Carte c;
+		ConditionVictoire cv=null;
 		if (num==0){
 			c=new Jocker();
+			cv = new ConditionMaxScore(true);
+			c.ajouterConditionVictoire(cv);
 		} else {
-			Symbole s= Symbole.PIQUE;
-			if (symb==1){
-				s=Symbole.TREFLE;
-			} else {
-				if (symb==2){
-					s=Symbole.CARREAU;
-				} else {
-					if (symb==3){
-						s=Symbole.COEUR;
+			Symbole s= null;
+			switch (symb) {
+				case 0:
+					s=Symbole.PIQUE;
+					switch (num) {
+						case 1:
+							cv= new ConditionMaxMinSymbole(1,Symbole.TREFLE);
+							break;
+
+						case 2:
+							cv= new ConditonPlusCarteValeur(3);
+							break;
+
+						case 3:
+							cv= new ConditonPlusCarteValeur(2);
+							break;
+
+						case 4:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.TREFLE);
+							break;
+
+						default:
+							break;
 					}
-				}
+					break;
+
+				case 1:
+					s=Symbole.TREFLE;
+					switch (num) {
+						case 1:
+							cv= new ConditionMaxMinSymbole(1,Symbole.PIQUE);
+							break;
+
+						case 2:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.COEUR);
+							break;
+
+						case 3:
+							cv= new ConditionMaxMinSymbole(1,Symbole.COEUR);
+							break;
+
+						case 4:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.PIQUE);
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				case 2:
+					s=Symbole.CARREAU;
+					switch (num) {
+						case 1:
+							cv= new ConditonPlusCarteValeur(4);
+							break;
+
+						case 2:
+							cv= new ConditionMaxMinSymbole(1,Symbole.CARREAU);
+							break;
+
+						case 3:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.CARREAU);
+							break;
+
+						case 4:
+							cv= new ConditionMaxScore(false);
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				case 3:
+					s=Symbole.COEUR;
+					cv= new ConditionJocker();
+					break;
+			
+				default:
+					break;
 			}
+			
 			c = new CarteClassique(num, s);
+			c.ajouterConditionVictoire(cv);
 		}
 		return c;
 	}
@@ -99,7 +174,8 @@ public class Test {
 		str.add(new StrategieIntelligent());
 		
 
-
+		/* 
+		// LES CONDITIONS DE VICTOIRES : CA MARCHE DE OUF
 		List<Carte> lc = creerToutesCartes();
 		Joueur j1 = new JoueurPhysique("Nina");
 		j1.ajouteASaCollection(lc.get(6));
@@ -140,10 +216,11 @@ public class Test {
 		ConditionVictoire cv3 = new ConditionMaxMinSymbole(-1,Symbole.TREFLE);
 		ConditionVictoire cv4 = new ConditionMaxMinSymbole(1,Symbole.CARREAU);
 		ConditionVictoire cv5 = new ConditionMaxMinSymbole(-1,Symbole.CARREAU);
-		ConditionVictoire cv6 = new ConditionMaxScore();
+		ConditionVictoire cv6 = new ConditionMaxScore(true);
 		ConditionVictoire cv8 = new ConditonPlusCarteValeur(3);
 		ConditionVictoire cv9 = new ConditonPlusCarteValeur(1);
 		ConditionVictoire cv10 = new ConditionMaxMinSymbole(1,Symbole.COEUR);
+		ConditionVictoire cv11 = new ConditionMaxScore(false);
 
 		List<Joueur> js = new ArrayList<Joueur>();
 		js.add(j1);
@@ -165,7 +242,6 @@ public class Test {
 		System.out.println(" Joueur gagnant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
 		j2.ajouteASaCollection(lc.get(11));
 		j2.accept(cs);
-		c.ajouterConditionVictoire(cv6);
 		System.out.println(" Joueur gagant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
 		c.ajouterConditionVictoire(cv8);
 		System.out.println(" Joueur gagnant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
@@ -173,8 +249,13 @@ public class Test {
 		System.out.println(" Joueur gagnant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
 		c.ajouterConditionVictoire(cv10);
 		System.out.println(" Joueur gagnant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
-		
-		/* 
+		c.ajouterConditionVictoire(cv11);
+		j1.ajouteASaCollection(lc.get(16));
+		j1.accept(cs);
+		System.out.println(" Joueur gagnant : "+js.get(c.JoueurGagnantCarte(js)).getNom());
+		*/
+
+		 
 		// Créer un menu
 
 		Menu m = new Menu();
@@ -195,7 +276,7 @@ public class Test {
 		}
 		p.calculScore();
 		System.out.println(p);
-		*/
+		
 	}
 
 }

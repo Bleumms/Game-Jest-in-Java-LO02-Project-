@@ -5,28 +5,41 @@ import java.util.List;
 
 public class ConditionMaxScore implements ConditionVictoire {
 
-	public ConditionMaxScore() {
-		// TODO Auto-generated constructor stub
+	private boolean jockerAccepte; 
+
+	public ConditionMaxScore(boolean jockerAccepte) {
+		this.jockerAccepte = jockerAccepte;
 	}
 
 	// renvoie le numero du joueur avec le score max
 	// vérifié
 	@Override
 	public int VerificationVictoire(List<Joueur> joueurs) {
+		List<Boolean> joueursAvecJocker = new ArrayList<Boolean>();
+		for (int i=0; i<joueurs.size(); i++) {
+			boolean aUnJocker = false;
+			for (int j=0; j<joueurs.get(i).getCollection().size(); j++){
+				if (joueurs.get(i).getCollection().get(j) instanceof Jocker){
+					aUnJocker = true;
+				}
+			}
+			joueursAvecJocker.add(aUnJocker);
+		}
 		int indexJoueur=0;
-		int max = joueurs.get(0).getScore();
+		int max = -20;
 		List<Integer> jMaxScore= new ArrayList<Integer>();
-		jMaxScore.add(0);
-		for (int i=1; i<joueurs.size(); i++) {
+		for (int i=0; i<joueurs.size(); i++) {
 			Joueur j = joueurs.get(i);
-			if (j.getScore() == max ) {
-				jMaxScore.add(i);
-			}
-			if (j.getScore() > max){
-				max=j.getScore();
-				jMaxScore.clear();
-				jMaxScore.add(i);
-			}
+			if (jockerAccepte==true || joueursAvecJocker.get(i) == false ){
+				if (j.getScore() == max ) {
+					jMaxScore.add(i);
+				}
+				if (j.getScore() > max){
+					max=j.getScore();
+					jMaxScore.clear();
+					jMaxScore.add(i);
+				}
+			} 
 		}
 		//egalité
 		if (jMaxScore.size()>1){
