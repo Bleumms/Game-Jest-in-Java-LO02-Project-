@@ -15,13 +15,6 @@ public class Menu {
 		return this.partieEnCours;
 	}
 
-	public Partie creerUnePartie() {
-		Partie p = new Partie();
-		// Choix du jeu
-		this.partieEnCours = p;
-		return p;
-	}
-
 	public Partie creerUnePartie(List<Jeu> jeux, List<Strategie> strats) {
 		Partie p = new Partie();
 		// ajouter un jeu
@@ -38,6 +31,7 @@ public class Menu {
 
 	private Jeu choixDuJeu(List<Jeu> jeux) {
 		// Verifier que jeux non vide !!
+		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
 		while (repValide == false) {
@@ -47,7 +41,6 @@ public class Menu {
 				System.out.println(jeux.get(i));
 			}
 			System.out.print("Choisissez le numéro du jeu qui vous intéresse : ");
-			Scanner clavier = new Scanner(System.in);
 			numero = clavier.nextInt();
 			if (numero >= 0 && numero < jeux.size()) {
 				repValide = true;
@@ -55,8 +48,6 @@ public class Menu {
 			if (repValide==false) {
 				System.out.println("Réponse invalide : " + numero);
 			}
-			clavier.close();
-
 		}
 		return jeux.get(numero);
 	}
@@ -112,7 +103,6 @@ public class Menu {
 					ajouter = true;
 				}
 			}
-		clavier.close();
 		}
 		return joueurs;
 	}
@@ -138,9 +128,7 @@ public class Menu {
 			if (repValide == false) {
 				System.out.println("Réponse invalide : " + rep);
 			}
-		clavier.close();
 		}
 		return reponse;
 	}
-
 }

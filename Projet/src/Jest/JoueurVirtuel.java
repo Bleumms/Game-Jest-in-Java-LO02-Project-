@@ -15,14 +15,6 @@ public class JoueurVirtuel extends Joueur {
 		this.strat = stra;
 	}
 
-	public void executeStrategieOffre() {
-
-	}
-
-	public void executeStrategieChoix() {
-
-	}
-
 	// a changer avec strategie
 	public void faireUneOffre() {
 		int numCarte = this.strat.executeFaireUneOffre(this.getCartesDistribuees(), this.getCollection());

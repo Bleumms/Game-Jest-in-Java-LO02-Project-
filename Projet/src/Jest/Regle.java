@@ -7,7 +7,7 @@ public class Regle {
 
 	@Override
 	public String toString() {
-		return "Regle []";
+		return "Regle";
 	}
 
 	public Regle() {

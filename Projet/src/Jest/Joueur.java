@@ -37,10 +37,11 @@ public class Joueur implements Visitable{
 
 	@Override
 	public String toString() {
-		return this.nom + " : \n  collection=" + collection + ", \n  carte reçues =" + this.cartesDistribuees + ", \n  carte visible ="+this.carteVisible+", \n  carte cachée ="+this.carteCachee+", \n     score=" + score+"\n";
+		return this.nom + " : \n  collection=" + collection + ", \n  carte reçues =" + this.cartesDistribuees + ", \n  carte visible ="+this.carteVisible+", \n     score=" + score+"\n";
 	}
 	
 	public void accept ( Visitor visiteur) {
+		System.out.println("Le joueur accepte le visiteur ");
 		visiteur.visit(this);		
 	}
 	

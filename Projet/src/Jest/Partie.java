@@ -100,8 +100,8 @@ public class Partie {
 			if (jFaisSonChoix==null) {
 				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
 			} 
-			System.out.println("C'est à "+ jFaisSonChoix.getNom()+" de jouer");
-			
+			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
+
 			List<Integer> resultat = jFaisSonChoix.choisirUneCarte(joueursDispo);
 			int numJoueur = resultat.get(0);
 			int numCarte = resultat.get(1);
@@ -111,9 +111,15 @@ public class Partie {
 			// on lui enlève la carte prise
 			Carte c = joueurChoisi.recupererCarte(numCarte);
 
-			System.out.print(jFaisSonChoix.getNom()+" a choisi la carte : ");
-			System.out.print(c+" de ");
-			System.out.println(joueurChoisi.getNom());
+			if (jFaisSonChoix instanceof JoueurPhysique){
+				System.out.println("Vous avez choisi la carte "+c.getNom()+" de "+joueurChoisi.getNom());
+			}
+			if (numCarte==0){
+				System.out.println("\n\n"+jFaisSonChoix.getNom()+" a choisi la carte visible : "+c.getNom()+" de "+joueurChoisi.getNom());
+
+			} else {
+				System.out.println("\n\n"+jFaisSonChoix.getNom()+" a choisi la carte cachée de "+joueurChoisi.getNom());
+			}
 
 			// et la donne a celui qui a fait son choix
 			jFaisSonChoix.ajouteASaCollection(c);
@@ -130,15 +136,14 @@ public class Partie {
 			}
 		}
 		
-		// on récupère les cartes non choisies
-		List<Carte> recup = new ArrayList<Carte>();
-		for (int i=0;i<this.participants.size();i++) {
-			recup.add(this.participants.get(i).remiseALaPioche());
-		}
-
 		// on remet a la pioche seulement si on peut encore faire un tour
 		boolean finDePartie = false;
 		if (this.pioche.size()>=this.participants.size()){
+			// on récupère les cartes non choisies
+			List<Carte> recup = new ArrayList<Carte>();
+			for (int i=0;i<this.participants.size();i++) {
+				recup.add(this.participants.get(i).remiseALaPioche());
+			}
 			this.remiseALaPioche(recup);
 		} else {
 			for (int i=0;i<this.participants.size();i++) {
@@ -150,7 +155,7 @@ public class Partie {
 	}
 	
 	public void affichageTable(){
-		System.out.print( "\nEtat de la table de jeu : \n Trophes :   " );
+		System.out.print( "\n\nEtat de la table de jeu : \n Trophes :   " );
 		for (int i=0; i<this.trophe.size();i++){
 			System.out.print(this.trophe.get(i)+"   ;   ");
 		}
@@ -180,15 +185,15 @@ public class Partie {
 	}
 
 	// pour tester : normalement la fonction appelle le pattern visitor
-	public List<Integer> calculScore() {
-		List<Integer> res = new ArrayList<Integer>();
+	public void calculScore() {
 		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa
 		// carte de référence
+		Visitor calcScore = new CalculateurScore();
+		calcScore.setReference(jeu.getReference());
 		for (int j = 0; j < this.participants.size(); j++) {
-			int r = this.jeu.getReference().calculScore(this.participants.get(j).getCollection());
-			res.add(r);
+			
+			this.participants.get(j).accept(calcScore);
 		}
-		return res;
 	}
 
 	// pour tester

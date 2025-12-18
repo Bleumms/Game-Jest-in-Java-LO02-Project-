@@ -46,7 +46,6 @@ public class JoueurPhysique extends Joueur{
 				System.out.println("Réponse invalide : " + rep);
 			}
 		}
-		clavier.close();
 		return reponse;
 	}
 

@@ -24,11 +24,15 @@ public class Carte {
 
 	@Override
 	public String toString() {
-		return "Carte [nom=" + nom + "]";
+		return "Carte "+this.nom;
 	}
 	
 	public int JoueurGagnantCarte(List<Joueur> joueurs) {
 		return this.condition.VerificationVictoire(joueurs);
+	}
+
+	public String getNom(){
+		return this.nom;
 	}
 	
 }

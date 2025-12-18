@@ -99,7 +99,52 @@ public class Test {
 		str.add(new StrategieRandom());
 		str.add(new StrategieIntelligent());
 		
+		/*
+		Strategie s = new StrategieIntelligent();
+		Joueur jv1 = new JoueurVirtuel("robo1", s);
+		Joueur jv2 = new JoueurVirtuel("robo2", s);
+		Joueur jv3 = new JoueurVirtuel("robo3", s);
+		Joueur jv4 = new JoueurVirtuel("robo4", s);
+		Joueur jv5 = new JoueurVirtuel("robo5", s);
+		Joueur jv6 = new JoueurVirtuel("robo6", s);
+		Joueur jv7 = new JoueurVirtuel("robo7", s);
+		Joueur jv8 = new JoueurVirtuel("robo8", s);
 
+		jv1.assignerCarteDistribuees(c0);
+		jv1.assignerCarteDistribuees(c13);
+		jv1.faireUneOffre();
+		System.out.println("\n"+jv1.getCarteVisible());
+		jv2.assignerCarteDistribuees(c10);
+		jv2.assignerCarteDistribuees(c0);
+		jv2.faireUneOffre();
+		System.out.println("\n"+jv2.getCarteVisible());
+		jv3.assignerCarteDistribuees(c10);
+		jv3.assignerCarteDistribuees(c5);
+		jv3.faireUneOffre();
+		System.out.println("\n"+jv3.getCarteVisible());
+		jv4.assignerCarteDistribuees(c9);
+		jv4.assignerCarteDistribuees(c14);
+		jv4.faireUneOffre();
+		System.out.println("\n"+jv4.getCarteVisible());
+		jv5.assignerCarteDistribuees(c2);
+		jv5.assignerCarteDistribuees(c6);
+		jv5.faireUneOffre();
+		System.out.println("\n"+jv5.getCarteVisible());
+		jv6.assignerCarteDistribuees(c2);
+		jv6.assignerCarteDistribuees(c14);
+		jv6.faireUneOffre();
+		System.out.println("\n"+jv6.getCarteVisible());
+		jv7.assignerCarteDistribuees(c15);
+		jv7.assignerCarteDistribuees(c3);
+		jv7.faireUneOffre();
+		System.out.println("\n"+jv7.getCarteVisible());
+		jv8.assignerCarteDistribuees(c15);
+		jv8.assignerCarteDistribuees(c14);
+		jv8.faireUneOffre();
+		System.out.println("\n"+jv8.getCarteVisible());
+		*/
+
+		/*
 		// TEST JOUEUR VIRTUEL
 		// je crée mon joueur
 		Strategie s = new StrategieIntelligent();
@@ -148,16 +193,19 @@ public class Test {
 		List<Joueur> l2 = new ArrayList<Joueur>();
 		l2.add(jv);
 		System.out.print(jv.choisirUneCarte(l2)); //ça marche
+		*/
 
-
-
+		
+		/*
 		// TEST VISITOR
 		Joueur joueurTest = new Joueur("Test");
 		Visitor vis = new CalculateurScore();
 		joueurTest.accept(vis);
 		System.out.print(joueurTest.getScore());
+		 */
+
+
 		
-		/*
 		// Créer un menu
 
 		Menu m = new Menu();
@@ -176,8 +224,8 @@ public class Test {
 		while (fin == false){
 			fin = p.faireUnTourDeJeu();
 		}
+		p.calculScore();
 		System.out.println(p);
-		*/
 	}
 
 }
