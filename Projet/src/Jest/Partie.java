@@ -198,7 +198,9 @@ public class Partie {
 		for (int i=0; i<this.trophe.size(); i++){
 			Carte c = this.trophe.get(i);
 			int indexJ = c.JoueurGagnantCarte(this.participants);
-			this.participants.get(indexJ).ajouteASaCollection(c);
+			if (indexJ>=0){
+				this.participants.get(indexJ).ajouteASaCollection(c);
+			}
 		}
 	}
 

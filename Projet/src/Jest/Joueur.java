@@ -41,7 +41,6 @@ public class Joueur implements Visitable{
 	}
 	
 	public void accept ( Visitor visiteur) {
-		System.out.println("Le joueur accepte le visiteur ");
 		visiteur.visit(this);		
 	}
 	
