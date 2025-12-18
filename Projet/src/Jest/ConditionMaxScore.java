@@ -1,5 +1,6 @@
 package Jest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConditionMaxScore implements ConditionVictoire {
@@ -12,28 +13,30 @@ public class ConditionMaxScore implements ConditionVictoire {
 	// vérifié
 	@Override
 	public int VerificationVictoire(List<Joueur> joueurs) {
-		// TODO Auto-generated method stub
+		int indexJoueur=0;
 		int max = joueurs.get(0).getScore();
-		int index=0;
+		List<Integer> jMaxScore= new ArrayList<Integer>();
+		jMaxScore.add(0);
 		for (int i=1; i<joueurs.size(); i++) {
-			if (joueurs.get(i).getScore() == max ) {
-				// Egalité : tirage au hasard
-				System.out.print("Deux scores sont égaux, tirages au hasard au profit ...");
-				double randomValue = Math.random();
-				if (randomValue<0.5) {
-					System.out.println("... Du joueur numéro "+index+" !");
-				} else {
-					System.out.println("... Du joueur numéro "+i+" !");
-					max = joueurs.get(i).getScore();
-					index=i;
-				}
+			Joueur j = joueurs.get(i);
+			if (j.getScore() == max ) {
+				jMaxScore.add(i);
 			}
-			else if (joueurs.get(i).getScore() > max ) {
-				max = joueurs.get(i).getScore();
-				index=i;
+			if (j.getScore() > max){
+				max=j.getScore();
+				jMaxScore.clear();
+				jMaxScore.add(i);
 			}
 		}
-		return index;
+		//egalité
+		if (jMaxScore.size()>1){
+			double alea = Math.random()*jMaxScore.size();
+			int aleaInt = Double.valueOf(alea).intValue();
+			indexJoueur=jMaxScore.get(aleaInt);
+		} else {
+			indexJoueur=jMaxScore.get(0);
+		}
+		return indexJoueur;
 	}
 
 }

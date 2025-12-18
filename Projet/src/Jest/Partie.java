@@ -151,6 +151,7 @@ public class Partie {
 			}
 			finDePartie=true;
 		}
+		calculScore();
 		return finDePartie;
 	}
 	
@@ -184,23 +185,61 @@ public class Partie {
 		return joueursPasEncoreJoue.get(indexJoueur);
 	}
 
-	// pour tester : normalement la fonction appelle le pattern visitor
 	public void calculScore() {
-		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa
-		// carte de référence
+		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa carte de référence
 		Visitor calcScore = new CalculateurScore();
 		calcScore.setReference(jeu.getReference());
 		for (int j = 0; j < this.participants.size(); j++) {
-			
 			this.participants.get(j).accept(calcScore);
 		}
 	}
 
-	// pour tester
-	public void partieFactice(List<Joueur> participantsF, Jeu jeuF, List<Carte> piocheF, List<Carte> tropheF) {
-		participants = participantsF;
-		jeu = jeuF;
-		pioche = piocheF;
-		trophe = tropheF;
+	public void attribuerLesTrophes(){
+		for (int i=0; i<this.trophe.size(); i++){
+			Carte c = this.trophe.get(i);
+			int indexJ = c.JoueurGagnantCarte(this.participants);
+			this.participants.get(indexJ).ajouteASaCollection(c);
+		}
+	}
+
+	public void finDePartie(){
+		System.out.println("\n\nFin de partie : ");
+		
+		// Attribuer les trophés
+		this.attribuerLesTrophes();
+
+		int maxscore = this.participants.get(0).getScore();
+		List<Joueur> jMaxScore= new ArrayList<Joueur>();
+		jMaxScore.add(this.participants.get(0));
+		System.out.println("\nJoueur 1 : "+this.participants.get(0).getNom()+"\n   Score : "+this.participants.get(0).getScore()+"\n    Cartes : "+this.participants.get(0).getCollection());
+		for (int i=1; i < this.participants.size(); i++){
+			Joueur j = this.participants.get(i);
+			System.out.println("\nJoueur "+(i+1)+" : "+j.getNom()+"\n   Score : "+j.getScore()+"\n    Cartes : "+j.getCollection());
+			if (j.getScore() == maxscore){
+				jMaxScore.add(j);
+			}
+			if (j.getScore() > maxscore){
+				maxscore=j.getScore();
+				jMaxScore.clear();
+				jMaxScore.add(j);
+			}
+		}
+		if (jMaxScore.size()==1){
+			System.out.println("\n\nLe gagnant de la partie est "+jMaxScore.get(0).getNom()+" avec un score de "+maxscore);
+		} else {
+			System.out.println("\n\nEgalité !");
+			System.out.print("Les joueurs ");
+			for(int i=0; i<jMaxScore.size();i++){
+				System.out.print(jMaxScore.get(i));
+				if (i<jMaxScore.size()-2){
+					System.out.print(", ");
+				} else {
+					if (i<jMaxScore.size()-1){
+						System.out.print(" et ");
+					}
+				}
+			}
+			System.out.println(" ont un score de "+maxscore);
+		}
 	}
 }
