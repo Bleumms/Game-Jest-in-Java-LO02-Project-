@@ -30,7 +30,9 @@ public class Menu {
 	public void jouer(){
 		System.out.println("\n"+this.partieEnCours);
 		System.out.print("Jouer ?    :   ");
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
+		@SuppressWarnings("unused")
 		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		System.out.println("\n");
 		boolean fin =false;
@@ -48,6 +50,7 @@ public class Menu {
 		System.out.println("\nQue souhaitez vous faire ?");
 		System.out.println("      1 -   Créer une nouvelle partie ! ");
 		System.out.println("      2 -   Reprendre une ancienne partie ! ");
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -78,6 +81,7 @@ public class Menu {
 			List<Integer> valsAcceptable= new ArrayList<Integer>();
 			for (int i=0; i<fichiers.size();i++){
 				System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
+				@SuppressWarnings("unused")
 				int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
 				valsAcceptable.add(i+1);
 			}
@@ -92,6 +96,7 @@ public class Menu {
 	}
 
 	private int demanderPartieARestorer(List<Integer> valsAcceptable){
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -126,6 +131,7 @@ public class Menu {
 
 	private Jeu choixDuJeu(List<Jeu> jeux) {
 		// Verifier que jeux non vide !!
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -149,6 +155,7 @@ public class Menu {
 	}
 
 	private List<Joueur> choixDesJoueurs(List<Strategie> strats) {
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		List<String> valsAcceptees = new ArrayList<String>();
 		valsAcceptees.add("3");
@@ -199,6 +206,7 @@ public class Menu {
 	}
 
 	private String ReponseUtilisateur(String question, List<String> valsAcceptees) {
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		String reponse = null;
 		boolean repValide = false;
