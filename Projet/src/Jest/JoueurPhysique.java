@@ -1,3 +1,11 @@
+/*
+ * Représente un joueur humain interagissant via la console.
+ * Hérite de Joueur et implémente les méthodes de choix via Scanner.
+ * 
+ * @author Nina et Emeline
+ * @see Joueur
+ */
+
 package Jest;
 
 import java.util.ArrayList;
@@ -6,11 +14,21 @@ import java.util.Scanner;
 
 public class JoueurPhysique extends Joueur{
 
+	/* 
+	 * Constructeur avec paramètre.
+	 * Initialise le nom du joueur physique.
+	 * @param n Le nom du joueur
+	*/
 	public JoueurPhysique(String n) {
 		super(n);
 	}
 
-	// place en position 0 celle visible et en 1 celle qui ne l'es pas
+	/* 
+	 * Permet au joueur physique de faire une offre en choisissant une carte à rendre visible.
+	 * Utilise la console pour récupérer les informations.
+	 * Place en position 0 la carte visible et en 1 celle qui ne l'es pas.	 
+	 * Composé de tests pour la validité du choix.
+	*/
 	public void faireUneOffre() {
 		System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
 		Scanner clavier = new Scanner(System.in);
@@ -26,6 +44,14 @@ public class JoueurPhysique extends Joueur{
 		this.choisirCarteVisible(Integer.parseInt(reponse) - 1);
 	}
 
+	/* 
+	 * Méthode pour obtenir une réponse valide de l'utilisateur via la console.
+	 * Continue de poser la question jusqu'à obtenir une réponse valide.
+	 * Composé de test sur la validité de la réponse.
+	 * @param question La question à poser à l'utilisateur
+	 * @param valsAcceptees La liste des réponses acceptées (vide si toutes les réponses sont acceptées)
+	 * @return La réponse valide de l'utilisateur
+	*/
 	private String ReponseUtilisateur(String question, List<String> valsAcceptees) {
 		Scanner clavier = new Scanner(System.in);
 		String reponse = null;
@@ -51,10 +77,20 @@ public class JoueurPhysique extends Joueur{
 		return reponse;
 	}
 
+	/* 
+	 * Méthode pour choisir une carte parmi les cartes des autres joueurs
+	 * Que les cartes soient visibles ou cachées.
+	 * Obtient le choix via la console.
+	 * Demande d'abord le joueur ciblé, puis la carte (visible ou cachée).
+	 * Composé de tests pour la validité les choix.
+	 * Si le joueur est le seul avec une carte, le choix de l'utilisateur est automatique. 
+	 * @param joueurs La liste des joueurs en compétition
+	 * @return La liste contenant l'indice du joueur ciblé et l'indice de la carte choisie.
+	*/
 	public List<Integer> choisirUneCarte(List<Joueur> joueurs) {
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size() == 1 && joueurs.contains(this)) {
-			res.add(0); // de toute façon il y a qu'un joueur dans la liste donc c'est dans celui la qu'on prend la carte
+			res.add(0);
 			res.add(this.ChoisiUneDeSesCartes());
 		} else {
 			List<String> valsAcceptees = new ArrayList<String>();
@@ -100,6 +136,12 @@ public class JoueurPhysique extends Joueur{
 		return res;
 	}
 
+	/* 
+	 * Méthode pour choisir une de ses propres cartes à offrir
+	 * Obtient le choix via la console.
+	 * Composé de tests pour la validité du choix.
+	 * @return L'indice de la carte choisie
+	*/
 	public int ChoisiUneDeSesCartes() {
 		List<String> valsAcceptees = new ArrayList<String>();
 		valsAcceptees.add("V");
