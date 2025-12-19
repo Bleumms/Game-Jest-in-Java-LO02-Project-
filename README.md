@@ -14,7 +14,7 @@
 
 ---
 
-## 📋 Table des Matières
+## Table des Matières
 
 - [À Propos](#-à-propos)
 - [Caractéristiques](#-caractéristiques)
@@ -30,7 +30,7 @@
 
 ## À Propos
 
-**Jest** est un jeu de cartes stratégique développé en Java dans le cadre du projet LO02. Le jeu oppose 3 ou 4 joueurs (humains ou IA) dans une bataille tactique où chaque carte a une valeur qui dépend de règles complexes et interdépendantes.
+**Jest** est un jeu de cartes stratégique développé en Java dans le cadre du projet LO02. Le jeu oppose 3 ou 4 joueurs (humains ou virtuels) dans une bataille tactique où chaque carte a une valeur qui dépend de règles complexes et interdépendantes.
 
 Le projet met en œuvre plusieurs concepts avancés de programmation orientée objet :
 - Héritage et polymorphisme
@@ -43,10 +43,10 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 ## Caractéristiques
 
 ### 🎯 Gameplay
-- **3-4 joueurs** : Parties multijoueurs avec joueurs humains et IA
+- **3-4 joueurs** : Parties multijoueurs avec joueurs humains et virtuels
 - **Système de points dynamique** : 5 règles qui modifient la valeur des cartes
 - **Cartes trophées** : Objectifs variés à accomplir pour gagner
-- **Stratégies IA** : Deux niveaux de difficulté (Random et Intelligent)
+- **Stratégies joueurs virtuels** : Deux niveaux de difficulté (Random et Intelligent)
 
 ### 🔧 Fonctionnalités Techniques
 - **Sauvegarde/Chargement** : Reprenez vos parties à tout moment
@@ -274,7 +274,7 @@ public class CalculateurScore implements Visitor {
 - ✅ Pas de modification des classes Joueur
 
 ### 2. **Strategy Pattern**
-*Pour les IA*
+*Pour les Joueurs Virtuels*
 
 ```java
 public interface Strategie {
@@ -289,7 +289,7 @@ public interface Strategie {
 
 **Avantages** :
 - ✅ Changement de stratégie à la volée
-- ✅ Ajout facile de nouvelles IA
+- ✅ Ajout facile de nouvelles Stratégies
 - ✅ Code des joueurs simplifié
 
 ### 3. **Template Method**
