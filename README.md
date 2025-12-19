@@ -343,11 +343,10 @@ open target/site/apidocs/index.html
 
 ## Améliorations Possibles
 
-- [ ] Interface graphique (JavaFX ou Swing)
+- [ ] Interface graphique
 - [ ] Mode en ligne multijoueur
 - [ ] Statistiques et historique des parties
 - [ ] Système de classement
-- [ ] Animations et effets sonores
 - [ ] Mode tournoi
 
 ---
