@@ -18,11 +18,28 @@ public class Menu {
 		if (actionDemande==1){
 			Partie p = this.creerUnePartie();
 			this.partieEnCours = p;
+			this.partieEnCours.initialiserLaPartie();
 		} else {
 			Partie p =this.restorerUnePartie();
 			this.partieEnCours = p;
 		}
+		this.jouer();
 	}
+
+
+	public void jouer(){
+		System.out.println("\n"+this.partieEnCours);
+		System.out.print("Jouer ?    :   ");
+		Scanner clavier = new Scanner(System.in);
+		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
+		System.out.println("\n");
+		boolean fin =false;
+		while (fin == false){
+			fin = this.partieEnCours.faireUnTourDeJeu();
+		}
+		this.partieEnCours.finDePartie();
+	}
+
 
 	public int affichageMenu(){
 		System.out.println(" -------------------------------------------------");
@@ -48,21 +65,29 @@ public class Menu {
 	}
 
 	public Partie restorerUnePartie(){
-		System.out.println("\n Quelle partie voulez vous reprendre : ");
+		
 		List<String> fichiers=null;
 		try{
 			fichiers = Partie.listerSauvegardes();
 		} catch (IOException e){
 			e.printStackTrace();
 		}
-		List<Integer> valsAcceptable= new ArrayList<Integer>();
-		for (int i=0; i<fichiers.size();i++){
-			System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
-			int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
-			valsAcceptable.add(i+1);
+		Partie p=null;
+		if (fichiers!=null && fichiers.size()>0){
+			System.out.println("\n Quelle partie voulez vous reprendre : ");
+			List<Integer> valsAcceptable= new ArrayList<Integer>();
+			for (int i=0; i<fichiers.size();i++){
+				System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
+				int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
+				valsAcceptable.add(i+1);
+			}
+			int rep = demanderPartieARestorer(valsAcceptable);
+			p = Partie.charger(fichiers.get(rep));
+		} else {
+			System.out.println("Aucune partie sauvegardée, créez une partie : \n");
+			p =this.creerUnePartie();
+			p.initialiserLaPartie();
 		}
-		int rep = demanderPartieARestorer(valsAcceptable);
-		Partie p = Partie.charger(fichiers.get(rep));
 		return p;
 	}
 
@@ -105,10 +130,11 @@ public class Menu {
 		boolean repValide = false;
 		int numero = 0;
 		while (repValide == false) {
-			System.out.println("Voici la liste des jeux de cartes disponibles : ");
+			System.out.println("\n\nVoici la liste des jeux de cartes disponibles : ");
 			for (int i = 0; i < jeux.size(); i++) {
 				System.out.print(" " + i + ". ");
 				System.out.println(jeux.get(i));
+				System.out.println();
 			}
 			System.out.print("Choisissez le numéro du jeu qui vous intéresse : ");
 			numero = clavier.nextInt();
@@ -125,11 +151,16 @@ public class Menu {
 	private List<Joueur> choixDesJoueurs(List<Strategie> strats) {
 		Scanner clavier = new Scanner(System.in);
 		List<String> valsAcceptees = new ArrayList<String>();
-		boolean ajouter = false;
-		int compte = 1;
+		valsAcceptees.add("3");
+		valsAcceptees.add("4");
+		int nb=4;
+		String nbJoueurs = ReponseUtilisateur("A combien de joueurs voulez vous jouer ? (3/4) : ", valsAcceptees);
+		if (nbJoueurs=="3"){
+			nb=3;
+		} 
 		List<Joueur> joueurs = new ArrayList<Joueur>();
-		while (compte < 4 || (compte < 5 && ajouter == true)) {
-			System.out.println("Joueur " + compte + " : ");
+		for (int i=1; i<=nb; i++){
+			System.out.println("Joueur " + i + " : ");
 			// Joueur reel ou virtu
 			valsAcceptees.clear();
 			valsAcceptees.add("R");
@@ -150,9 +181,9 @@ public class Menu {
 				int numero = 0;
 				while (repValide == false) {
 					System.out.println("Voici la liste des startégies disponibles : ");
-					for (int i = 0; i < strats.size(); i++) {
-						System.out.print(" " + i + ". ");
-						System.out.println(strats.get(i));
+					for (int j = 0; j < strats.size(); j++) {
+						System.out.print(" " + j + ". ");
+						System.out.println(strats.get(j));
 					}
 					System.out.print("Choisissez le numéro de la stratégie qui vous intéresse : ");
 					numero = clavier.nextInt();
@@ -162,16 +193,6 @@ public class Menu {
 				}
 				Strategie strat = strats.get(numero);
 				joueurs.add(new JoueurVirtuel(nom, strat));
-			}
-			compte++;
-			if (compte == 4) {
-				valsAcceptees.clear();
-				valsAcceptees.add("Y");
-				valsAcceptees.add("N");
-				String Joueur4 = ReponseUtilisateur("Voulez vous ajouter un 4eme joueur ? (Y/N) : ", valsAcceptees);
-				if (Joueur4.equals("Y")) {
-					ajouter = true;
-				}
 			}
 		}
 		return joueurs;

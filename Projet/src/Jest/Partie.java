@@ -23,12 +23,14 @@ public class Partie implements Serializable {
 	private Jeu jeu;
 	private List<Carte> pioche;
 	private List<Carte> trophe;
+	private int ID;
 
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
+		this.ID = -1;
 	}
 
 	public void ajouterUnJoueur(Joueur j) {
@@ -66,8 +68,25 @@ public class Partie implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Partie :\n  dateHeureDeCreation=" + dateHeureDeCreation + ", \n  participants=" + participants
-				+ ", \n  jeu=" + jeu + ", \n  pioche=" + pioche + ", \n  trophe=" + trophe;
+		String message="";
+		if (this.ID!=-1){
+			message=message+"Partie "+this.ID;
+		} else {
+			message=message+"Partie ";
+		}
+		message=message+"\n      date et heure de création : "+dateHeureDeCreation;
+		message=message+"\n      paricipants : ";
+		for (int i=0; i<this.participants.size();i++){
+			Joueur j = this.participants.get(i);
+			message=message+j.getNom();
+			if (i<this.participants.size()-2){
+				message=message+", ";
+			} else if (i<this.participants.size()-1){
+				message=message+" et ";
+			}
+		}
+		message=message+"\n      les trophés : "+this.trophe;
+		return message;
 	}
 
 	public void initialiserLaPartie(int NombreTrophe) {
@@ -261,31 +280,41 @@ public class Partie implements Serializable {
 		}
 	}
 
+	public int getID(){
+		return this.ID;
+	}
+
+	public void setID(int id){
+		this.ID=id;
+	}
+
 	//SAUVEGARDE
 	public static void sauvegarder(Partie p) {
-		List<String> fichiers=null;
-		try{
-			fichiers = Partie.listerSauvegardes();
-		} catch (IOException e){
-			e.printStackTrace();
+		if (p.getID()==-1){
+			List<String> fichiers=null;
+			try{
+				fichiers = Partie.listerSauvegardes();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+			//dernier nom de sauvegarde
+			int max = -1;
+	    	for (String s : fichiers) {
+    	    	int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
+		        if (x > max) {
+    		        max = x;
+        		}
+	    	}
+			p.setID(max+1);
 		}
-		//dernier nom de sauvegarde
-		int max = -1;
-	    for (String s : fichiers) {
-    	    int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
-	        if (x > max) {
-    	        max = x;
-        	}
-    	}
-		String titre = "Partie_"+(max+1)+".obj";
+		String titre = "Partie_"+(p.getID())+".obj";
         try (ObjectOutputStream oos =
                      new ObjectOutputStream(new FileOutputStream(titre))) {
 
             oos.writeObject(p);
-            System.out.println("Partie sauvegardée avec succès");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Problème lors de la sauvegarde de la partie");
         }
     }
 

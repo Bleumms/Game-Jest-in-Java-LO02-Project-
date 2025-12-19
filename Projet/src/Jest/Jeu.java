@@ -32,7 +32,7 @@ public class Jeu implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Jeu :  \n  Possède : " + cartes + "\n  Référence : "+ref;
+		return "Jeu :  \n      Cartes : " + cartes + "\n      Règles sur la carte de référence : "+ref;
 	}
 
 	public void ajouterReference(Reference r) {

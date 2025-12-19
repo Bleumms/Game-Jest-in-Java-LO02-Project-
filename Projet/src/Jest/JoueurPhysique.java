@@ -12,7 +12,9 @@ public class JoueurPhysique extends Joueur{
 
 	// place en position 0 celle visible et en 1 celle qui ne l'es pas
 	public void faireUneOffre() {
-		System.out.println("   " + this.getNom() + " : ");
+		System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
+		Scanner clavier = new Scanner(System.in);
+		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		System.out.print("Voici vos deux cartes reçues :   ");
 		System.out.println("carte 1= " + this.getCartesDistribuees().get(0) + "  ;  carte 2= "
 				+ this.getCartesDistribuees().get(1));
@@ -57,7 +59,10 @@ public class JoueurPhysique extends Joueur{
 		} else {
 			List<String> valsAcceptees = new ArrayList<String>();
 
-			System.out.println("   " + this.getNom() + " : ");
+			System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
+			Scanner clavier = new Scanner(System.in);
+			String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
+		
 			System.out.println("Vous pouvez choisir une carte parmis celle disponibles :   ");
 			int compte = 1;
 			int indexLuiMeme = -1;
