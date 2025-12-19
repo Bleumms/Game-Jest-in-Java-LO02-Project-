@@ -2,7 +2,7 @@
 
 <div align="center" class="text-center">
 <h1>GAME-JEST-IN-JAVA-LO02-PROJECT-</h1>
-<p><em>Unleash Strategic Play, Dominate Every Card Game</em></p>
+<p><em>~Strategic Open Source Card Game~</em></p>
 
 <img alt="last-commit" src="https://img.shields.io/github/last-commit/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&amp;logo=git&amp;logoColor=white&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
 <img alt="repo-top-language" src="https://img.shields.io/github/languages/top/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&amp;color=0080ff" class="inline-block mx-1" style="margin: 0px 2px;">
