@@ -1,3 +1,9 @@
+/*
+ * Stratégie de jeu aléatoire.
+ * Tous les choix sont effectués au hasard.
+ * 
+ * @author Nina et Emeline
+*/
 package Jest;
 
 import java.io.Serializable;
@@ -8,10 +14,22 @@ public class StrategieRandom implements Strategie, Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	/*
+	 * Constructeur de la stratégie random
+	 * @return Une instance de StrategieRandom
+	*/
+	@Override
 	public String toString(){
 		return "Stratégie random";
 	}
 	
+	/*
+	 * Exécute la stratégie de faire une offre
+	 * Le choix de la carte visible est fait aléatoirement.
+	 * @param cartesDistribuées La liste des cartes distribuées au joueur
+	 * @param cartesEnCollection La liste des cartes déjà en collection du joueur
+	 * @return L'index de la carte qui sera visible
+	*/
 	@Override
 	public int executeFaireUneOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
 		double aleaCarte = Math.random()*2;
@@ -19,6 +37,13 @@ public class StrategieRandom implements Strategie, Serializable{
 		return numCarte ;
 	}
 
+	/*
+	 * Exécute la stratégie de choisir une carte parmi les cartes proposées par les autres joueurs
+	 * Détermine aléatoirement un joueur et une carte parmi ceux proposés.
+	 * @param joueurs La liste des joueurs en jeu
+	 * @param moiMeme Le joueur virtuel qui exécute la stratégie
+	 * @return Une liste contenant l'index du joueur choisi et l'index de la carte choisie
+	*/
 	@Override
 	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
 		List<Integer> res = new ArrayList<Integer>();
@@ -47,6 +72,10 @@ public class StrategieRandom implements Strategie, Serializable{
 		return res;
 	}
 
+	/*
+	 * Exécute la stratégie de choisir une carte parmi ses propres cartes
+	 * @return L'index de la carte choisie
+	*/
 	private int executeChoisiUneDeSesCartes(){
 		double alea = Math.random();
 		int res = 0;

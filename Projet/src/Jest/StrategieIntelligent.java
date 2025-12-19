@@ -1,3 +1,13 @@
+/*
+ * Stratégie de jeu intelligente.
+ * Analyse les cartes et applique des priorités :
+ * Compléter la collection de Cœurs si Jocker possédé
+ * Prendre le Jocker si aucun Cœur possédé
+ * Privilégier les cartes noires de haute valeur
+ * 
+ * @author Nina et Emeline
+*/
+
 package Jest;
 
 import java.io.Serializable;
@@ -6,12 +16,26 @@ import java.util.List;
 
 public class StrategieIntelligent implements Strategie, Serializable{
 
+
 	private static final long serialVersionUID = 1L;
 	
+	/*
+	 * Constructeur de la stratégie intelligente
+	 * @return Une instance de StrategieIntelligent
+	*/
+	@Override
 	public String toString(){
 		return "Stratégie intelligente";
 	}
 
+	/*
+	 * Exécute la stratégie de faire une offre
+	 * Il choisit la carte à rendre visible en fonction de sa valeur et de son symbole.
+	 * Il privilégie les cartes noires de faible valeur et évite de montrer les Cœurs ou le Jocker.	
+	 * @param cartesDistribuées La liste des cartes distribuées au joueur
+	 * @param cartesEnCollection La liste des cartes déjà en collection du joueur
+	 * @return L'index de la carte qui sera visible
+	*/
 	@Override
 	public int executeFaireUneOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
 		int numCarte = 0;
@@ -49,6 +73,13 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		return numCarte;
 	}
 
+	/*
+	 * Exécute la stratégie de choisir une carte parmi les cartes proposées par les autres joueurs
+	 * Détermine la carte qui correspond le plus aux priorités définies.
+	 * @param joueurs La liste des joueurs en jeu
+	 * @param moiMeme Le joueur virtuel qui exécute la stratégie
+	 * @return Une liste contenant l'index du joueur choisi et l'index de la carte choisie
+	*/
 	@Override
 	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
 		boolean aUnJocker = false;
@@ -141,6 +172,18 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		return res;
 	}
 
+	/*
+	 * Exécute la stratégie de choisir une carte parmi ses propres cartes
+	 * Il choisit en fonction de ses besoins et priorités :
+	 * Prendre un Cœur si intéressé par les Cœurs
+	 * Prendre le Jocker si aucun Cœur possédé
+	 * Privilégier les cartes noires de haute valeur
+	 * @param moiMeme Le joueur virtuel qui exécute la stratégie
+	 * @param aUnJocker Indique si le joueur possède un Jocker dans sa collection
+	 * @param nbCoeurs Le nombre de Cœurs dans la collection du joueur
+	 * @param interesseParCoeur Indique si le joueur est intéressé par les Cœurs
+	 * @return L'index de la carte choisie
+	*/
 	private int executeChoisiUneDeSesCartes(Joueur moiMeme, boolean aUnJocker, int nbCoeurs,  boolean interesseParCoeur){
 		Carte cV = moiMeme.getCarteVisible();
 		Carte cC = moiMeme.getCarteCachee();
