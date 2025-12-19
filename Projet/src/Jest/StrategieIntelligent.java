@@ -119,25 +119,6 @@ public class StrategieIntelligent implements Strategie, Serializable{
 						}
 					}
 				}
-				if (prioTrouvee>3){
-					// PRIORITE 4: c'est une un coeur plus élevée que celle que j'ai potentionnellement SAUF si j'ai un jocker
-					if (c instanceof CarteClassique){
-						CarteClassique cc = (CarteClassique) c;
-						if (cc.getSymbole()==Symbole.COEUR){
-							if (max==null){ // pas défini ou défini mais un coeur
-								max = c;
-								prioTrouvee = 4;
-								numJoueur = i;
-							} else if (prioTrouvee==4){
-								CarteClassique ccmax = (CarteClassique) max;
-								if (cc.getNumero()<ccmax.getNumero()){   // on prend quand même le plus petit num en coeur
-									max = c;
-									numJoueur = i;
-								}
-							}
-						}
-					}
-				}
 			}
 			// si on en trouvé aucune qui correspond on fait au piff
 			if (prioTrouvee==10){

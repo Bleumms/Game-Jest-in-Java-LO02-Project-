@@ -82,7 +82,7 @@ public class Menu {
 				valsAcceptable.add(i+1);
 			}
 			int rep = demanderPartieARestorer(valsAcceptable);
-			p = Partie.charger(fichiers.get(rep));
+			p = Partie.charger(fichiers.get(rep-1));
 		} else {
 			System.out.println("Aucune partie sauvegardée, créez une partie : \n");
 			p =this.creerUnePartie();
@@ -154,7 +154,7 @@ public class Menu {
 		valsAcceptees.add("3");
 		valsAcceptees.add("4");
 		int nb=4;
-		String nbJoueurs = ReponseUtilisateur("A combien de joueurs voulez vous jouer ? (3/4) : ", valsAcceptees);
+		String nbJoueurs = ReponseUtilisateur("\nA combien de joueurs voulez vous jouer ? (3/4) : ", valsAcceptees);
 		if (nbJoueurs=="3"){
 			nb=3;
 		} 

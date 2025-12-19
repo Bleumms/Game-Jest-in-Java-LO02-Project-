@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.*;
@@ -85,7 +86,14 @@ public class Partie implements Serializable {
 				message=message+" et ";
 			}
 		}
-		message=message+"\n      les trophés : "+this.trophe;
+		message=message+"\n      les trophés : ";
+		for (int i=0; i<this.trophe.size();i++){
+			Carte c = this.trophe.get(i);
+			message=message+c.getNom()+" : "+c.getConditionVictoire();
+			 if (i<this.participants.size()-1){
+				message=message+"   ;   ";
+			} 
+		}
 		return message;
 	}
 
@@ -109,6 +117,9 @@ public class Partie implements Serializable {
 	}
 
 	public boolean faireUnTourDeJeu() {
+		if (this.pioche.size()<this.participants.size()){
+			return true;
+		}
 		// INITIALISATION DES VARS
 		// créer la liste des joueur pour les quels on peut prendre une carte
 		List<Joueur> joueursDispo = new ArrayList<Joueur>(this.participants);
@@ -146,10 +157,10 @@ public class Partie implements Serializable {
 				System.out.println("Vous avez choisi la carte "+c.getNom()+" de "+joueurChoisi.getNom());
 			}
 			if (numCarte==0){
-				System.out.println("\n\n"+jFaisSonChoix.getNom()+" a choisi la carte visible : "+c.getNom()+" de "+joueurChoisi.getNom());
+				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte visible : "+c.getNom()+" de "+joueurChoisi.getNom());
 
 			} else {
-				System.out.println("\n\n"+jFaisSonChoix.getNom()+" a choisi la carte cachée de "+joueurChoisi.getNom());
+				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte cachée de "+joueurChoisi.getNom());
 			}
 
 			// et la donne a celui qui a fait son choix
@@ -232,7 +243,7 @@ public class Partie implements Serializable {
 			int indexJ = c.JoueurGagnantCarte(this.participants);
 			if (indexJ>=0){
 				this.participants.get(indexJ).ajouteASaCollection(c);
-				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ) + "\n("+c.getConditionVictoire()+")");
+				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ).getNom() + "\n("+c.getConditionVictoire()+")");
 			}
 		}
 	}
@@ -278,6 +289,10 @@ public class Partie implements Serializable {
 			}
 			System.out.println(" ont un score de "+maxscore);
 		}
+
+		// Supprimer des sauvegardes parce qu'on peux pas reprendre cette partie
+		Partie.supprimerPartie(this.ID);
+
 	}
 
 	public int getID(){
@@ -346,5 +361,15 @@ public class Partie implements Serializable {
 	public static List<String> listerSauvegardes() throws IOException{
 		Path dossierCourant = Paths.get(".");
 		return Files.list(dossierCourant).filter(Files::isRegularFile).map(path->path.getFileName().toString()).filter(nom ->nom.matches("Partie_\\d+\\.obj")).collect(Collectors.toList());
+	}
+
+	public static boolean supprimerPartie(int ID) {
+    	String nomFichier = "Partie_" + ID + ".obj";
+    	File f = new File(nomFichier);
+	    if (f.exists()) {
+    	    return f.delete(); // true si suppression OK
+	    } else {
+    	    return false; // fichier inexistant
+    	}
 	}
 }
