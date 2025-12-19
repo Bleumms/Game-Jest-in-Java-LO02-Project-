@@ -5,7 +5,7 @@
  * @author Nina et Emeline
  * @see Reference
  * @see ValeurParCarte
- */
+*/
 
 package Jest;
 

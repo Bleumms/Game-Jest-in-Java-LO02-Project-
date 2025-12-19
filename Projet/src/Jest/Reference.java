@@ -3,7 +3,7 @@
  * 
  * @author Nina et Emeline
  * @see Regle
- */
+*/
 
 package Jest;
 

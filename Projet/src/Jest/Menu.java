@@ -1,3 +1,10 @@
+/*
+ * Gère le menu principal et la création des parties.
+ * Permet de créer ou reprendre une partie, configurer les joueurs.
+ * 
+ * @author Nina et Emeline
+*/
+
 package Jest;
 
 import java.io.IOException;
