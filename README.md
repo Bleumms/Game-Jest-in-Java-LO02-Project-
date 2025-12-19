@@ -31,7 +31,7 @@
 <ul class="list-disc pl-4 my-0">
 <li class="my-0">🧩 <strong>Modular Design:</strong> Clear separation of components like game flow, rules, and players for easy customization.</li>
 <li class="my-0">🎯 <strong>Flexible Rules Engine:</strong> Supports diverse game mechanics through an extensive set of rule classes.</li>
-<li class="my-0">💡 <strong>AI &amp; Human Players:</strong> Incorporates virtual, random, and intelligent strategies for dynamic gameplay.</li>
+<li class="my-0">💡 <strong>Virtual &amp; Human Players:</strong> Incorporates random, and intelligent strategies for dynamic gameplay with virtual players.</li>
 <li class="my-0">🔍 <strong>Design Pattern Integration:</strong> Utilizes patterns like Visitor for scalable and maintainable code.</li>
 <li class="my-0">🃏 <strong>Core Card &amp; Score Management:</strong> Robust classes for handling cards, scoring, and game state.</li>
 <li class="my-0">🚀 <strong>Extensibility:</strong> Built to grow with your game ideas, supporting new rules, strategies, and features.</li>
