@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import java.io.Serializable;
 import java.io.FileOutputStream;
@@ -11,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.nio.file.*;
 
 public class Partie implements Serializable {
 
@@ -21,16 +23,12 @@ public class Partie implements Serializable {
 	private Jeu jeu;
 	private List<Carte> pioche;
 	private List<Carte> trophe;
-	private static int compteur=0;
-	private int ID;
 
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
-		this.ID=compteur;
-		compteur++;
 	}
 
 	public void ajouterUnJoueur(Joueur j) {
@@ -89,10 +87,6 @@ public class Partie implements Serializable {
 			this.choisirLesTrophes(2);
 			this.melangerLaPioche();
 		}
-	}
-
-	public int getID(){
-		return this.ID;
 	}
 
 	public boolean faireUnTourDeJeu() {
@@ -170,7 +164,7 @@ public class Partie implements Serializable {
 			finDePartie=true;
 		}
 		calculScore();
-		Partie.sauvegarder(this, this.ID);
+		Partie.sauvegarder(this);
 		return finDePartie;
 	}
 	
@@ -267,10 +261,23 @@ public class Partie implements Serializable {
 		}
 	}
 
-
 	//SAUVEGARDE
-	public static void sauvegarder(Partie p, int ID) {
-		String titre = "Partie_"+ID+".obj";
+	public static void sauvegarder(Partie p) {
+		List<String> fichiers=null;
+		try{
+			fichiers = Partie.listerSauvegardes();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		//dernier nom de sauvegarde
+		int max = -1;
+	    for (String s : fichiers) {
+    	    int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
+	        if (x > max) {
+    	        max = x;
+        	}
+    	}
+		String titre = "Partie_"+(max+1)+".obj";
         try (ObjectOutputStream oos =
                      new ObjectOutputStream(new FileOutputStream(titre))) {
 
@@ -282,19 +289,33 @@ public class Partie implements Serializable {
         }
     }
 
-	public static Partie charger(int ID) {
-    	Partie p = null;
+	public static Partie charger(int ID)  {
 		String titre = "Partie_"+ID+".obj";
-        try (ObjectInputStream ois =
-                     new ObjectInputStream(new FileInputStream(titre))) {
-
-            p = (Partie) ois.readObject();
-            System.out.println("Partie chargée avec succès");
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return p;
+		Partie p=null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(titre))) {
+	        p = (Partie) ois.readObject();
+    	    System.out.println("Partie chargée avec succès");
+        	
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("Problème de chargement de la partie");
+		}
+		return p;
     }
+
+	public static Partie charger(String nomFichier) {
+        Partie p=null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFichier))) {
+	        p = (Partie) ois.readObject();
+    	    System.out.println("Partie chargée avec succès");
+        	
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("Problème de chargement de la partie");
+		}
+		return p;
+    }
+
+	public static List<String> listerSauvegardes() throws IOException{
+		Path dossierCourant = Paths.get(".");
+		return Files.list(dossierCourant).filter(Files::isRegularFile).map(path->path.getFileName().toString()).filter(nom ->nom.matches("Partie_\\d+\\.obj")).collect(Collectors.toList());
+	}
 }

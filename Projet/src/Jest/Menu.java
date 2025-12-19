@@ -1,5 +1,6 @@
 package Jest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,7 +19,8 @@ public class Menu {
 			Partie p = this.creerUnePartie();
 			this.partieEnCours = p;
 		} else {
-			//this.restorerUnePartie();
+			Partie p =this.restorerUnePartie();
+			this.partieEnCours = p;
 		}
 	}
 
@@ -40,6 +42,41 @@ public class Menu {
 			}
 			if (repValide==false) {
 				System.out.println("Réponse invalide : " + numero);
+			}
+		}
+		return numero;
+	}
+
+	public Partie restorerUnePartie(){
+		System.out.println("\n Quelle partie voulez vous reprendre : ");
+		List<String> fichiers=null;
+		try{
+			fichiers = Partie.listerSauvegardes();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		List<Integer> valsAcceptable= new ArrayList<Integer>();
+		for (int i=0; i<fichiers.size();i++){
+			System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
+			int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
+			valsAcceptable.add(i+1);
+		}
+		int rep = demanderPartieARestorer(valsAcceptable);
+		Partie p = Partie.charger(fichiers.get(rep));
+		return p;
+	}
+
+	private int demanderPartieARestorer(List<Integer> valsAcceptable){
+		Scanner clavier = new Scanner(System.in);
+		boolean repValide = false;
+		int numero = 0;
+		while (repValide == false) {
+			System.out.print(">>> (1/2/...) :   ");
+			numero = clavier.nextInt();
+			if (numero>0 && numero<=valsAcceptable.size()) {
+				repValide = true;
+			} else if (repValide==false) {
+				System.out.println("Réponse invalide, in n'y a pas de " + numero);
 			}
 		}
 		return numero;

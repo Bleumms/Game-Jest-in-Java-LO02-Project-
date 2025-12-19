@@ -1,5 +1,6 @@
 package Jest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,13 +93,15 @@ public class Test {
 		// Créer un menu
 
 		Menu m = new Menu();
+		System.out.println(m.getPartieEnCours());
 
 		// Recuperer la partie pour pouvoir jouer
-		Partie p = m.getPartieEnCours();
+		/*Partie p = m.getPartieEnCours();
 		
 
 		// Commencer la partie
 		p.initialiserLaPartie();
+		
 		System.out.println("\n\nID : "+p.getID()+"\n");
 
 		boolean fin = p.faireUnTourDeJeu();
@@ -111,13 +114,26 @@ public class Test {
 		System.out.println("\n\nID : "+p2.getID()+"\n");
 		System.out.println("\n\nID : "+p3.getID()+"\n");
 
-		Partie ptest = Partie.charger(0);
-		System.out.println(ptest);
-		ptest = Partie.charger(11);
-		System.out.println(ptest);
-		ptest = Partie.charger(2);
-		System.out.println(ptest);
-		/*// Faire des tours jusquà la fin 
+		try{
+			Partie ptest = Partie.charger(0);
+			System.out.println(ptest);
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("PB 0");
+		}
+		try{
+			Partie ptest = Partie.charger(1);
+			System.out.println(ptest);
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("PB 1");
+		}
+		try{
+			Partie ptest = Partie.charger(2);
+			System.out.println(ptest);
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("PB 2");
+		} */
+		/*
+		/// Faire des tours jusquà la fin 
 		boolean fin =false;
 		while (fin == false){
 			fin = p.faireUnTourDeJeu();
