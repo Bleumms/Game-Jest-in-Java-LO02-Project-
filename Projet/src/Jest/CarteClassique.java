@@ -1,4 +1,4 @@
-/**
+/*
  * Représente une carte classique avec un numéro (1-4) et un symbole.
  * Les cartes classiques sont les cartes standard du jeu, par opposition au Jocker.
  * 

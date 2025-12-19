@@ -1,14 +1,110 @@
 package Jest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
 	private Partie partieEnCours;
+	private List<Jeu> jeuxExistants;
+	private List<Strategie> strategiesDisponibles;
 
 	public Menu() {
+		this.jeuxExistants = new ArrayList<Jeu>();
+		this.strategiesDisponibles = new ArrayList<Strategie>();
+		this.creerLesElementsDeBase();
+		int actionDemande = this.affichageMenu();
+		if (actionDemande==1){
+			Partie p = this.creerUnePartie();
+			this.partieEnCours = p;
+			this.partieEnCours.initialiserLaPartie();
+		} else {
+			Partie p =this.restorerUnePartie();
+			this.partieEnCours = p;
+		}
+		this.jouer();
+	}
 
+
+	public void jouer(){
+		System.out.println("\n"+this.partieEnCours);
+		System.out.print("Jouer ?    :   ");
+		Scanner clavier = new Scanner(System.in);
+		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
+		System.out.println("\n");
+		boolean fin =false;
+		while (fin == false){
+			fin = this.partieEnCours.faireUnTourDeJeu();
+		}
+		this.partieEnCours.finDePartie();
+	}
+
+
+	public int affichageMenu(){
+		System.out.println(" -------------------------------------------------");
+		System.out.println("|        JEST     -     by Nina et Emeline        |");
+		System.out.println(" -------------------------------------------------");
+		System.out.println("\nQue souhaitez vous faire ?");
+		System.out.println("      1 -   Créer une nouvelle partie ! ");
+		System.out.println("      2 -   Reprendre une ancienne partie ! ");
+		Scanner clavier = new Scanner(System.in);
+		boolean repValide = false;
+		int numero = 0;
+		while (repValide == false) {
+			System.out.print(">>> (1/2) :   ");
+			numero = clavier.nextInt();
+			if (numero == 1 || numero==2) {
+				repValide = true;
+			}
+			if (repValide==false) {
+				System.out.println("Réponse invalide : " + numero);
+			}
+		}
+		return numero;
+	}
+
+	public Partie restorerUnePartie(){
+		
+		List<String> fichiers=null;
+		try{
+			fichiers = Partie.listerSauvegardes();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		Partie p=null;
+		if (fichiers!=null && fichiers.size()>0){
+			System.out.println("\n Quelle partie voulez vous reprendre : ");
+			List<Integer> valsAcceptable= new ArrayList<Integer>();
+			for (int i=0; i<fichiers.size();i++){
+				System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
+				int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
+				valsAcceptable.add(i+1);
+			}
+			int rep = demanderPartieARestorer(valsAcceptable);
+			p = Partie.charger(fichiers.get(rep-1));
+		} else {
+			System.out.println("Aucune partie sauvegardée, créez une partie : \n");
+			p =this.creerUnePartie();
+			p.initialiserLaPartie();
+		}
+		return p;
+	}
+
+	private int demanderPartieARestorer(List<Integer> valsAcceptable){
+		Scanner clavier = new Scanner(System.in);
+		boolean repValide = false;
+		int numero = 0;
+		while (repValide == false) {
+			System.out.print(">>> (1/2/...) :   ");
+			numero = clavier.nextInt();
+			if (numero>0 && numero<=valsAcceptable.size()) {
+				repValide = true;
+			} else if (repValide==false) {
+				System.out.println("Réponse invalide, in n'y a pas de " + numero);
+			}
+		}
+		return numero;
 	}
 	
 	public Partie getPartieEnCours() {
@@ -17,37 +113,30 @@ public class Menu {
 
 	public Partie creerUnePartie() {
 		Partie p = new Partie();
-		// Choix du jeu
-		this.partieEnCours = p;
-		return p;
-	}
-
-	public Partie creerUnePartie(List<Jeu> jeux, List<Strategie> strats) {
-		Partie p = new Partie();
 		// ajouter un jeu
-		Jeu jeu = choixDuJeu(jeux);
+		Jeu jeu = choixDuJeu(this.jeuxExistants);
 		p.choisirUnJeu(jeu);
 		// ajouter des joueurs
-		List<Joueur> joueurs = choixDesJoueurs(strats);
+		List<Joueur> joueurs = choixDesJoueurs(this.strategiesDisponibles);
 		for (int i=0; i<joueurs.size(); i++) {
 		p.ajouterUnJoueur(joueurs.get(i));
 		}
-		this.partieEnCours = p;
 		return p;
 	}
 
 	private Jeu choixDuJeu(List<Jeu> jeux) {
 		// Verifier que jeux non vide !!
+		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
 		while (repValide == false) {
-			System.out.println("Voici la liste des jeux de cartes disponibles : ");
+			System.out.println("\n\nVoici la liste des jeux de cartes disponibles : ");
 			for (int i = 0; i < jeux.size(); i++) {
 				System.out.print(" " + i + ". ");
 				System.out.println(jeux.get(i));
+				System.out.println();
 			}
 			System.out.print("Choisissez le numéro du jeu qui vous intéresse : ");
-			Scanner clavier = new Scanner(System.in);
 			numero = clavier.nextInt();
 			if (numero >= 0 && numero < jeux.size()) {
 				repValide = true;
@@ -55,8 +144,6 @@ public class Menu {
 			if (repValide==false) {
 				System.out.println("Réponse invalide : " + numero);
 			}
-			clavier.close();
-
 		}
 		return jeux.get(numero);
 	}
@@ -64,11 +151,16 @@ public class Menu {
 	private List<Joueur> choixDesJoueurs(List<Strategie> strats) {
 		Scanner clavier = new Scanner(System.in);
 		List<String> valsAcceptees = new ArrayList<String>();
-		boolean ajouter = false;
-		int compte = 1;
+		valsAcceptees.add("3");
+		valsAcceptees.add("4");
+		int nb=4;
+		String nbJoueurs = ReponseUtilisateur("\nA combien de joueurs voulez vous jouer ? (3/4) : ", valsAcceptees);
+		if (nbJoueurs=="3"){
+			nb=3;
+		} 
 		List<Joueur> joueurs = new ArrayList<Joueur>();
-		while (compte < 4 || (compte < 5 && ajouter == true)) {
-			System.out.println("Joueur " + compte + " : ");
+		for (int i=1; i<=nb; i++){
+			System.out.println("Joueur " + i + " : ");
 			// Joueur reel ou virtu
 			valsAcceptees.clear();
 			valsAcceptees.add("R");
@@ -89,9 +181,9 @@ public class Menu {
 				int numero = 0;
 				while (repValide == false) {
 					System.out.println("Voici la liste des startégies disponibles : ");
-					for (int i = 0; i < strats.size(); i++) {
-						System.out.print(" " + i + ". ");
-						System.out.println(strats.get(i));
+					for (int j = 0; j < strats.size(); j++) {
+						System.out.print(" " + j + ". ");
+						System.out.println(strats.get(j));
 					}
 					System.out.print("Choisissez le numéro de la stratégie qui vous intéresse : ");
 					numero = clavier.nextInt();
@@ -102,17 +194,6 @@ public class Menu {
 				Strategie strat = strats.get(numero);
 				joueurs.add(new JoueurVirtuel(nom, strat));
 			}
-			compte++;
-			if (compte == 4) {
-				valsAcceptees.clear();
-				valsAcceptees.add("Y");
-				valsAcceptees.add("N");
-				String Joueur4 = ReponseUtilisateur("Voulez vous ajouter un 4eme joueur ? (Y/N) : ", valsAcceptees);
-				if (Joueur4.equals("Y")) {
-					ajouter = true;
-				}
-			}
-		clavier.close();
 		}
 		return joueurs;
 	}
@@ -138,9 +219,185 @@ public class Menu {
 			if (repValide == false) {
 				System.out.println("Réponse invalide : " + rep);
 			}
-		clavier.close();
 		}
 		return reponse;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+	// CREER LES ELEMENTS DE BASE
+
+	public void creerLesElementsDeBase(){
+		// Le jeu n°1:
+		Jeu jeu = creerUnJeu("TOUT");
+		this.jeuxExistants.add(jeu);
+		// Le jeu n°2 :
+		Jeu jeu2 = creerUnJeu("MINI");
+		this.jeuxExistants.add(jeu2);
+
+		this.strategiesDisponibles.add(new StrategieRandom());
+		this.strategiesDisponibles.add(new StrategieIntelligent());
+	}
+
+	public static Reference creerReference(){
+		Reference r = new Reference();
+		Regle r1 = new RegleCoeur();
+		Regle r2 = new RegleCarreau();
+		Regle r3 = new RegleAs();
+		Regle r4 = new RegleDoubleNoir();
+		Regle r5 = new RegleJocker();
+		r.ajouterRegle(r1);
+		r.ajouterRegle(r2);
+		r.ajouterRegle(r3);
+		r.ajouterRegle(r4);
+		r.ajouterRegle(r5);
+		return r;
+	}
+
+	public static Carte creerCarte(int symb, int num){
+		Carte c;
+		ConditionVictoire cv=null;
+		if (num==0){
+			c=new Jocker();
+			cv = new ConditionMaxScore(true);
+			c.ajouterConditionVictoire(cv);
+		} else {
+			Symbole s= null;
+			switch (symb) {
+				case 0:
+					s=Symbole.PIQUE;
+					switch (num) {
+						case 1:
+							cv= new ConditionMaxMinSymbole(1,Symbole.TREFLE);
+							break;
+
+						case 2:
+							cv= new ConditonPlusCarteValeur(3);
+							break;
+
+						case 3:
+							cv= new ConditonPlusCarteValeur(2);
+							break;
+
+						case 4:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.TREFLE);
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				case 1:
+					s=Symbole.TREFLE;
+					switch (num) {
+						case 1:
+							cv= new ConditionMaxMinSymbole(1,Symbole.PIQUE);
+							break;
+
+						case 2:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.COEUR);
+							break;
+
+						case 3:
+							cv= new ConditionMaxMinSymbole(1,Symbole.COEUR);
+							break;
+
+						case 4:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.PIQUE);
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				case 2:
+					s=Symbole.CARREAU;
+					switch (num) {
+						case 1:
+							cv= new ConditonPlusCarteValeur(4);
+							break;
+
+						case 2:
+							cv= new ConditionMaxMinSymbole(1,Symbole.CARREAU);
+							break;
+
+						case 3:
+							cv= new ConditionMaxMinSymbole(-1,Symbole.CARREAU);
+							break;
+
+						case 4:
+							cv= new ConditionMaxScore(false);
+							break;
+
+						default:
+							break;
+					}
+					break;
+
+				case 3:
+					s=Symbole.COEUR;
+					cv= new ConditionJocker();
+					break;
+			
+				default:
+					break;
+			}
+			
+			c = new CarteClassique(num, s);
+			c.ajouterConditionVictoire(cv);
+		}
+		return c;
+	}
+
+	public static List<Carte> creerToutesCartes(){
+		List<Carte> toutesCartes = new ArrayList<Carte>();
+		for (int symb=0; symb<4; symb++){
+			for (int num=1; num<5 ; num++){
+				toutesCartes.add(creerCarte(symb,num));
+			}
+		}
+		toutesCartes.add(creerCarte(0,0));
+		return toutesCartes;
+	}
+
+	public static List<Carte> creerMiniCartes(){
+		List<Carte> toutesCartes = new ArrayList<Carte>();
+		for (int symb=0; symb<4; symb++){
+			for (int num=1; num<3 ; num++){
+				toutesCartes.add(creerCarte(symb,num));
+			}
+		}
+		toutesCartes.add(creerCarte(0,0));
+		return toutesCartes;
+	}
+
+
+	public static Jeu creerUnJeu(String type){
+		Jeu jeu = new Jeu();
+
+		List<Carte> Cartes=null;
+		if (type=="MINI"){
+			Cartes = creerMiniCartes();
+		} else {
+			Cartes = creerToutesCartes();
+		}
+		jeu.ajouterDesCartes(Cartes);
+
+		Reference r = creerReference();
+		jeu.ajouterReference(r);
+
+		return jeu;
+	}
 }

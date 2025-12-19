@@ -43,4 +43,8 @@ public class ValeurParCarte {
 		}
 	}
 
+	public String toString(){
+		return c+" = "+getValeur();
+	}
+
 }

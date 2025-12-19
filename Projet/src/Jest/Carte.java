@@ -2,6 +2,10 @@
  * Classe représentant une carte du jeu Jest.
  * Une carte possède un nom et une condition de victoire qui détermine
  * quel joueur remporte cette carte en fin de partie.
+ * La classe offre des méthodes pour définir le nom de la carte,
+ * ajouter une condition de victoire, et déterminer le joueur gagnant
+ * en fonction de cette condition.
+ * 
  * 
  * @author Nina et Emeline
  * @see ConditionVictoire
@@ -11,9 +15,15 @@
 
 package Jest;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Carte {
+public class Carte implements Serializable{
+
+	/*
+	 * Référence de sérialisation pour la classe Carte.
+	*/
+	private static final long serialVersionUID = 1L;
 	private String nom;
 	private ConditionVictoire condition;
 	
@@ -46,13 +56,14 @@ public class Carte {
 		this.condition = cv;
 	}
 
-	/*
+	
+	/* 
 	 * Retourne une représentation textuelle de la carte.
-	 * @return Une chaîne de caractères représentant la carte
+	 * @return Une chaîne décrivant la carte
 	*/
 	@Override
 	public String toString() {
-		return "Carte [nom=" + nom + "]";
+		return "Carte "+this.nom;
 	}
 	
 	/* Détermine quel joueur remporte cette carte en fonction de la condition de victoire.
@@ -63,4 +74,19 @@ public class Carte {
 		return this.condition.VerificationVictoire(joueurs);
 	}
 	
+	/* 
+	 * Renvoi le nom de la carte.
+	 * @return Le nom de la carte
+	*/
+	public String getNom(){
+		return this.nom;
+	}
+
+	/* 
+	 * Renvoi la condition de victoire de la carte.
+	 * @return La condition de victoire
+	*/
+	public ConditionVictoire getConditionVictoire(){
+		return this.condition;
+	}
 }

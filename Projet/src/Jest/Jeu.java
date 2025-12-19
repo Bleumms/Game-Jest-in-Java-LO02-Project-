@@ -1,11 +1,14 @@
 package Jest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Jeu {
+public class Jeu implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private List<Carte> cartes;
 	private Reference ref;
 
@@ -29,7 +32,7 @@ public class Jeu {
 
 	@Override
 	public String toString() {
-		return "Jeu :  \n  Possède : " + cartes + "\n  Référence : "+ref;
+		return "Jeu :  \n      Cartes : " + cartes + "\n      Règles sur la carte de référence : "+ref;
 	}
 
 	public void ajouterReference(Reference r) {
@@ -63,7 +66,11 @@ public class Jeu {
 	}
 	
 	public List<Carte> getCartes() {
-		return cartes;
+		List<Carte> liste = new ArrayList<Carte>();
+		for (int i=0; i<this.cartes.size();i++){
+			liste.add(this.cartes.get(i));
+		}
+		return liste;
 	}
 
 	public boolean estSupperieur(Carte c1, Carte c2) {

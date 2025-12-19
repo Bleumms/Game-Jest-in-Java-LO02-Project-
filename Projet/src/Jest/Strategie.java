@@ -9,4 +9,5 @@ public interface Strategie {
 
 	List<Integer> executeChoisirUneCarte (List <Joueur> joueurs, Joueur moiMeme);
 
+	public String toString();
 }

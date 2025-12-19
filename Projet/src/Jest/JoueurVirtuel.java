@@ -53,12 +53,20 @@ public class JoueurVirtuel extends Joueur {
 	}
 
 	// a changer avec strategie
+	/* 
+	 * Fait une offre en utilisant la stratégie définie.
+	*/
 	public void faireUneOffre() {
 		int numCarte = this.strat.executeFaireUneOffre(this.getCartesDistribuees(), this.getCollection());
 		this.ChoisirCarteVisible(numCarte);
 
 	}
-
+	/
+	/* 
+	 * Choisit une carte parmi les cartes des autres joueurs en utilisant la stratégie définie.
+	 * @param j La liste des autres joueurs
+	 * @return La liste des indices des cartes choisies
+	*/
 	public List<Integer> choisirUneCarte (List<Joueur> j){
 		List<Integer> res = this.strat.executeChoisirUneCarte(j, this);
 		return res;

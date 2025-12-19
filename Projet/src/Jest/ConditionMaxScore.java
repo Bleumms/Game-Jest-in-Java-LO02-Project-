@@ -1,39 +1,66 @@
 package Jest;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ConditionMaxScore implements ConditionVictoire {
+public class ConditionMaxScore implements ConditionVictoire, Serializable {
 
-	public ConditionMaxScore() {
-		// TODO Auto-generated constructor stub
+	private static final long serialVersionUID = 1L;
+	
+	private boolean jockerAccepte; 
+
+	public ConditionMaxScore(boolean jockerAccepte) {
+		this.jockerAccepte = jockerAccepte;
 	}
+
+	public String toString(){
+        String message="Le joueur qui a le score maximum";
+        if (jockerAccepte==false){
+            message=message+" sans Jocker";
+        }
+        return message;
+    }
 
 	// renvoie le numero du joueur avec le score max
 	// vérifié
 	@Override
 	public int VerificationVictoire(List<Joueur> joueurs) {
-		// TODO Auto-generated method stub
-		int max = joueurs.get(0).getScore();
-		int index=0;
-		for (int i=1; i<joueurs.size(); i++) {
-			if (joueurs.get(i).getScore() == max ) {
-				// Egalité : tirage au hasard
-				System.out.print("Deux scores sont égaux, tirages au hasard au profit ...");
-				double randomValue = Math.random();
-				if (randomValue<0.5) {
-					System.out.println("... Du joueur numéro "+index+" !");
-				} else {
-					System.out.println("... Du joueur numéro "+i+" !");
-					max = joueurs.get(i).getScore();
-					index=i;
+		List<Boolean> joueursAvecJocker = new ArrayList<Boolean>();
+		for (int i=0; i<joueurs.size(); i++) {
+			boolean aUnJocker = false;
+			for (int j=0; j<joueurs.get(i).getCollection().size(); j++){
+				if (joueurs.get(i).getCollection().get(j) instanceof Jocker){
+					aUnJocker = true;
 				}
 			}
-			else if (joueurs.get(i).getScore() > max ) {
-				max = joueurs.get(i).getScore();
-				index=i;
-			}
+			joueursAvecJocker.add(aUnJocker);
 		}
-		return index;
+		int indexJoueur=0;
+		int max = -20;
+		List<Integer> jMaxScore= new ArrayList<Integer>();
+		for (int i=0; i<joueurs.size(); i++) {
+			Joueur j = joueurs.get(i);
+			if (jockerAccepte==true || joueursAvecJocker.get(i) == false ){
+				if (j.getScore() == max ) {
+					jMaxScore.add(i);
+				}
+				if (j.getScore() > max){
+					max=j.getScore();
+					jMaxScore.clear();
+					jMaxScore.add(i);
+				}
+			} 
+		}
+		//egalité
+		if (jMaxScore.size()>1){
+			double alea = Math.random()*jMaxScore.size();
+			int aleaInt = Double.valueOf(alea).intValue();
+			indexJoueur=jMaxScore.get(aleaInt);
+		} else {
+			indexJoueur=jMaxScore.get(0);
+		}
+		return indexJoueur;
 	}
 
 }

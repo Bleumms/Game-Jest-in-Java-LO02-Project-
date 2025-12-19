@@ -107,9 +107,12 @@ public class Joueur implements Visitable{
 		if (i==0) {
 			c = this.carteVisible;
 			this.carteVisible=null;
-		} else {
+		} else if (i==1) {
 			c = this.carteCachee;
 			this.carteCachee=null;
+		} else {
+			c = null;
+			System.out.println("Indice de carte invalide.");
 		}
 		return c;
 	}

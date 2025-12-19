@@ -24,12 +24,14 @@ public class JoueurPhysique extends Joueur{
 	}
 
 	/* 
-	 * Permet au joueur physique de faire une offre en choisissant une carte visible.
-	 * Utilise la console pour récupérer les informations.
-	 * Place en position 0 la carte visible et en 1 celle qui ne l'es pas.
+	 * Méthode pour faire une offre de carte visible parmi les cartes distribuées.
+	 * Obtient le choix via la console.
+	 * Composé de tests pour la validité du choix.
 	*/
 	public void faireUneOffre() {
-		System.out.println("   " + this.getNom() + " : ");
+		System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
+		Scanner clavier = new Scanner(System.in);
+		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		System.out.print("Voici vos deux cartes reçues :   ");
 		System.out.println("carte 1= " + this.getCartesDistribuees().get(0) + "  ;  carte 2= "
 				+ this.getCartesDistribuees().get(1));
@@ -38,7 +40,7 @@ public class JoueurPhysique extends Joueur{
 		valsAcceptees.add("1");
 		String reponse = ReponseUtilisateur("Quelle carte souhaitez vous rendre visible aux autres joueurs ? (1/2) : ",
 				valsAcceptees);
-		this.ChoisirCarteVisible(Integer.parseInt(reponse) - 1);
+		this.choisirCarteVisible(Integer.parseInt(reponse) - 1);
 	}
 
 	/* 
@@ -71,7 +73,6 @@ public class JoueurPhysique extends Joueur{
 				System.out.println("Réponse invalide : " + rep);
 			}
 		}
-		clavier.close();
 		return reponse;
 	}
 

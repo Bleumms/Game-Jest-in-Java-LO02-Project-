@@ -4,19 +4,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Partie {
+import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.nio.file.*;
+
+public class Partie implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private Date dateHeureDeCreation;
 	private List<Joueur> participants; 
 	private Jeu jeu;
 	private List<Carte> pioche;
 	private List<Carte> trophe;
+	private int ID;
 
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
+		this.ID = -1;
 	}
 
 	public void ajouterUnJoueur(Joueur j) {
@@ -49,13 +64,37 @@ public class Partie {
 				Joueur j = participants.get(i);
 				j.assignerCarteDistribuees(pioche.remove(0));
 			}
-		}
+		} 
 	}
 
 	@Override
 	public String toString() {
-		return "Partie :\n  dateHeureDeCreation=" + dateHeureDeCreation + ", \n  participants=" + participants
-				+ ", \n  jeu=" + jeu + ", \n  pioche=" + pioche + ", \n  trophe=" + trophe;
+		String message="";
+		if (this.ID!=-1){
+			message=message+"Partie "+this.ID;
+		} else {
+			message=message+"Partie ";
+		}
+		message=message+"\n      date et heure de création : "+dateHeureDeCreation;
+		message=message+"\n      paricipants : ";
+		for (int i=0; i<this.participants.size();i++){
+			Joueur j = this.participants.get(i);
+			message=message+j.getNom();
+			if (i<this.participants.size()-2){
+				message=message+", ";
+			} else if (i<this.participants.size()-1){
+				message=message+" et ";
+			}
+		}
+		message=message+"\n      les trophés : ";
+		for (int i=0; i<this.trophe.size();i++){
+			Carte c = this.trophe.get(i);
+			message=message+c.getNom()+" : "+c.getConditionVictoire();
+			 if (i<this.participants.size()-1){
+				message=message+"   ;   ";
+			} 
+		}
+		return message;
 	}
 
 	public void initialiserLaPartie(int NombreTrophe) {
@@ -78,6 +117,9 @@ public class Partie {
 	}
 
 	public boolean faireUnTourDeJeu() {
+		if (this.pioche.size()<this.participants.size()){
+			return true;
+		}
 		// INITIALISATION DES VARS
 		// créer la liste des joueur pour les quels on peut prendre une carte
 		List<Joueur> joueursDispo = new ArrayList<Joueur>(this.participants);
@@ -100,8 +142,8 @@ public class Partie {
 			if (jFaisSonChoix==null) {
 				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
 			} 
-			System.out.println("C'est à "+ jFaisSonChoix.getNom()+" de jouer");
-			
+			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
+
 			List<Integer> resultat = jFaisSonChoix.choisirUneCarte(joueursDispo);
 			int numJoueur = resultat.get(0);
 			int numCarte = resultat.get(1);
@@ -111,9 +153,15 @@ public class Partie {
 			// on lui enlève la carte prise
 			Carte c = joueurChoisi.recupererCarte(numCarte);
 
-			System.out.print(jFaisSonChoix.getNom()+" a choisi la carte : ");
-			System.out.print(c+" de ");
-			System.out.println(joueurChoisi.getNom());
+			if (jFaisSonChoix instanceof JoueurPhysique){
+				System.out.println("Vous avez choisi la carte "+c.getNom()+" de "+joueurChoisi.getNom());
+			}
+			if (numCarte==0){
+				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte visible : "+c.getNom()+" de "+joueurChoisi.getNom());
+
+			} else {
+				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte cachée de "+joueurChoisi.getNom());
+			}
 
 			// et la donne a celui qui a fait son choix
 			jFaisSonChoix.ajouteASaCollection(c);
@@ -130,15 +178,14 @@ public class Partie {
 			}
 		}
 		
-		// on récupère les cartes non choisies
-		List<Carte> recup = new ArrayList<Carte>();
-		for (int i=0;i<this.participants.size();i++) {
-			recup.add(this.participants.get(i).remiseALaPioche());
-		}
-
 		// on remet a la pioche seulement si on peut encore faire un tour
 		boolean finDePartie = false;
 		if (this.pioche.size()>=this.participants.size()){
+			// on récupère les cartes non choisies
+			List<Carte> recup = new ArrayList<Carte>();
+			for (int i=0;i<this.participants.size();i++) {
+				recup.add(this.participants.get(i).remiseALaPioche());
+			}
 			this.remiseALaPioche(recup);
 		} else {
 			for (int i=0;i<this.participants.size();i++) {
@@ -146,11 +193,13 @@ public class Partie {
 			}
 			finDePartie=true;
 		}
+		calculScore();
+		Partie.sauvegarder(this);
 		return finDePartie;
 	}
 	
 	public void affichageTable(){
-		System.out.print( "\nEtat de la table de jeu : \n Trophes :   " );
+		System.out.print( "\n\nEtat de la table de jeu : \n Trophes :   " );
 		for (int i=0; i<this.trophe.size();i++){
 			System.out.print(this.trophe.get(i)+"   ;   ");
 		}
@@ -179,23 +228,148 @@ public class Partie {
 		return joueursPasEncoreJoue.get(indexJoueur);
 	}
 
-	// pour tester : normalement la fonction appelle le pattern visitor
-	public List<Integer> calculScore() {
-		List<Integer> res = new ArrayList<Integer>();
-		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa
-		// carte de référence
+	public void calculScore() {
+		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa carte de référence
+		Visitor calcScore = new CalculateurScore();
+		calcScore.setReference(jeu.getReference());
 		for (int j = 0; j < this.participants.size(); j++) {
-			int r = this.jeu.getReference().calculScore(this.participants.get(j).getCollection());
-			res.add(r);
+			this.participants.get(j).accept(calcScore);
 		}
-		return res;
 	}
 
-	// pour tester
-	public void partieFactice(List<Joueur> participantsF, Jeu jeuF, List<Carte> piocheF, List<Carte> tropheF) {
-		participants = participantsF;
-		jeu = jeuF;
-		pioche = piocheF;
-		trophe = tropheF;
+	public void attribuerLesTrophes(){
+		for (int i=0; i<this.trophe.size(); i++){
+			Carte c = this.trophe.get(i);
+			int indexJ = c.JoueurGagnantCarte(this.participants);
+			if (indexJ>=0){
+				this.participants.get(indexJ).ajouteASaCollection(c);
+				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ).getNom() + "\n("+c.getConditionVictoire()+")");
+			}
+		}
+	}
+
+	public void finDePartie(){
+		System.out.println("\n\nFin de partie : ");
+		
+		// Attribuer les trophés
+		this.attribuerLesTrophes();
+
+		this.calculScore();
+
+		int maxscore = this.participants.get(0).getScore();
+		List<Joueur> jMaxScore= new ArrayList<Joueur>();
+		jMaxScore.add(this.participants.get(0));
+		System.out.println("\nJoueur 1 : "+this.participants.get(0).getNom()+"\n   Score : "+this.participants.get(0).getScore()+"\n    Cartes : "+this.participants.get(0).getCollection());
+		for (int i=1; i < this.participants.size(); i++){
+			Joueur j = this.participants.get(i);
+			System.out.println("\nJoueur "+(i+1)+" : "+j.getNom()+"\n   Score : "+j.getScore()+"\n    Cartes : "+j.getCollection());
+			if (j.getScore() == maxscore){
+				jMaxScore.add(j);
+			}
+			if (j.getScore() > maxscore){
+				maxscore=j.getScore();
+				jMaxScore.clear();
+				jMaxScore.add(j);
+			}
+		}
+		if (jMaxScore.size()==1){
+			System.out.println("\n\nLe gagnant de la partie est "+jMaxScore.get(0).getNom()+" avec un score de "+maxscore);
+		} else {
+			System.out.println("\n\nEgalité !");
+			System.out.print("Les joueurs ");
+			for(int i=0; i<jMaxScore.size();i++){
+				System.out.print(jMaxScore.get(i));
+				if (i<jMaxScore.size()-2){
+					System.out.print(", ");
+				} else {
+					if (i<jMaxScore.size()-1){
+						System.out.print(" et ");
+					}
+				}
+			}
+			System.out.println(" ont un score de "+maxscore);
+		}
+
+		// Supprimer des sauvegardes parce qu'on peux pas reprendre cette partie
+		Partie.supprimerPartie(this.ID);
+
+	}
+
+	public int getID(){
+		return this.ID;
+	}
+
+	public void setID(int id){
+		this.ID=id;
+	}
+
+	//SAUVEGARDE
+	public static void sauvegarder(Partie p) {
+		if (p.getID()==-1){
+			List<String> fichiers=null;
+			try{
+				fichiers = Partie.listerSauvegardes();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+			//dernier nom de sauvegarde
+			int max = -1;
+	    	for (String s : fichiers) {
+    	    	int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
+		        if (x > max) {
+    		        max = x;
+        		}
+	    	}
+			p.setID(max+1);
+		}
+		String titre = "Partie_"+(p.getID())+".obj";
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(titre))) {
+
+            oos.writeObject(p);
+
+        } catch (IOException e) {
+            System.out.println("Problème lors de la sauvegarde de la partie");
+        }
+    }
+
+	public static Partie charger(int ID)  {
+		String titre = "Partie_"+ID+".obj";
+		Partie p=null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(titre))) {
+	        p = (Partie) ois.readObject();
+    	    System.out.println("Partie chargée avec succès");
+        	
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("Problème de chargement de la partie");
+		}
+		return p;
+    }
+
+	public static Partie charger(String nomFichier) {
+        Partie p=null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFichier))) {
+	        p = (Partie) ois.readObject();
+    	    System.out.println("Partie chargée avec succès");
+        	
+		} catch (IOException | ClassNotFoundException e){
+			System.out.println("Problème de chargement de la partie");
+		}
+		return p;
+    }
+
+	public static List<String> listerSauvegardes() throws IOException{
+		Path dossierCourant = Paths.get(".");
+		return Files.list(dossierCourant).filter(Files::isRegularFile).map(path->path.getFileName().toString()).filter(nom ->nom.matches("Partie_\\d+\\.obj")).collect(Collectors.toList());
+	}
+
+	public static boolean supprimerPartie(int ID) {
+    	String nomFichier = "Partie_" + ID + ".obj";
+    	File f = new File(nomFichier);
+	    if (f.exists()) {
+    	    return f.delete(); // true si suppression OK
+	    } else {
+    	    return false; // fichier inexistant
+    	}
 	}
 }
