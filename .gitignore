@@ -1,5 +1,7 @@
 # Java
 bin/
+
+Projet/bin/Jest/*.class
 *.class
 Projet/bin/Jest/Partie.class
 Projet/bin/Jest/CalculateurScore.class
