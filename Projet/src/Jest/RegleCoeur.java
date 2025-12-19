@@ -1,8 +1,8 @@
 /*
  * Règle concernant les cartes de Cœur.
- * Sans Jocker : les Cœurs valent 0 point</li>
- * Avec Jocker mais pas tous les Cœurs : valeur négative</li>
- * Avec Jocker et tous les Cœurs (1,2,3,4) : valeur positive</li>
+ * Sans Jocker : les Cœurs valent 0 point
+ * Avec Jocker mais pas tous les Cœurs : valeur négative
+ * Avec Jocker et tous les Cœurs (1,2,3,4) : valeur positive
  * 
  * @author Nina et Emeline
 */
@@ -58,7 +58,7 @@ public class RegleCoeur extends Regle {
 		}
 	}
 
-	/* Exemple de méthode à redéfinir dans les sous-classes
+	/* 
 	 * Modifie la valeur d'une carte spécifique selon la règle des Cœurs
 	 * @param c La carte à modifier
 	 * @param toutesLesCartes La liste de toutes les cartes du jeu

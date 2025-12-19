@@ -1,6 +1,7 @@
 /*
- * Règle concernant les cartes de Carreau.
- * Tous les Carreaux valent leur valeur négative.
+ * Règle concernant les As / 1.
+ * As seul de sa couleur : vaut 5× sa valeur (5 points)
+ * As avec un autre As de même couleur : vaut sa valeur normale (1 point)
  * 
  * @author Nina et Emeline
 */
@@ -56,7 +57,6 @@ public class RegleAs extends Regle {
 	}
 
 	/*
-	 * Exemple de méthode à redéfinir dans les sous-classes
 	 * Modifie la valeur d'une carte spécifique selon la règle des As
 	 * @param c La carte à modifier
 	 * @param toutesLesCartes La liste de toutes les cartes du jeu
