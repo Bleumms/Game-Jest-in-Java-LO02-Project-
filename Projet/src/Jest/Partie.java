@@ -1,3 +1,13 @@
+/**
+ * Représente une partie complète du jeu Jest.
+ * Gère le déroulement de la partie, la distribution des cartes,
+ * le calcul des scores et la sauvegarde/chargement.
+ * 
+ * @author Nina et Emeline
+ * @see Jeu
+ * @see Joueur
+ */
+
 package Jest;
 
 import java.util.ArrayList;
@@ -19,13 +29,39 @@ public class Partie implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/*
+	 * Date et heure de création de la partie
+	*/
 	private Date dateHeureDeCreation;
+
+	/*
+	 * Liste des joueurs participants à la partie
+	*/
 	private List<Joueur> participants; 
+
+	/*
+	 * Le jeu qui sera utilisé pour la partie
+	*/
 	private Jeu jeu;
+
+	/*
+	 * La pioche de cartes pour la partie, qui dépendra du jeu choisi
+	*/
 	private List<Carte> pioche;
+
+	/*
+	 * Les trophées à attribuer aux joueurs à la fin de la partie
+	*/
 	private List<Carte> trophe;
+
+	/*
+	 * Identifiant unique de la partie pour la sauvegarde
+	*/
 	private int ID;
 
+	/*
+	 * Constructeur de la partie
+	*/
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
@@ -34,14 +70,27 @@ public class Partie implements Serializable {
 		this.ID = -1;
 	}
 
+
+	/*
+	 * Ajoute un joueur à la partie
+	 * @param j Le joueur à ajouter
+	*/
 	public void ajouterUnJoueur(Joueur j) {
 		this.participants.add(j);
 	}
 
+	/*
+	 * Définit le jeu à utiliser pour la partie
+	 * @param j Le jeu à définir
+	*/
 	public void choisirUnJeu(Jeu j) {
 		this.jeu = j;
 	}
 
+	/*
+	 * Choisit les trophées de la partie
+	 * @param nbTrophes Le nombre de trophées à définir
+	*/
 	public void choisirLesTrophes(int nbTrophes) {
 		this.pioche = jeu.getCartes();
 		this.melangerLaPioche();
@@ -50,10 +99,19 @@ public class Partie implements Serializable {
 		}
 	}
 
+	/*
+	 * Mélange la pioche de cartes
+	*/
 	public void melangerLaPioche() {
 		Collections.shuffle(pioche);
 	}
 
+	/*
+	 * Distribue les cartes aux joueurs
+	 * On s'assure que la pioche a assez de cartes
+	 * Puis on va assigner 2 cartes par joueur
+	 * On enlève à chaque fois les cartes distribuées de la pioche, pour ne pas les redonner
+	*/
 	public void distribuer() {
 		if (this.pioche.size() >= 2*this.participants.size()) {
 			for (int i = 0; i < participants.size(); i++) {
@@ -67,6 +125,10 @@ public class Partie implements Serializable {
 		} 
 	}
 
+	/*
+	 * Affiche les informations de la partie
+	 * Inclut l'ID, la date de création, les participants et les trophées
+	*/
 	@Override
 	public String toString() {
 		String message="";
@@ -97,6 +159,10 @@ public class Partie implements Serializable {
 		return message;
 	}
 
+	/*
+	 * Initialise la partie en choisissant les trophées et en mélangeant la pioche
+	 * @param NombreTrophe Le nombre de trophées à choisir
+	*/
 	public void initialiserLaPartie(int NombreTrophe) {
 		if (this.trophe.size() == 0) {
 			this.choisirLesTrophes(NombreTrophe);
@@ -109,19 +175,31 @@ public class Partie implements Serializable {
 		}
 	}
 
+	/*
+	 * Initialise la partie en choisissant 2 trophées et en mélangeant la pioche
+	*/
 	public void initialiserLaPartie() {
 		if (this.trophe.size() == 0) {
 			this.choisirLesTrophes(2);
 			this.melangerLaPioche();
+			System.out.println("\nLes trophées sont :   ");
+			for (int i=0; i<this.trophe.size();i++){
+				System.out.print(this.trophe.get(i)+"   ;   ");
+			}
+			System.out.println();
 		}
 	}
 
+	/*
+	 * Déroulement d'un tour de jeu complet
+	 * Retourne true si la partie est terminée, false sinon
+	*/	
 	public boolean faireUnTourDeJeu() {
 		if (this.pioche.size()<this.participants.size()){
 			return true;
 		}
 		// INITIALISATION DES VARS
-		// créer la liste des joueur pour les quels on peut prendre une carte
+		// créer la liste des joueur pour lesquels on peut prendre une carte
 		List<Joueur> joueursDispo = new ArrayList<Joueur>(this.participants);
 		List<Joueur> joueursPasEncoreJoue = new ArrayList<Joueur>(this.participants);
 		Joueur jFaisSonChoix = null;
@@ -198,6 +276,11 @@ public class Partie implements Serializable {
 		return finDePartie;
 	}
 	
+
+	/*
+	 * Affiche les informations de la table de jeu
+	 * Inclut les trophées et les joueurs avec leurs cartes visibles et le nombre de cartes en collection
+	*/
 	public void affichageTable(){
 		System.out.print( "\n\nEtat de la table de jeu : \n Trophes :   " );
 		for (int i=0; i<this.trophe.size();i++){
@@ -209,11 +292,21 @@ public class Partie implements Serializable {
 		}
 	}
 	
+	/*
+	 * Mélange les cartes restantes et les remet dans la pioche
+	 * @param cartes Les cartes à remettre dans la pioche
+	*/
 	public void remiseALaPioche(List<Carte> cartes) {
 		Collections.shuffle(cartes);
 		this.pioche.addAll(0, cartes);
 	}
 	
+	/*
+	 * Détermine l'ordre initial des joueurs en fonction de leur carte visible			
+	 * Le joueur avec la carte visible la plus faible joue en premier
+	 * @param joueursPasEncoreJoue La liste des joueurs n'ayant pas encore joué ce tour
+	 * @return Le joueur qui doit jouer
+	*/
 	public Joueur definirJoueurSuivant(List<Joueur> joueursPasEncoreJoue) {
 		Carte CarteMax=joueursPasEncoreJoue.get(0).getCarteVisible();
 		int indexJoueur = 0;
@@ -228,8 +321,11 @@ public class Partie implements Serializable {
 		return joueursPasEncoreJoue.get(indexJoueur);
 	}
 
+	/*
+	 * Calcule le score de chaque joueur en fonction des cartes dans leur collection
+	*/
 	public void calculScore() {
-		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a sa carte de référence
+		// pour chaque joueur on donne sa main complete au jeu qui va faire appel a la carte de référence
 		Visitor calcScore = new CalculateurScore();
 		calcScore.setReference(jeu.getReference());
 		for (int j = 0; j < this.participants.size(); j++) {
@@ -237,6 +333,9 @@ public class Partie implements Serializable {
 		}
 	}
 
+	/*
+	 * Attribue les trophées aux joueurs en fonction des conditions de victoire des cartes trophées
+	*/
 	public void attribuerLesTrophes(){
 		for (int i=0; i<this.trophe.size(); i++){
 			Carte c = this.trophe.get(i);
@@ -248,6 +347,10 @@ public class Partie implements Serializable {
 		}
 	}
 
+	/*
+	 * Termine la partie en affichant les scores finaux et le gagnant
+	 * Supprime la sauvegarde de la partie
+	*/
 	public void finDePartie(){
 		System.out.println("\n\nFin de partie : ");
 		
@@ -295,14 +398,28 @@ public class Partie implements Serializable {
 
 	}
 
+	/*
+	 * Récupère l'ID de la partie
+	 * @return L'ID de la partie
+	*/
 	public int getID(){
 		return this.ID;
 	}
 
+	/*
+	 * Permet de modifier l'ID de la partie
+	 * @param id L'ID à définir
+	*/
 	public void setID(int id){
 		this.ID=id;
 	}
 
+	/*
+	 * Sauvegarde la partie dans un fichier depuis son ID
+	 * Le nom du fichier est "Partie_ID.obj" où ID est l'identifiant de la partie
+	 * Si l'ID n'est pas défini, il est attribué automatiquement
+	 * @param p La partie à sauvegarder
+	*/
 	//SAUVEGARDE
 	public static void sauvegarder(Partie p) {
 		if (p.getID()==-1){
@@ -333,6 +450,12 @@ public class Partie implements Serializable {
         }
     }
 
+	/*
+	 * Charge une partie depuis un fichier en utilisant son ID
+	 * Le nom du fichier est "Partie_ID.obj" où ID est l'identifiant de la partie
+	 * @param ID L'ID de la partie à charger
+	 * @return La partie chargée, ou null en cas d'erreur
+	*/
 	public static Partie charger(int ID)  {
 		String titre = "Partie_"+ID+".obj";
 		Partie p=null;
@@ -346,6 +469,11 @@ public class Partie implements Serializable {
 		return p;
     }
 
+	/*
+	 * Charge une partie depuis un fichier en utilisant son nom
+	 * @param nomFichier Le nom du fichier à charger
+	 * @return La partie chargée ou null en cas d'erreur
+	*/
 	public static Partie charger(String nomFichier) {
         Partie p=null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFichier))) {
@@ -358,11 +486,20 @@ public class Partie implements Serializable {
 		return p;
     }
 
+	/*
+	 * Liste les sauvegardes de parties existantes dans le répertoire courant
+	 * @return La liste des noms de fichiers de sauvegarde 
+	*/
 	public static List<String> listerSauvegardes() throws IOException{
 		Path dossierCourant = Paths.get(".");
 		return Files.list(dossierCourant).filter(Files::isRegularFile).map(path->path.getFileName().toString()).filter(nom ->nom.matches("Partie_\\d+\\.obj")).collect(Collectors.toList());
 	}
 
+	/*
+	 * Supprime la sauvegarde d'une partie en utilisant son ID
+	 * @param ID L'ID de la partie à supprimer
+	 * @return true si la suppression a réussi, false sinon
+	*/
 	public static boolean supprimerPartie(int ID) {
     	String nomFichier = "Partie_" + ID + ".obj";
     	File f = new File(nomFichier);

@@ -1,3 +1,19 @@
 # Java
 bin/
 *.class
+Projet/bin/Jest/Partie.class
+Projet/bin/Jest/CalculateurScore.class
+Projet/bin/Jest/Carte.class
+Projet/bin/Jest/CarteClassique.class
+Projet/bin/Jest/ConditionMaxScore.class
+Projet/bin/Jest/ConditionVictoire.class
+Projet/bin/Jest/Jeu.class
+Projet/bin/Jest/Jocker.class
+Projet/bin/Jest/Joueur.class
+Projet/bin/Jest/JoueurPhysique.class
+Projet/bin/Jest/JoueurVirtuel.class
+Projet/bin/Jest/Menu.class
+Projet/bin/Jest/Partie.class
+Projet/bin/Jest/Reference.class
+Projet/bin/Jest/Regle.class
+Projet/bin/Jest/RegleAs.class
