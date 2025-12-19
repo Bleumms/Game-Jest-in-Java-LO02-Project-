@@ -4,7 +4,6 @@
 
 ![Java](https://img.shields.io/badge/Java-17+-orange?style=flat&logo=java)
 ![Maven](https://img.shields.io/badge/Maven-3.8+-blue?style=flat&logo=apachemaven)
-![License](https://img.shields.io/badge/License-Educational-green?style=flat)
 ![Last Commit](https://img.shields.io/github/last-commit/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&logo=git)
 
 *Un jeu de cartes stratégique développé dans le cadre du projet LO02*
@@ -29,7 +28,7 @@
 
 ---
 
-## 🎮 À Propos
+## À Propos
 
 **Jest** est un jeu de cartes stratégique développé en Java dans le cadre du projet LO02. Le jeu oppose 3 ou 4 joueurs (humains ou IA) dans une bataille tactique où chaque carte a une valeur qui dépend de règles complexes et interdépendantes.
 
@@ -41,7 +40,7 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 
 ---
 
-## ✨ Caractéristiques
+## Caractéristiques
 
 ### 🎯 Gameplay
 - **3-4 joueurs** : Parties multijoueurs avec joueurs humains et IA
@@ -72,7 +71,7 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### 1️⃣ Cloner le dépôt
 
@@ -96,7 +95,7 @@ mvn javadoc:javadoc
 
 ---
 
-## 🚀 Utilisation
+## Utilisation
 
 ### Lancer le jeu
 
@@ -129,7 +128,7 @@ java -cp target/classes Jest.Main
 
 ---
 
-## 🎲 Règles du Jeu
+## Règles du Jeu
 
 ### Valeur de Base
 Chaque carte a une valeur égale à son numéro (1 à 4).
@@ -165,7 +164,7 @@ Exemples de conditions :
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Structure du Projet
 
@@ -254,7 +253,7 @@ Jest/
 
 ---
 
-## 🎨 Patterns de Conception
+## Patterns de Conception
 
 ### 1. **Visitor Pattern** 
 *Pour le calcul des scores*
@@ -306,7 +305,7 @@ public abstract class Regle {
 
 ---
 
-## 🧪 Tests
+## Tests
 
 ```bash
 # Exécuter les tests unitaires
@@ -318,7 +317,7 @@ mvn jacoco:report
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 La Javadoc complète est disponible après génération :
 
@@ -329,7 +328,7 @@ open target/site/apidocs/index.html
 
 ---
 
-## 🤝 Contributeurs
+## Contributeurs
 
 <table>
   <tr>
@@ -342,29 +341,14 @@ open target/site/apidocs/index.html
 
 ---
 
-## 📄 Licence
-
-Ce projet est développé dans un cadre éducatif pour le cours LO02.
-
----
-
-## 🔮 Améliorations Futures
+## Améliorations Possibles
 
 - [ ] Interface graphique (JavaFX ou Swing)
 - [ ] Mode en ligne multijoueur
 - [ ] Statistiques et historique des parties
-- [ ] Plus de stratégies IA (Machine Learning ?)
-- [ ] Système de classement/ELO
+- [ ] Système de classement
 - [ ] Animations et effets sonores
 - [ ] Mode tournoi
-
----
-
-## 📞 Contact
-
-Pour toute question ou suggestion concernant le projet :
-- 🐛 [Ouvrir une issue](https://github.com/Bleumms/Game-Jest-in-Java-LO02-Project-/issues)
-- 💬 Discuter dans les [Discussions](https://github.com/Bleumms/Game-Jest-in-Java-LO02-Project-/discussions)
 
 ---
 
