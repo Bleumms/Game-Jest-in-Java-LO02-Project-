@@ -31,7 +31,9 @@ public class JoueurPhysique extends Joueur{
 	*/
 	public void faireUneOffre() {
 		System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
+		@SuppressWarnings("unused")
 		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		System.out.print("Voici vos deux cartes reçues :   ");
 		System.out.println("carte 1= " + this.getCartesDistribuees().get(0) + "  ;  carte 2= "
@@ -53,6 +55,7 @@ public class JoueurPhysique extends Joueur{
 	 * @return La réponse valide de l'utilisateur
 	*/
 	private String ReponseUtilisateur(String question, List<String> valsAcceptees) {
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		String reponse = null;
 		boolean repValide = false;
@@ -96,7 +99,9 @@ public class JoueurPhysique extends Joueur{
 			List<String> valsAcceptees = new ArrayList<String>();
 
 			System.out.println("\n   >>>   " + this.getNom() + "   :          (faites Enter pour jouer)");
+			@SuppressWarnings("resource")
 			Scanner clavier = new Scanner(System.in);
+			@SuppressWarnings("unused")
 			String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		
 			System.out.println("Vous pouvez choisir une carte parmis celle disponibles :   ");

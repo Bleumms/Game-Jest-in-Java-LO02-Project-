@@ -1,5 +1,7 @@
 # Java
 bin/
+
+Projet/bin/Jest/*.class
 *.class
 Projet/bin/Jest/Partie.class
 Projet/bin/Jest/CalculateurScore.class
@@ -18,3 +20,4 @@ Projet/bin/Jest/Reference.class
 Projet/bin/Jest/Regle.class
 Projet/bin/Jest/RegleAs.class
 Projet/bin/Jest/Partie.class
+Projet/bin/Jest/Reference.class

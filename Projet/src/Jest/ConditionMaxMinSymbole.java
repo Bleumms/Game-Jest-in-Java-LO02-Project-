@@ -1,3 +1,8 @@
+/*
+ * Condition : le joueur avec la carte la plus haute/basse d'un symbole.
+ * 
+ * @author Nina et Emeline
+*/
 package Jest;
 
 import java.io.Serializable;
@@ -7,14 +12,28 @@ public class ConditionMaxMinSymbole implements ConditionVictoire, Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    /*
+     * maxMin : si positif, on cherche le maximum, si négatif, on cherche le minimum
+    */
     private int maxMin; 
     private Symbole s;
 
+    /*
+     * Constructeur de ConditionMaxMinSymbole
+     * @param maxMin Indique si on cherche le maximum (positif) ou le minimum (négatif)
+     * @param s Le symbole des cartes à considérer
+    */
     public ConditionMaxMinSymbole(int maxMin, Symbole s){
         this.maxMin = maxMin;
         this.s = s;
     }
 
+    /*
+     * Redéfinit la méthode toString pour afficher la condition de victoire
+     * Affiche si on cherche la carte la plus haute ou la plus basse d'un symbole
+     * @return Une chaîne de caractères représentant la condition de victoire
+    */
+    @Override
     public String toString(){
         String message="Le joueur qui a une carte de symbole "+this.s;
         if (maxMin <0){
@@ -25,6 +44,12 @@ public class ConditionMaxMinSymbole implements ConditionVictoire, Serializable {
         return message;
     }
 
+    /*
+     * Vérifie la condition de victoire en fonction de la carte la plus haute/basse d'un symbole
+     * Permet de savoir qui a la carte la plus haute/basse d'un symbole parmi les joueurs.
+     * @param joueurs La liste des joueurs en jeu
+     * @return L'indice du joueur gagnant si la condition est remplie
+    */
     public int VerificationVictoire(List<Joueur> joueurs){
 
         int extremum;

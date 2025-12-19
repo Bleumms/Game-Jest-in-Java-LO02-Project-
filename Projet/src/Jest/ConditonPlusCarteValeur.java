@@ -1,3 +1,9 @@
+/*
+ * Condition : le joueur ayant le plus de cartes d'une valeur donnée.
+ * 
+ * @author Nina et Emeline
+*/
+
 package Jest;
 
 import java.util.List;
@@ -8,16 +14,35 @@ public class ConditonPlusCarteValeur implements ConditionVictoire, Serializable 
 
     private static final long serialVersionUID = 1L;
 
+    /*
+     * num : le numéro de la carte dont on compte les occurrences
+    */
     private int num;
     
+
+    /*
+     * Constructeur de ConditonPlusCarteValeur
+     * @param num Le numéro de la carte dont on compte les occurrences
+    */
     public ConditonPlusCarteValeur(int num) {
         this.num=num;
     }
 
+    /*
+     * Redéfinit la méthode toString pour afficher la condition de victoire
+     * @return Une chaîne de caractères représentant la condition de victoire
+    */
     public String toString(){
         return "Le joueur qui a le plus de fois une carte de numéro "+num;
     }
 
+    /*
+     * Vérifie la condition de victoire en fonction du nombre de cartes d'une valeur donnée
+     * Permet de savoir qui a le plus de cartes d'une valeur donnée parmi les joueurs.
+     * En cas d'égalité, un gagnant est choisi aléatoirement parmi les joueurs à égalité.
+     * @param joueurs La liste des joueurs en jeu
+     * @return L'indice du joueur gagnant si la condition est remplie
+    */
     public int VerificationVictoire(List<Joueur> joueurs){
         List<Integer> nbCartesPossedes = new ArrayList<Integer>();
         for (int i=0; i<joueurs.size(); i++) {

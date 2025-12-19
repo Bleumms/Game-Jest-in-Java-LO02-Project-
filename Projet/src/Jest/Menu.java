@@ -1,3 +1,10 @@
+/*
+ * Gère le menu principal et la création des parties.
+ * Permet de créer ou reprendre une partie, configurer les joueurs.
+ * 
+ * @author Nina et Emeline
+*/
+
 package Jest;
 
 import java.io.IOException;
@@ -10,6 +17,11 @@ public class Menu {
 	private List<Jeu> jeuxExistants;
 	private List<Strategie> strategiesDisponibles;
 
+	/*
+	 * Constructeur de Menu
+	 * Initialise les éléments de base, démarre une partie, et la récupération d'une partie sauvegardée
+	 * Gère le menu principal
+	*/
 	public Menu() {
 		this.jeuxExistants = new ArrayList<Jeu>();
 		this.strategiesDisponibles = new ArrayList<Strategie>();
@@ -26,11 +38,16 @@ public class Menu {
 		this.jouer();
 	}
 
-
+	/*
+	 * Démarre la partie en cours
+	 * Gère les tours de jeu jusqu'à la fin de la partie
+	*/
 	public void jouer(){
 		System.out.println("\n"+this.partieEnCours);
 		System.out.print("Jouer ?    :   ");
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
+		@SuppressWarnings("unused")
 		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
 		System.out.println("\n");
 		boolean fin =false;
@@ -40,7 +57,10 @@ public class Menu {
 		this.partieEnCours.finDePartie();
 	}
 
-
+	/*
+	 * Affiche le menu principal et demande une action à l'utilisateur
+	 * @return Le numéro de l'action choisie
+	*/
 	public int affichageMenu(){
 		System.out.println(" -------------------------------------------------");
 		System.out.println("|        JEST     -     by Nina et Emeline        |");
@@ -48,6 +68,7 @@ public class Menu {
 		System.out.println("\nQue souhaitez vous faire ?");
 		System.out.println("      1 -   Créer une nouvelle partie ! ");
 		System.out.println("      2 -   Reprendre une ancienne partie ! ");
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -64,6 +85,10 @@ public class Menu {
 		return numero;
 	}
 
+	/*
+	 * Restaure une partie sauvegardée
+	 * @return La partie restaurée
+	*/
 	public Partie restorerUnePartie(){
 		
 		List<String> fichiers=null;
@@ -78,6 +103,7 @@ public class Menu {
 			List<Integer> valsAcceptable= new ArrayList<Integer>();
 			for (int i=0; i<fichiers.size();i++){
 				System.out.println("      "+(i+1)+"   -   "+fichiers.get(i));
+				@SuppressWarnings("unused")
 				int x = Integer.parseInt(fichiers.get(i).replace("Partie_", "").replace(".obj", ""));
 				valsAcceptable.add(i+1);
 			}
@@ -91,7 +117,13 @@ public class Menu {
 		return p;
 	}
 
+	/*
+	 * Demande à l'utilisateur quel numéro de partie restaurer
+	 * @param valsAcceptable La liste des numéros de parties disponibles
+	 * @return Le numéro de la partie choisie
+	*/
 	private int demanderPartieARestorer(List<Integer> valsAcceptable){
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -107,10 +139,18 @@ public class Menu {
 		return numero;
 	}
 	
+	/*
+	 * Retourne la partie en cours
+	 * @return La partie en cours
+	*/
 	public Partie getPartieEnCours() {
 		return this.partieEnCours;
 	}
 
+	/*
+	 * Crée une nouvelle partie
+	 * @return La partie créée
+	*/
 	public Partie creerUnePartie() {
 		Partie p = new Partie();
 		// ajouter un jeu
@@ -124,8 +164,14 @@ public class Menu {
 		return p;
 	}
 
+	/*
+	 * Demande à l'utilisateur quel jeu choisir parmi une liste
+	 * @param jeux La liste des jeux disponibles
+	 * @return Le jeu choisi
+	*/
 	private Jeu choixDuJeu(List<Jeu> jeux) {
 		// Verifier que jeux non vide !!
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
 		int numero = 0;
@@ -148,7 +194,14 @@ public class Menu {
 		return jeux.get(numero);
 	}
 
+	/*
+	 * Demande à l'utilisateur de choisir les joueurs parmi des joueurs réels et virtuels
+	 * Récupérer les informations nécessaires pour chaque joueur
+	 * @param strats La liste des stratégies disponibles pour les joueurs virtuels
+	 * @return La liste des joueurs choisis
+	*/
 	private List<Joueur> choixDesJoueurs(List<Strategie> strats) {
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		List<String> valsAcceptees = new ArrayList<String>();
 		valsAcceptees.add("3");
@@ -198,7 +251,14 @@ public class Menu {
 		return joueurs;
 	}
 
+	/*
+	 * Demande à l'utilisateur une réponse à la question donnée en argument, avec des valeurs acceptées
+	 * @param question La question à poser
+	 * @param valsAcceptees La liste des réponses acceptées (vide si toutes les réponses sont acceptées)
+	 * @return La réponse choisie
+	*/
 	private String ReponseUtilisateur(String question, List<String> valsAcceptees) {
+		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		String reponse = null;
 		boolean repValide = false;
