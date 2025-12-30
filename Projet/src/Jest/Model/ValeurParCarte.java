@@ -7,7 +7,7 @@
  * @see Regle
 */
 
-package Jest;
+package Jest.Model;
 
 public class ValeurParCarte {
 

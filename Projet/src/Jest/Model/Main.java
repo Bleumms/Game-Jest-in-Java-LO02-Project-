@@ -4,7 +4,7 @@
  * @author Nina et Emeline
 */
 
-package Jest;
+package Jest.Model;
 
 public class Main {
 

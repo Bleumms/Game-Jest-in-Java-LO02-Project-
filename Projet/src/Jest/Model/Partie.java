@@ -8,7 +8,7 @@
  * @see Joueur
  */
 
-package Jest;
+package Jest.Model;
 
 import java.util.ArrayList;
 import java.util.Collections;

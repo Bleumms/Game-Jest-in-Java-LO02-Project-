@@ -5,7 +5,7 @@
  * @see Visitable
 */
 
-package Jest;
+package Jest.Model;
 
 public interface Visitor {
 

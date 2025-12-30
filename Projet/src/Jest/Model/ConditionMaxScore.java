@@ -5,7 +5,7 @@
  * @author Nina et Emeline
 */
 
-package Jest;
+package Jest.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

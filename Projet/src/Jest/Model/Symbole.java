@@ -5,7 +5,7 @@
  * @author Nina et Emeline
 */
 
-package Jest;
+package Jest.Model;
 
 public enum Symbole {
 	PIQUE, TREFLE, CARREAU, COEUR, NONE

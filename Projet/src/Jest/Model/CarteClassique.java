@@ -7,7 +7,7 @@
  * @see Symbole
  */
 
-package Jest;
+package Jest.Model;
 
 public class CarteClassique extends Carte {
 

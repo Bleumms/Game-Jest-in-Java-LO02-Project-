@@ -8,7 +8,7 @@
  * @see Strategie
 */
 
-package Jest;
+package Jest.Model;
 
 import java.util.List;
 

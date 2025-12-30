@@ -7,7 +7,7 @@
  * @see Reference
  */
 
-package Jest;
+package Jest.Model;
 
 import java.util.ArrayList;
 import java.util.List;

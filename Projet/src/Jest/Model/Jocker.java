@@ -6,7 +6,7 @@
  * @see Carte
  */
 
-package Jest;
+package Jest.Model;
 
 public class Jocker extends Carte {
 

@@ -7,7 +7,7 @@
  * @see ValeurParCarte
 */
 
-package Jest;
+package Jest.Model;
 
 import java.io.Serializable;
 import java.util.List;
