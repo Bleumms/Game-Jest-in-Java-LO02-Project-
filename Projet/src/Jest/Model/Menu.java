@@ -10,9 +10,11 @@ package Jest.Model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu extends Observable {
+	private int etat;
 	private Partie partieEnCours;
 	private List<Jeu> jeuxExistants;
 	private List<Strategie> strategiesDisponibles;
@@ -26,6 +28,7 @@ public class Menu {
 		this.jeuxExistants = new ArrayList<Jeu>();
 		this.strategiesDisponibles = new ArrayList<Strategie>();
 		this.creerLesElementsDeBase();
+		this.etat=0;
 
 		/*
 		int actionDemande = this.affichageMenu();
@@ -41,11 +44,26 @@ public class Menu {
 	}
 
 	public void creerPartie(){
-		System.out.print("creer la partie");
+		System.out.print("DEBUG : creer une partie");
+		this.etat=1;
+		this.setChanged();
+		this.notifyObservers("creer une partie");
+
 	}
 
 	public void reprendrePartie(){
-		System.out.print("reprendre une partie");
+		System.out.print("DEBUG : reprendre une partie");
+		this.etat=2;
+		this.setChanged();
+		this.notifyObservers("reprendre une partie");
+	}
+
+	public int getEtat(){
+		return this.etat;
+	}
+
+	public List<Jeu> getJeux(){
+		return this.jeuxExistants;
 	}
 
 	/*
@@ -455,7 +473,7 @@ public class Menu {
 
 
 	public static Jeu creerUnJeu(String type){
-		Jeu jeu = new Jeu();
+		Jeu jeu = new Jeu("Jeu de carte "+type);
 
 		List<Carte> Cartes=null;
 		if (type=="MINI"){

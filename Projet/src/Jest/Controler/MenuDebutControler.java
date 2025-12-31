@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-public class MenuControler {
+public class MenuDebutControler {
     private Menu menu;
 	private JButton boutonCreer;
     private JButton boutonReprendre;
 	
-	public MenuControler (Menu m, JButton boutonC, JButton boutonR){
+	public MenuDebutControler (Menu m, JButton boutonC, JButton boutonR){
 		this.menu=m;
 		this.boutonCreer=boutonC;
         this.boutonReprendre=boutonR;
