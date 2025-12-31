@@ -1,0 +1,41 @@
+Ce que j'ai compris du cours : 
+a chaque fois qu'un élément de l'interface peut effectuer une action 
+il y a un controleur entre ce bouton (ou autre) et l'objet qui reçois l'action (d'une classe dans les modèle).
+
+ICI : 
+Quelle action l'utilisateur peut faire : 
+
+    - D'abord le menu : l'utilisateur peut choisir entre créer une partie et en reprendre une autre : 
+            donc le menu est lié à deux bouton. 
+            Idée 1 : Je pense qu'il faut faire le lien avec un seul bouton et on creera 2 controleur pendant la vue
+            -> Nope, idée de merde ! Chaque bouton appelle une méthode de Menu différente ! 
+            Idée 2 : Un seul contrôleur qui contient le modèle Menu et DEUX objet JButon
+
+CAS 1 : creer un jeu
+    - Toujours le menu : choisir un jeu de carte : 
+            Proposition 1 : On peut le faire avec des boutons (un bouton par jeu)
+            Proposition 2 : Sinon en bouton radio, c'est plus mimi <3
+    
+    - Toujours le menu : choisir les joueurs :
+            Le nombre de joueurs :  bouton radio aussi ?
+            Nom du joueur : text
+            Joueur physique ou virtuel : bouton
+            (potentielle) stratégie : bouton radio
+    
+    - Valider :
+            Un bouton lié à Menu : on vérifie que chaque élément à été rempli, si oui : partie.initialiser la partie
+
+!! Attention : cette façon de faire insinue que sera stocké des choix que l'utilisateur a sélectionné qui peuvent être modifier 
+ce n'est pas déjà intégré dans le code, avec ce qu'on a pour l'instant on a besoin que tout se fasse une seule fois, 
+ne peut ensuite plus être modifié et il faut que tout soit cohérent sinon peut lever des exceptions.
+
+CAS 2 : Reprendre un jeu 
+
+    - Choisir le jeu (dans Menu) : radio bouton 
+
+
+
+Pendant une partie, l'utilisteur peut : 
+    - Faire une offre : click sur un des deux bouton
+    - Choisir une carte parmis les offres : click sur un bouton (le joueur) et sur un autre (la carte)
+    
