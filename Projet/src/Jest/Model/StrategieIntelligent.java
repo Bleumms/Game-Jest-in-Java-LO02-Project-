@@ -28,6 +28,10 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		return "Stratégie intelligente";
 	}
 
+	public String getNom(){
+		return "Stratégie intelligente";
+	}
+
 	/*
 	 * Exécute la stratégie de faire une offre
 	 * Il choisit la carte à rendre visible en fonction de sa valeur et de son symbole.

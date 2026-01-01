@@ -4,6 +4,9 @@ import  Jest.Model.Menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+
 import javax.swing.*;
 
 
@@ -19,11 +22,47 @@ public class MenuCreerControler {
         this.boutonsNbJoueurs=boutonsNbJoueurs;
         this.valider=valider;
 		
-		// L'appuie sur le bouton creer
+
+		initRadioBoutonsJeux();
+		initBoutonsNbJoueurs();
+        initValider();
+    }
+
+    private void initRadioBoutonsJeux() {
+        Enumeration<AbstractButton> buttons = this.radiosBoutonsJeux.getElements();
+
+        while (buttons.hasMoreElements()) {
+            AbstractButton btn = buttons.nextElement();
+
+            btn.addActionListener(e -> {
+                AbstractButton source = (AbstractButton) e.getSource();
+                int index = Integer.parseInt(source.getActionCommand());
+                System.out.println("DEBUG : Radio bouton sélectionné index = " + index);
+                menu.setJeuSelectionne(index);
+            });
+        }
+    }
+
+    private void initBoutonsNbJoueurs() {
+        Enumeration<AbstractButton> buttons = this.boutonsNbJoueurs.getElements();
+
+        while (buttons.hasMoreElements()) {
+            AbstractButton btn = buttons.nextElement();
+
+            btn.addActionListener(e -> {
+                AbstractButton source = (AbstractButton) e.getSource();
+                int index = Integer.parseInt(source.getActionCommand());
+                System.out.println("DEBUG : Bouton sélectionné " + index+" joueurs");
+                menu.setNbJoueursSelectionne(index);
+            });
+        }
+    }
+
+	private void initValider(){
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Bouton validé activé");
-				// vérifié que coché
+				System.out.println("DEBUG : Bouton validé activé");
+				menu.validerPageCreerPartie();
 			}
 		});
 	}

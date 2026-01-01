@@ -20,7 +20,7 @@ public class MenuDebutControler {
 		// L'appuie sur le bouton creer
 		this.boutonCreer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.print("\nControleur de l'interrupteur: activation de "+menu);
+				System.out.println("DEBUG : Bouton 1 cliqué");
 				menu.creerPartie();
 			}
 		});
@@ -28,7 +28,7 @@ public class MenuDebutControler {
         // L'appuie sur le bouton reprendre
 		this.boutonReprendre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.print("\nControleur de l'interrupteur: activation de "+menu);
+				System.out.println("DEBUG : Bouton 2 cliqué ");
 				menu.reprendrePartie();
 			}
 		});

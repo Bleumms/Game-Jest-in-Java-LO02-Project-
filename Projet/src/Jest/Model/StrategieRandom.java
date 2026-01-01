@@ -22,6 +22,10 @@ public class StrategieRandom implements Strategie, Serializable{
 	public String toString(){
 		return "Stratégie random";
 	}
+
+	public String getNom(){
+		return "Stratégie random";
+	}
 	
 	/*
 	 * Exécute la stratégie de faire une offre

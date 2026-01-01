@@ -32,4 +32,6 @@ public interface Strategie {
 	 * @return Une chaîne de caractères représentant la stratégie
 	*/
 	public String toString();
+
+	public String getNom();
 }
