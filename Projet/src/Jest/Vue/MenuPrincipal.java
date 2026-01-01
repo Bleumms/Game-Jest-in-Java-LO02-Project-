@@ -32,8 +32,8 @@ public class MenuPrincipal implements Observer {
 			window2.getFrame().setVisible(true);
 		}
 
-		// cas 3 : après le premier menu l'utilisateur a choisi de creer une partie
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueurs){
+		//  après le premier menu l'utilisateur a choisi de reprendre une par
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.ReprendrePartie){
 			frame.dispose();
 			// A FAIRE
 		}

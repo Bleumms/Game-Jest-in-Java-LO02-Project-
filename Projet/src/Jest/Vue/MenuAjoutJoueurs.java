@@ -1,19 +1,13 @@
 package Jest.Vue;
 
-import Jest.Controler.MenuCreerControler;
-import Jest.Controler.MenuDebutControler;
 import Jest.Controler.MenuJoueursControler;
 import  Jest.Model.Menu;
 import Jest.Model.Strategie;
 import Jest.Model.Etat;
-import  Jest.Model.Jeu;
 
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-
-//import com.sun.java.swing.plaf.windows.resources.windows;
-
 
 public class MenuAjoutJoueurs implements Observer {
 	
@@ -27,9 +21,55 @@ public class MenuAjoutJoueurs implements Observer {
     private ButtonGroup radiosBoutonsType;
 
 
+
 	public void update(Observable instanceObservable, Object arg1){
-		
+		// La validation n'a pas fonctionné POUR L'INSTANT MARCHE PAS DU TOUT
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueursAvecErreur){
+            System.out.println("DEBUG : Mal saisi!");
+            this.ajoutMessageErreur();
+		}
+        // Un nouveau joueur a été ajouté et il faut en recréer un
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueur){
+            System.out.println("DEBUG : Encore un joueur");
+            enleverMessageErreur();
+            frame.dispose();
+            this.interfaceAjouteUnJoueurVirtuel();
+		}
+        // Tous les joueurs ont étés ajoutés
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.LancerPartie){
+            System.out.println("DEBUG : J'ai tous les joueurs");
+            frame.dispose();
+		}
 	}
+
+    private void ajoutMessageErreur(){
+        System.out.println("DEBUG : Mal saisi ");
+		JLabel label3 = new JLabel("Attention, les informations sont mal remplis !");
+        JLabel label4 = new JLabel("(Pensez a faire Entrer pour contabiliser la saisie)");
+		label3.setBounds(50, 170, 250,20);
+        label4.setBounds(50, 180, 250,20);
+		Container content = frame.getContentPane();
+        content.add(label3);
+        content.setComponentZOrder(label3, 0); // devant
+        content.add(label4);
+        content.setComponentZOrder(label4, 0); // devant
+        content.repaint();
+    }
+
+    private void enleverMessageErreur(){
+        Component[] components = frame.getContentPane().getComponents();
+        int compteur =0;
+        for (Component c : components) {
+            if (c instanceof JPanel) {
+                compteur ++;
+                if (compteur<=2){    // ça compte a partir du bas jsp pq, j'ai vu en testant
+                    frame.getContentPane().remove(c); // supprime les boutons radios sauf ceux pour le type
+                }
+            }
+        }
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();
+    }
 
     public JFrame getFrame(){
         return this.frame;
@@ -46,7 +86,13 @@ public class MenuAjoutJoueurs implements Observer {
 	}
 
     private void interfaceAjouteUnJoueurVirtuel(){
-        System.out.println("DEBUG : interfaceAjouteUnJoueurVirtuel");
+        Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton btn = buttons.nextElement();
+            btn.setVisible(true);
+        }
+
+        /*System.out.println("DEBUG : interfaceAjouteUnJoueurVirtuel");
         Container content = frame.getContentPane();
 		for (int i=0; i< this.menu.getStrats().size(); i++){
             Strategie s = this.menu.getStrats().get(i);
@@ -60,11 +106,16 @@ public class MenuAjoutJoueurs implements Observer {
             content.add(jRadioButtonStrat);
             content.setComponentZOrder(jRadioButtonStrat, 0); // devant
 		}	
-        content.repaint();
+        content.repaint(); */
     }
 
     private void interfaceAjouteUnJoueurNonVirtuel(){
-        System.out.println("DEBUG : interfaceAjouteUnJoueurNonVirtuel");
+        Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton btn = buttons.nextElement();
+            btn.setVisible(false);
+        }
+        /*System.out.println("DEBUG : interfaceAjouteUnJoueurNonVirtuel");
         Component[] components = frame.getContentPane().getComponents();
         int compteur =0;
         for (Component c : components) {
@@ -76,14 +127,14 @@ public class MenuAjoutJoueurs implements Observer {
             }
         }
         frame.getContentPane().revalidate();
-        frame.getContentPane().repaint();
+        frame.getContentPane().repaint(); */
     }
 
 	private void interfaceAjouteUnJoueur(int numeroJoueur) {
 
 		//Creating the Frame
     	frame = new JFrame();
-		frame.setBounds(100, 100, 400, 200);
+		frame.setBounds(100, 100, 400, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -125,6 +176,17 @@ public class MenuAjoutJoueurs implements Observer {
 		frame.getContentPane().add(zoneTexte);
         
         this.radiosBoutonsStrat = new ButtonGroup();
+		for (int i=0; i< this.menu.getStrats().size(); i++){
+            Strategie s = this.menu.getStrats().get(i);
+
+			JRadioButton jRadioButtonStrat = new JRadioButton();
+			jRadioButtonStrat.setText((i+1)+"   "+s.getNom());
+            jRadioButtonStrat.setActionCommand(String.valueOf(i));
+			jRadioButtonStrat.setBounds(100, 90+(20*i), 200,20);
+			frame.getContentPane().add(jRadioButtonStrat);
+            jRadioButtonStrat.setVisible(false);
+			this.radiosBoutonsStrat.add(jRadioButtonStrat);
+		}	
 
         // valider
 		valider = new JButton("Valider");

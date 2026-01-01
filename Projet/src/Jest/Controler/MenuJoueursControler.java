@@ -28,6 +28,10 @@ public class MenuJoueursControler {
         this.valider=valider;
         this.zoneTexte=zoneTexte;
 
+        this.nom="";
+        this.strategieSelectionne=-1;
+        typeJoueur="Reel";
+
 		initRadioBoutonsStrat();
 		initRadioBoutonsType();
         intiZoneDeTexte();
@@ -46,6 +50,7 @@ public class MenuJoueursControler {
                 int index = Integer.parseInt(source.getActionCommand());
                 System.out.println("DEBUG : Radio bouton sélectionné index = " + index);
                 this.strategieSelectionne = index;
+                System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
             });
         }
     }
@@ -61,6 +66,7 @@ public class MenuJoueursControler {
                 String type = source.getActionCommand();
                 System.out.println("DEBUG : Bouton sélectionné joueurs " + type);
                 this.typeJoueur = type;
+                System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
             });
         }
     }
@@ -70,6 +76,7 @@ public class MenuJoueursControler {
             String contenu = zoneTexte.getText();
             System.out.println("DEBUG : Zone texte entrée validée : " + contenu);
             this.nom = contenu;
+            System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
         });
     }
 
@@ -77,6 +84,12 @@ public class MenuJoueursControler {
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("DEBUG : Bouton validé activé");
+                System.out.println("DEBUG :  type : " + typeJoueur+" ; nom : "+nom+" ; strat : "+strategieSelectionne);
+                Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
+                while (buttons.hasMoreElements()) {
+                    AbstractButton btn = buttons.nextElement();
+                    System.out.println(btn);
+                }
 				menu.validerUnJoueur(typeJoueur, nom,  strategieSelectionne);
 			}
 		});

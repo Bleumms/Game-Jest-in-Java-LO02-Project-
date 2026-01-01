@@ -59,7 +59,7 @@ public class Menu extends Observable {
 		System.out.println("DEBUG : jeu selectionné :  "+jeuSelectionne+" ; nbJoueur selectionné : "+nbJoueursSelectionne);
 		String message="";
 		if (this.jeuSelectionne>=0 && this.jeuSelectionne<this.jeuxExistants.size() && (this.nbJoueursSelectionne==3  || this.nbJoueursSelectionne==4)){
-			this.etat=Etat.SelectionnerJoueur1;
+			this.etat=Etat.SelectionnerJoueur;
 			message="selectionner les joueurs";
 			Partie p = new Partie();
 			p.choisirUnJeu(this.jeuxExistants.get(this.jeuSelectionne));
@@ -83,14 +83,19 @@ public class Menu extends Observable {
 			Joueur j;
 			if (typeJoueur=="Virtu"){
 				message="joueur virtuel créé";
-				j = new JoueurPhysique(nom);
+				j = new JoueurVirtuel(nom, this.strategiesDisponibles.get(strategieSelectionne));
 			} else {
 				message="joueur réel créé";
-				j = new JoueurVirtuel(nom, this.strategiesDisponibles.get(strategieSelectionne));
+				j = new JoueurPhysique(nom);
 			}
 			this.partieEnCours.ajouterUnJoueur(j);
 			System.out.println("DEBUG : partie :  "+this.partieEnCours);
-			this.etat = Etat.SelectionnerJoueur2;
+			if (this.partieEnCours.getParticipants().size()==nbJoueursSelectionne){
+				this.etat=Etat.LancerPartie;
+				this.partieEnCours.initialiserLaPartie();
+			} else {
+				this.etat=Etat.SelectionnerJoueur;
+			}
 		}
 		this.setChanged();
 		this.notifyObservers(message);

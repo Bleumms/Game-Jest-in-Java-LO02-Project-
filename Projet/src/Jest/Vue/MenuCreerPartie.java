@@ -39,7 +39,7 @@ public class MenuCreerPartie implements Observer {
 		}
 
 		// Validation réussie
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueurs){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueur){
 			frame.dispose();
 			MenuAjoutJoueurs window2 = new MenuAjoutJoueurs(this.menu);
 			window2.getFrame().setVisible(true);
@@ -65,8 +65,6 @@ public class MenuCreerPartie implements Observer {
         content.add(label5);
         content.setComponentZOrder(label5, 0); // devant
         content.repaint();
-
-
     }
 
 	private void interfaceCreerUnePartie(){

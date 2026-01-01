@@ -79,6 +79,10 @@ public class Partie implements Serializable {
 		this.participants.add(j);
 	}
 
+	public List<Joueur> getParticipants() {
+		return this.participants;
+	}
+
 	/*
 	 * Définit le jeu à utiliser pour la partie
 	 * @param j Le jeu à définir
