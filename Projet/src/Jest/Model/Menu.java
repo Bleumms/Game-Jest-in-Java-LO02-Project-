@@ -15,6 +15,8 @@ import java.util.Scanner;
 
 public class Menu extends Observable {
 	private int etat;
+	private int jeuSelectionne;
+	private int nbJoueursSelectionne;
 	private Partie partieEnCours;
 	private List<Jeu> jeuxExistants;
 	private List<Strategie> strategiesDisponibles;
@@ -29,6 +31,8 @@ public class Menu extends Observable {
 		this.strategiesDisponibles = new ArrayList<Strategie>();
 		this.creerLesElementsDeBase();
 		this.etat=0;
+		this.jeuSelectionne=-1;
+		this.nbJoueursSelectionne=0;
 
 		/*
 		int actionDemande = this.affichageMenu();
@@ -43,6 +47,26 @@ public class Menu extends Observable {
 		this.jouer();*/
 	}
 
+	public void setJeuSelectionne(int i){
+		this.jeuSelectionne=i;
+	}
+
+	public void setNbJoueursSelectionne(int i){
+		this.nbJoueursSelectionne=i;
+	}
+
+	public void validerPageCreerPartie(){
+		String message="erreur settings en creant une partie";
+		if (this.jeuSelectionne>0 && this.jeuSelectionne<this.jeuxExistants.size()){
+			if (this.nbJoueursSelectionne==3  || this.nbJoueursSelectionne==4){
+				this.etat=3;
+				message="selectionner les joueurs";
+			}
+		}
+		this.setChanged();
+		this.notifyObservers(message);
+	}
+	
 	public void creerPartie(){
 		System.out.print("DEBUG : creer une partie");
 		this.etat=1;
