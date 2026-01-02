@@ -89,8 +89,7 @@ public class MenuCreerPartie implements Observer {
 		for (int i=0; i< this.menu.getJeux().size(); i++){
             Jeu j = this.menu.getJeux().get(i);
 
-			JRadioButton jRadioButtonJeu = new JRadioButton();
-			jRadioButtonJeu.setText((compte+1)+"   "+j.getNom());
+			JRadioButton jRadioButtonJeu = new JRadioButton((compte+1)+"   "+j.getNom());
             jRadioButtonJeu.setActionCommand(String.valueOf(i));
 			jRadioButtonJeu.setBounds(75, (120+20*compte), 250,20);
 			frame.getContentPane().add(jRadioButtonJeu);

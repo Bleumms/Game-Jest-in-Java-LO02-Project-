@@ -19,6 +19,7 @@ public class MenuAjoutJoueurs implements Observer {
     private JTextField  zoneTexte;
     private ButtonGroup radiosBoutonsStrat;
     private ButtonGroup radiosBoutonsType;
+    private int compteNumeroJoueur;
 
 
 
@@ -33,12 +34,15 @@ public class MenuAjoutJoueurs implements Observer {
             System.out.println("DEBUG : Encore un joueur");
             enleverMessageErreur();
             frame.dispose();
-            this.interfaceAjouteUnJoueurVirtuel();
+            compteNumeroJoueur++;
+            this.interfaceAjouteUnJoueur();
 		}
         // Tous les joueurs ont étés ajoutés
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.LancerPartie){
             System.out.println("DEBUG : J'ai tous les joueurs");
             frame.dispose();
+            TestPartie window2 = new TestPartie(this.menu.getPartieEnCours());
+			window2.getFrame().setVisible(true);
 		}
 	}
 
@@ -46,8 +50,8 @@ public class MenuAjoutJoueurs implements Observer {
         System.out.println("DEBUG : Mal saisi ");
 		JLabel label3 = new JLabel("Attention, les informations sont mal remplis !");
         JLabel label4 = new JLabel("(Pensez a faire Entrer pour contabiliser la saisie)");
-		label3.setBounds(50, 170, 250,20);
-        label4.setBounds(50, 180, 250,20);
+		label3.setBounds(50, 170, 350,20);
+        label4.setBounds(50, 180, 350,20);
 		Container content = frame.getContentPane();
         content.add(label3);
         content.setComponentZOrder(label3, 0); // devant
@@ -80,7 +84,8 @@ public class MenuAjoutJoueurs implements Observer {
         this.menu = m;
 		this.menu.addObserver(this);
 
-		interfaceAjouteUnJoueur(1);
+        compteNumeroJoueur=1;
+		interfaceAjouteUnJoueur();
         new MenuJoueursControler(this.menu, this.zoneTexte,  this.valider, this.radiosBoutonsStrat, this.radiosBoutonsType);
         
 	}
@@ -91,22 +96,6 @@ public class MenuAjoutJoueurs implements Observer {
             AbstractButton btn = buttons.nextElement();
             btn.setVisible(true);
         }
-
-        /*System.out.println("DEBUG : interfaceAjouteUnJoueurVirtuel");
-        Container content = frame.getContentPane();
-		for (int i=0; i< this.menu.getStrats().size(); i++){
-            Strategie s = this.menu.getStrats().get(i);
-
-			JRadioButton jRadioButtonStrat = new JRadioButton();
-			jRadioButtonStrat.setText((i+1)+"   "+s.getNom());
-            jRadioButtonStrat.setActionCommand(String.valueOf(i));
-			jRadioButtonStrat.setBounds(100, 90+(20*i), 200,20);
-			frame.getContentPane().add(jRadioButtonStrat);
-			this.radiosBoutonsStrat.add(jRadioButtonStrat);
-            content.add(jRadioButtonStrat);
-            content.setComponentZOrder(jRadioButtonStrat, 0); // devant
-		}	
-        content.repaint(); */
     }
 
     private void interfaceAjouteUnJoueurNonVirtuel(){
@@ -115,22 +104,9 @@ public class MenuAjoutJoueurs implements Observer {
             AbstractButton btn = buttons.nextElement();
             btn.setVisible(false);
         }
-        /*System.out.println("DEBUG : interfaceAjouteUnJoueurNonVirtuel");
-        Component[] components = frame.getContentPane().getComponents();
-        int compteur =0;
-        for (Component c : components) {
-            if (c instanceof JRadioButton) {
-                compteur ++;
-                if (compteur<=2){    // ça compte a partir du bas jsp pq, j'ai vu en testant
-                    frame.getContentPane().remove(c); // supprime les boutons radios sauf ceux pour le type
-                }
-            }
-        }
-        frame.getContentPane().revalidate();
-        frame.getContentPane().repaint(); */
     }
 
-	private void interfaceAjouteUnJoueur(int numeroJoueur) {
+	private void interfaceAjouteUnJoueur() {
 
 		//Creating the Frame
     	frame = new JFrame();
@@ -138,7 +114,7 @@ public class MenuAjoutJoueurs implements Observer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-        String message =  "Joueur "+numeroJoueur;
+        String message =  "Joueur "+compteNumeroJoueur;
 		JLabel label = new JLabel(message);
 		label.setBounds(30, 30, 70, 20);
 		frame.getContentPane().add(label);

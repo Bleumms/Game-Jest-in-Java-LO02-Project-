@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Observable;
 
 import java.io.Serializable;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.*;
 
-public class Partie implements Serializable {
+public class Partie extends Observable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,6 +84,10 @@ public class Partie implements Serializable {
 		return this.participants;
 	}
 
+	public List<Carte> getTrophes(){
+		return this.trophe;
+	}
+	
 	/*
 	 * Définit le jeu à utiliser pour la partie
 	 * @param j Le jeu à définir
