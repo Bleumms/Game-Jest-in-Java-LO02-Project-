@@ -60,6 +60,8 @@ public class Partie extends Observable implements Serializable {
 	*/
 	private int ID;
 
+	private EtatPartie etat;
+
 	/*
 	 * Constructeur de la partie
 	*/
@@ -69,6 +71,7 @@ public class Partie extends Observable implements Serializable {
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
 		this.ID = -1;
+		this.etat=EtatPartie.Initial;
 	}
 
 
@@ -86,6 +89,12 @@ public class Partie extends Observable implements Serializable {
 
 	public List<Carte> getTrophes(){
 		return this.trophe;
+	}
+
+	public void attendreUneOffre(){
+		for (int i=0;i<this.participants.size();i++) {
+			this.participants.get(i).attendreUneOffre();
+		}
 	}
 	
 	/*
@@ -132,6 +141,7 @@ public class Partie extends Observable implements Serializable {
 				j.assignerCarteDistribuees(pioche.remove(0));
 			}
 		} 
+		this.etat=EtatPartie.Distribué;
 	}
 
 	/*

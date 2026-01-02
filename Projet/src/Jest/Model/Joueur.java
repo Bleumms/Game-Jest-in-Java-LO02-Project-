@@ -14,8 +14,9 @@ package Jest.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Joueur implements Visitable, Serializable{
+public class Joueur extends Observable implements Visitable, Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -42,17 +43,22 @@ public class Joueur implements Visitable, Serializable{
 	 * Score du joueur
 	*/
 	private int score;
+
+	protected EtatJoueur etat;
+	private int ID;
 	
 	/* 
 	 * Constructeur avec paramètre.
 	 * Initialise le nom du joueur et crée des listes vides pour la collection et les cartes distribuées.
 	 * @param n Le nom du joueur
 	*/
-	public Joueur(String n) {
+	public Joueur(String n, int i) {
 		this.setNom(n);
 		collection = new ArrayList<Carte>();
 		cartesDistribuees = new ArrayList<Carte>();
 		score=0;
+		this.ID=i;
+		this.etat=EtatJoueur.Initial;
 	}
 
 	/* 
@@ -160,6 +166,10 @@ public class Joueur implements Visitable, Serializable{
 	public void faireUneOffre () {
 	}
 
+	public void attendreUneOffre(){
+
+	}
+
 	/* 
 	 * Méthode pour choisir une carte parmi les cartes des autres joueurs
 	 * @param j La liste des joueurs en compétition
@@ -226,6 +236,14 @@ public class Joueur implements Visitable, Serializable{
 	*/
 	public Carte getCarteCachee() {
 		return this.carteCachee;
+	}
+
+	public EtatJoueur getEtat(){
+		return this.etat;
+	}
+
+	public int getID(){
+		return this.ID;
 	}
 	
 	

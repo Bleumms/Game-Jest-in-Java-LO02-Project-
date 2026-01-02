@@ -3,7 +3,7 @@ package Jest.Vue;
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
 import  Jest.Model.Menu;
-import Jest.Model.Etat;
+import Jest.Model.EtatMenu;
 import  Jest.Model.Jeu;
 
 import java.awt.*;
@@ -26,14 +26,14 @@ public class MenuPrincipal implements Observer {
 
 	public void update(Observable instanceObservable, Object arg1){
 		// après le premier menu l'utilisateur a choisi de creer une partie
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.CreerPartie){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartie){
 			frame.dispose();
 			MenuCreerPartie window2 = new MenuCreerPartie(this.menu);
 			window2.getFrame().setVisible(true);
 		}
 
 		//  après le premier menu l'utilisateur a choisi de reprendre une par
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.ReprendrePartie){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.ReprendrePartie){
 			frame.dispose();
 			// A FAIRE
 		}

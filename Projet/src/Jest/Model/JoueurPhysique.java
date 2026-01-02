@@ -19,9 +19,17 @@ public class JoueurPhysique extends Joueur{
 	 * Initialise le nom du joueur physique.
 	 * @param n Le nom du joueur
 	*/
-	public JoueurPhysique(String n) {
-		super(n);
+	public JoueurPhysique(String n, int i) {
+		super(n,i);
 	}
+
+	public void attendreUneOffre(){
+		this.etat=EtatJoueur.AttenteOffre;
+		this.setChanged();
+		this.notifyObservers("en attente d'une offre");
+		System.out.println("DEBUG : joueur : "+getNom()+" offre en attente");
+	}
+
 
 	/* 
 	 * Permet au joueur physique de faire une offre en choisissant une carte à rendre visible.

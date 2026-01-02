@@ -14,7 +14,7 @@ import java.util.Observable;
 import java.util.Scanner;
 
 public class Menu extends Observable {
-	private Etat etat;
+	private EtatMenu etat;
 	private int jeuSelectionne;
 	private int nbJoueursSelectionne;
 	private Partie partieEnCours;
@@ -30,7 +30,7 @@ public class Menu extends Observable {
 		this.jeuxExistants = new ArrayList<Jeu>();
 		this.strategiesDisponibles = new ArrayList<Strategie>();
 		this.creerLesElementsDeBase();
-		this.etat=Etat.Initialisation;
+		this.etat=EtatMenu.Initialisation;
 		this.jeuSelectionne=-1;
 		this.nbJoueursSelectionne=0;
 
@@ -59,14 +59,14 @@ public class Menu extends Observable {
 		System.out.println("DEBUG : jeu selectionné :  "+jeuSelectionne+" ; nbJoueur selectionné : "+nbJoueursSelectionne);
 		String message="";
 		if (this.jeuSelectionne>=0 && this.jeuSelectionne<this.jeuxExistants.size() && (this.nbJoueursSelectionne==3  || this.nbJoueursSelectionne==4)){
-			this.etat=Etat.SelectionnerJoueur;
+			this.etat=EtatMenu.SelectionnerJoueur;
 			message="selectionner les joueurs";
 			Partie p = new Partie();
 			p.choisirUnJeu(this.jeuxExistants.get(this.jeuSelectionne));
 			this.partieEnCours=p;
 			
 		} else {
-			this.etat=Etat.CreerPartieAvecErreur;
+			this.etat=EtatMenu.CreerPartieAvecErreur;
 			message="erreur settings en creant une partie";
 		}
 		System.out.println("DEBUG : partie :  "+this.partieEnCours);
@@ -78,23 +78,23 @@ public class Menu extends Observable {
 		String message="";
 		if (nom=="" || (typeJoueur=="Virtu" && strategieSelectionne==-1)){
 			message="erreur settings en creant le joueur";
-			this.etat = Etat.SelectionnerJoueursAvecErreur;
+			this.etat = EtatMenu.SelectionnerJoueursAvecErreur;
 		} else {
 			Joueur j;
 			if (typeJoueur=="Virtu"){
 				message="joueur virtuel créé";
-				j = new JoueurVirtuel(nom, this.strategiesDisponibles.get(strategieSelectionne));
+				j = new JoueurVirtuel(nom, partieEnCours.getParticipants().size(), this.strategiesDisponibles.get(strategieSelectionne));
 			} else {
 				message="joueur réel créé";
-				j = new JoueurPhysique(nom);
+				j = new JoueurPhysique(nom, partieEnCours.getParticipants().size());
 			}
 			this.partieEnCours.ajouterUnJoueur(j);
 			System.out.println("DEBUG : partie :  "+this.partieEnCours);
 			if (this.partieEnCours.getParticipants().size()==nbJoueursSelectionne){
-				this.etat=Etat.LancerPartie;
+				this.etat=EtatMenu.LancerPartie;
 				this.partieEnCours.initialiserLaPartie();
 			} else {
-				this.etat=Etat.SelectionnerJoueur;
+				this.etat=EtatMenu.SelectionnerJoueur;
 			}
 		}
 		this.setChanged();
@@ -102,19 +102,19 @@ public class Menu extends Observable {
 	}
 	
 	public void creerPartie(){
-		this.etat=Etat.CreerPartie;
+		this.etat=EtatMenu.CreerPartie;
 		this.setChanged();
 		this.notifyObservers("creer une partie");
 
 	}
 
 	public void reprendrePartie(){
-		this.etat=Etat.ReprendrePartie;
+		this.etat=EtatMenu.ReprendrePartie;
 		this.setChanged();
 		this.notifyObservers("reprendre une partie");
 	}
 
-	public Etat getEtat(){
+	public EtatMenu getEtat(){
 		return this.etat;
 	}
 
@@ -314,7 +314,7 @@ public class Menu extends Observable {
 
 			// Si reel
 			if (reelOuVirtu.equals("R")) {
-				joueurs.add(new JoueurPhysique(nom));
+				joueurs.add(new JoueurPhysique(nom, partieEnCours.getParticipants().size()));
 				// Si virtu
 			} else {
 				// choix de la strat
@@ -333,7 +333,7 @@ public class Menu extends Observable {
 					}
 				}
 				Strategie strat = strats.get(numero);
-				joueurs.add(new JoueurVirtuel(nom, strat));
+				joueurs.add(new JoueurVirtuel(nom, partieEnCours.getParticipants().size(),  strat));
 			}
 		}
 		return joueurs;

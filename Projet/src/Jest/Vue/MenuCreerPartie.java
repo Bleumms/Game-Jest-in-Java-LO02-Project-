@@ -3,7 +3,7 @@ package Jest.Vue;
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
 import  Jest.Model.Menu;
-import Jest.Model.Etat;
+import Jest.Model.EtatMenu;
 import  Jest.Model.Jeu;
 
 import java.awt.*;
@@ -33,13 +33,13 @@ public class MenuCreerPartie implements Observer {
 
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.CreerPartieAvecErreur){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartieAvecErreur){
             System.out.println("DEBUG : Mal saisi!");
             this.ajoutMessageErreur();
 		}
 
 		// Validation réussie
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueur){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur){
 			frame.dispose();
 			MenuAjoutJoueurs window2 = new MenuAjoutJoueurs(this.menu);
 			window2.getFrame().setVisible(true);

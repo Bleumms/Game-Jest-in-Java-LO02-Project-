@@ -3,7 +3,7 @@ package Jest.Vue;
 import Jest.Controler.MenuJoueursControler;
 import  Jest.Model.Menu;
 import Jest.Model.Strategie;
-import Jest.Model.Etat;
+import Jest.Model.EtatMenu;
 
 import java.awt.*;
 import java.util.*;
@@ -25,12 +25,12 @@ public class MenuAjoutJoueurs implements Observer {
 
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné POUR L'INSTANT MARCHE PAS DU TOUT
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueursAvecErreur){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueursAvecErreur){
             System.out.println("DEBUG : Mal saisi!");
             this.ajoutMessageErreur();
 		}
         // Un nouveau joueur a été ajouté et il faut en recréer un
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.SelectionnerJoueur){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur){
             System.out.println("DEBUG : Encore un joueur");
             enleverMessageErreur();
             frame.dispose();
@@ -38,7 +38,7 @@ public class MenuAjoutJoueurs implements Observer {
             this.interfaceAjouteUnJoueur();
 		}
         // Tous les joueurs ont étés ajoutés
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==Etat.LancerPartie){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.LancerPartie){
             System.out.println("DEBUG : J'ai tous les joueurs");
             frame.dispose();
             TestPartie window2 = new TestPartie(this.menu.getPartieEnCours());
