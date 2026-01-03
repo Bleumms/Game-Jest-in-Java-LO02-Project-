@@ -30,6 +30,12 @@ public class JoueurPhysique extends Joueur{
 		System.out.println("DEBUG : joueur : "+getNom()+" offre en attente");
 	}
 
+	public void attendreUnChoix(List<Joueur> joueurs){
+		this.etat=EtatJoueur.AttenteChoix;
+		this.setChanged();
+		this.notifyObservers("en attente d'un choix");
+		System.out.println("DEBUG : joueur : "+getNom()+" choix en attente");
+	}
 
 	/* 
 	 * Permet au joueur physique de faire une offre en choisissant une carte à rendre visible.

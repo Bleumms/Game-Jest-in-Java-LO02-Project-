@@ -4,6 +4,7 @@ import Jest.Controler.PartieControler;
 import  Jest.Model.Partie;
 import  Jest.Model.Carte;
 import Jest.Model.EtatJoueur;
+import Jest.Model.EtatPartie;
 import Jest.Model.Joueur;
 
 import java.awt.*;
@@ -28,7 +29,6 @@ public class TestPartie implements Observer {
     private JButton jouer;
     private ButtonGroup boutonsFaireMonOffre;
     private List<Integer> possedeUnBouton;
-    private int compteurOffreFaite;
 
     public void update(Observable instanceObservable, Object arg1){
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteOffre){
@@ -36,8 +36,7 @@ public class TestPartie implements Observer {
             this.ajouterBoutonOffre((Joueur)instanceObservable);
         }
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
-            compteurOffreFaite++;
-            System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
+            System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite ");
             if (this.possedeUnBouton.contains(((Joueur)instanceObservable).getID())){
                 this.supprimerBoutonJoueur(((Joueur)instanceObservable).getID());
             }
@@ -46,11 +45,20 @@ public class TestPartie implements Observer {
             } catch (IOException e ){
                 e.printStackTrace();
             }
-            if (compteurOffreFaite==this.partie.getParticipants().size()){
-                
-            }
         }
         this.supprimerBoutonJouer();
+        if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.OffreFinis){
+            System.out.println("DEBUG : UPDATE : on passe au choix de carte");
+            try{
+                this.choixDeLaCarte();
+            } catch (IOException e ){
+                e.printStackTrace();
+            }
+        }
+        if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
+            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());
+            
+        }
     }
 
     public JFrame getFrame(){
@@ -62,7 +70,6 @@ public class TestPartie implements Observer {
         this.possedeUnBouton = new ArrayList<Integer>();
         this.partie = p;
 		this.partie.addObserver(this);
-        this.compteurOffreFaite=0;
         for (Joueur j : this.partie.getParticipants()){
             j.addObserver(this);
         }
@@ -72,7 +79,28 @@ public class TestPartie implements Observer {
             e.printStackTrace();
         }
         new PartieControler(this.partie,this.jouer);
-        
+    }
+
+    private void choixDeLaCarte() throws IOException{
+        System.out.println("DEBUG : choix");
+        //qui joue ?
+        Joueur j = this.partie.getfaisSonChoix();
+
+        // position
+        int numeroJ = j.getID();
+        int positionCentre = 125+(225*numeroJ);
+        System.out.println("DEBUG : id : "+numeroJ+" ; position : "+positionCentre);
+
+        // Fleche pour savoir qui joue
+        JPanel panelJoueurChoix = new JPanel();
+        panelJoueurChoix.setBounds(positionCentre-25, 250, 55, 55);
+        BufferedImage img = ImageIO.read(new File("Test_fleche.png"));
+        JLabel pic = new JLabel(new ImageIcon(img));
+        panelJoueurChoix.add(pic);
+        frame.getContentPane().add(panelJoueurChoix);
+        frame.getContentPane().setComponentZOrder(panelJoueurChoix, 0);
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();    
     }
 
     private void supprimerBoutonJouer(){
@@ -111,7 +139,6 @@ public class TestPartie implements Observer {
     private void presenterOffre(Joueur j) throws IOException{
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
-        System.out.println("DEBUG : presenter une offre\n id :"+numeroJ+" pos : "+positionCentre);
 
         //carte visible
         JPanel panelOffreVisible = new JPanel();
@@ -142,7 +169,7 @@ public class TestPartie implements Observer {
 
     private void ajouterPageOffre(Joueur j){
         // Ouvrir une page où le joueur choisi sa carte visible
-        FaireUneOffre window2 = new FaireUneOffre(j);
+        FaireUneOffre window2 = new FaireUneOffre(this.partie, j);
 		window2.getFrame().setVisible(true);
     }
 

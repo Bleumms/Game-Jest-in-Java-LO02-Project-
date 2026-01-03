@@ -126,10 +126,11 @@ public class Menu extends Observable {
 		return this.strategiesDisponibles;
 	}
 
+
 	/*
 	 * Démarre la partie en cours
 	 * Gère les tours de jeu jusqu'à la fin de la partie
-	*/
+	*//*
 	public void jouer(){
 		System.out.println("\n"+this.partieEnCours);
 		System.out.print("Jouer ?    :   ");
@@ -143,7 +144,7 @@ public class Menu extends Observable {
 			fin = this.partieEnCours.faireUnTourDeJeu();
 		}
 		this.partieEnCours.finDePartie();
-	}
+	} */
 
 	/*
 	 * Affiche le menu principal et demande une action à l'utilisateur

@@ -1,5 +1,5 @@
 package Jest.Model;
 
 public enum EtatPartie {
-    Initial, Distribué
+    Initial, Distribué, OffreFinis
 }

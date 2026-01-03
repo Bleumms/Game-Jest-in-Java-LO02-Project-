@@ -1,5 +1,5 @@
 package Jest.Model;
 
 public enum EtatJoueur {
-    Initial, AttenteOffre, OffreFaite
+    Initial, AttenteOffre, OffreFaite, AttenteChoix, ChoixFait
 }

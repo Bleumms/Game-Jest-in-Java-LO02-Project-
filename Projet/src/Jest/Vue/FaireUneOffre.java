@@ -5,6 +5,7 @@ import Jest.Model.Joueur;
 import Jest.Controler.JoueurControler;
 import Jest.Controler.PartieControler;
 import Jest.Model.Carte;
+import Jest.Model.Partie;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,6 +23,8 @@ public class FaireUneOffre implements Observer {
     
     private JFrame frame;
     private Joueur joueur; 
+    private Partie partie;
+
     private JButton btnCarte1;
     private JButton btnCarte2;
 
@@ -32,15 +35,16 @@ public class FaireUneOffre implements Observer {
         }
     }
 
-    public FaireUneOffre(Joueur j){
+    public FaireUneOffre(Partie p, Joueur j){
         this.joueur=j;
+        this.partie=p;
         this.joueur.addObserver(this);
         try{
             this.interfaceFaireUneOffre();
         } catch (IOException e){
             e.printStackTrace();
         }
-        new JoueurControler(this.joueur,this.btnCarte1, this.btnCarte2);
+        new JoueurControler(this.partie, this.joueur, this.btnCarte1, this.btnCarte2);
     }
 
     public JFrame getFrame(){

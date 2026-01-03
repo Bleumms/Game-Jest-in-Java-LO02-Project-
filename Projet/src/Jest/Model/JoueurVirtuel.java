@@ -34,6 +34,13 @@ public class JoueurVirtuel extends Joueur {
 		this.faireUneOffre();
 	}
 
+	public void attendreUnChoix(List<Joueur> joueurs){
+		this.choix = choisirUneCarte(joueurs);
+		this.etat=EtatJoueur.ChoixFait;
+		this.setChanged();
+		this.notifyObservers("choix fait");
+	}
+
 	/* 
 	 * Définit la stratégie du joueur virtuel.
 	 * @param stra La stratégie à définir

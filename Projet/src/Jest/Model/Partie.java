@@ -61,6 +61,9 @@ public class Partie extends Observable implements Serializable {
 	private int ID;
 
 	private EtatPartie etat;
+	private int compteurOffreFaite;
+	private Joueur faisSonChoix;
+	private List<Joueur> pasEncoreJoue;
 
 	/*
 	 * Constructeur de la partie
@@ -72,6 +75,9 @@ public class Partie extends Observable implements Serializable {
 		this.trophe = new ArrayList<Carte>();
 		this.ID = -1;
 		this.etat=EtatPartie.Initial;
+		this.faisSonChoix=null;
+		this.compteurOffreFaite=0;
+		this.pasEncoreJoue= new ArrayList<Joueur>();
 	}
 
 
@@ -81,6 +87,7 @@ public class Partie extends Observable implements Serializable {
 	*/
 	public void ajouterUnJoueur(Joueur j) {
 		this.participants.add(j);
+		this.pasEncoreJoue.add(j);
 	}
 
 	public List<Joueur> getParticipants() {
@@ -91,10 +98,53 @@ public class Partie extends Observable implements Serializable {
 		return this.trophe;
 	}
 
+	public EtatPartie getEtat(){
+		return this.etat;
+	}
+
+	public Joueur getfaisSonChoix(){
+		return this.faisSonChoix;
+	}
+
+	public void prochainJoueur(){
+		if (faisSonChoix==null) {
+			faisSonChoix = definirJoueurSuivant();
+		} 
+		System.out.println("DEBUG : C'est à "+ faisSonChoix.getNom()+" de jouer");
+	}
+
+	public void ajouterCompteurOffreFaite(){
+		this.compteurOffreFaite++;
+		finDesOffres();
+	}
+
+	public void finDesOffres(){
+		System.out.println("DEBUG : compteur : "+this.compteurOffreFaite+" ; nb participants : "+this.participants.size());
+		if (this.compteurOffreFaite==this.participants.size()){
+			this.etat=EtatPartie.OffreFinis;
+			prochainJoueur();
+			System.out.println("DEBUG : on passe au choix de carte");
+			this.setChanged();
+			this.notifyObservers();
+			try{
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			this.faisSonChoix.attendreUnChoix(this.pasEncoreJoue);	
+		}
+	}
+
 	public void attendreUneOffre(){
 		for (int i=0;i<this.participants.size();i++) {
 			this.participants.get(i).attendreUneOffre();
 		}
+		for (Joueur j : this.participants){
+			if (j.getEtat()==EtatJoueur.OffreFaite){
+				compteurOffreFaite++;
+			}
+		}
+		finDesOffres();
 	}
 	
 	/*
@@ -142,6 +192,8 @@ public class Partie extends Observable implements Serializable {
 			}
 		} 
 		this.etat=EtatPartie.Distribué;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/*
@@ -212,7 +264,7 @@ public class Partie extends Observable implements Serializable {
 	/*
 	 * Déroulement d'un tour de jeu complet
 	 * Retourne true si la partie est terminée, false sinon
-	*/	
+	*/	/*
 	public boolean faireUnTourDeJeu() {
 		if (this.pioche.size()<this.participants.size()){
 			return true;
@@ -237,7 +289,7 @@ public class Partie extends Observable implements Serializable {
 		while (joueursPasEncoreJoue.size()>0) {
 			// choisir le 1er joueur
 			if (jFaisSonChoix==null) {
-				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
+				jFaisSonChoix = definirJoueurSuivant();
 			} 
 			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
 
@@ -273,7 +325,7 @@ public class Partie extends Observable implements Serializable {
 			} else {
 				jFaisSonChoix=null;
 			}
-		}
+		} 
 		
 		// on remet a la pioche seulement si on peut encore faire un tour
 		boolean finDePartie = false;
@@ -293,7 +345,7 @@ public class Partie extends Observable implements Serializable {
 		calculScore();
 		Partie.sauvegarder(this);
 		return finDePartie;
-	}
+	} */
 	
 
 	/*
@@ -326,18 +378,19 @@ public class Partie extends Observable implements Serializable {
 	 * @param joueursPasEncoreJoue La liste des joueurs n'ayant pas encore joué ce tour
 	 * @return Le joueur qui doit jouer
 	*/
-	public Joueur definirJoueurSuivant(List<Joueur> joueursPasEncoreJoue) {
-		Carte CarteMax=joueursPasEncoreJoue.get(0).getCarteVisible();
+	public Joueur definirJoueurSuivant() {
+		System.out.println("DEBUG : this.pasEncoreJoue : "+this.pasEncoreJoue);
+		Carte CarteMax=this.pasEncoreJoue.get(0).getCarteVisible();
 		int indexJoueur = 0;
-		for (int i=1;i<joueursPasEncoreJoue.size();i++) {
-			Carte c = joueursPasEncoreJoue.get(i).getCarteVisible();
+		for (int i=1;i<this.pasEncoreJoue.size();i++) {
+			Carte c = this.pasEncoreJoue.get(i).getCarteVisible();
 			boolean besoinChanger = this.jeu.estSupperieur(c,CarteMax);
 			if (besoinChanger) {
 				CarteMax = c;
 				indexJoueur = i;
 			}
 		}
-		return joueursPasEncoreJoue.get(indexJoueur);
+		return this.pasEncoreJoue.get(indexJoueur);
 	}
 
 	/*
