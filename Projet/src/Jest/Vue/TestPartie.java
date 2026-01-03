@@ -1,6 +1,5 @@
 package Jest.Vue;
 
-import Jest.Controler.MenuJoueursControler;
 import Jest.Controler.PartieControler;
 import  Jest.Model.Partie;
 import  Jest.Model.Carte;
@@ -12,10 +11,11 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observer;
 import java.util.Observable;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -26,20 +26,31 @@ public class TestPartie implements Observer {
     private Partie partie;
 
     private JButton jouer;
+    private ButtonGroup boutonsFaireMonOffre;
+    private List<Integer> possedeUnBouton;
+    private int compteurOffreFaite;
 
     public void update(Observable instanceObservable, Object arg1){
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteOffre){
             System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre en attente");
-            //this.ajouterBoutonOffre(instanceObservable);
+            this.ajouterBoutonOffre((Joueur)instanceObservable);
         }
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
+            compteurOffreFaite++;
             System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
+            if (this.possedeUnBouton.contains(((Joueur)instanceObservable).getID())){
+                this.supprimerBoutonJoueur(((Joueur)instanceObservable).getID());
+            }
             try{
                 this.presenterOffre((Joueur)instanceObservable);
             } catch (IOException e ){
                 e.printStackTrace();
             }
+            if (compteurOffreFaite==this.partie.getParticipants().size()){
+                
+            }
         }
+        this.supprimerBoutonJouer();
     }
 
     public JFrame getFrame(){
@@ -47,8 +58,11 @@ public class TestPartie implements Observer {
     }
 
     public TestPartie(Partie p){
+        this.boutonsFaireMonOffre=new ButtonGroup();
+        this.possedeUnBouton = new ArrayList<Integer>();
         this.partie = p;
 		this.partie.addObserver(this);
+        this.compteurOffreFaite=0;
         for (Joueur j : this.partie.getParticipants()){
             j.addObserver(this);
         }
@@ -61,14 +75,47 @@ public class TestPartie implements Observer {
         
     }
 
+    private void supprimerBoutonJouer(){
+        this.jouer.setVisible(false);
+    }
+
+    private void supprimerBoutonJoueur(int idJoueur){
+        int n_ieme = this.possedeUnBouton.indexOf(idJoueur);
+        Enumeration<AbstractButton> buttons = boutonsFaireMonOffre.getElements();
+        int compte=0;
+        while (buttons.hasMoreElements()) {
+            AbstractButton btn = buttons.nextElement();
+            if (compte==n_ieme){
+                btn.setVisible(false);
+            }
+            compte++;
+        }
+    }
+
+    private void ajouterBoutonOffre(Joueur j){
+        int numeroJ = j.getID();
+        int positionCentre = 125+(225*numeroJ);
+
+        // bouton faire mon offre
+        JButton faireMonOffre = new JButton("Faire mon offre");
+		faireMonOffre.setBounds(positionCentre-75, 425, 150,25);
+        faireMonOffre.addActionListener(event -> ajouterPageOffre(j));
+		frame.getContentPane().add(faireMonOffre);
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();    
+
+        this.boutonsFaireMonOffre.add(faireMonOffre);
+        this.possedeUnBouton.add(numeroJ);
+    }
+
     private void presenterOffre(Joueur j) throws IOException{
         int numeroJ = j.getID();
-        int positionCentre = 125+(180*numeroJ);
+        int positionCentre = 125+(225*numeroJ);
         System.out.println("DEBUG : presenter une offre\n id :"+numeroJ+" pos : "+positionCentre);
 
         //carte visible
         JPanel panelOffreVisible = new JPanel();
-        panelOffreVisible.setBounds(positionCentre-105, 320, 110, 155);
+        panelOffreVisible.setBounds(positionCentre-105, 320, 105, 155);
         BufferedImage imgV = ImageIO.read(new File("Test_carte.png"));
         JLabel picV = new JLabel(new ImageIcon(imgV));
         picV.setLayout(new BorderLayout());
@@ -82,20 +129,27 @@ public class TestPartie implements Observer {
 
         //carte cachée
         JPanel panelOffreCachee = new JPanel();
-        panelOffreCachee.setBounds(positionCentre-105, 320, 110, 155);
+        panelOffreCachee.setBounds(positionCentre, 320, 105, 155);
         BufferedImage imgC = ImageIO.read(new File("Test_carte_dos.png"));
         JLabel picC = new JLabel(new ImageIcon(imgC));
         panelOffreCachee.add(picC);
 
         content.add(panelOffreCachee);
         content.setComponentZOrder(panelOffreCachee, 0); // devant
+        content.revalidate();
         content.repaint();    
+    }
+
+    private void ajouterPageOffre(Joueur j){
+        // Ouvrir une page où le joueur choisi sa carte visible
+        FaireUneOffre window2 = new FaireUneOffre(j);
+		window2.getFrame().setVisible(true);
     }
 
     private void interfaceTableDeJeu() throws IOException {
         //Creating the Frame
     	frame = new JFrame();
-		frame.setBounds(100, 60, 800, 600);
+		frame.setBounds(100, 60, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -131,15 +185,17 @@ public class TestPartie implements Observer {
         //Un icone par joueur
         
         JPanel panelJoueurs = new JPanel();
-        panelJoueurs.setBounds(0, 475, 700, 85);
+        panelJoueurs.setBounds(0, 475, 1000, 85);
         panelJoueurs.setLayout(null);
         int position=100;
         // pour chaques trophés :
         for (int i=0; i<this.partie.getParticipants().size(); i++){
             Joueur j  = this.partie.getParticipants().get(i);
 
+            System.out.println("DEBUG : icones\n joueur :"+j.getNom());
+
             JPanel panelUnJoueur = new JPanel();
-            panelUnJoueur.setBounds(position+(180*i), 0, 55, 80);
+            panelUnJoueur.setBounds(position+(225*i), 0, 55, 80);
 
             BufferedImage imgJ = ImageIO.read(new File("Test_joueur.png"));
             JLabel picJ = new JLabel(new ImageIcon(imgJ));

@@ -96,13 +96,13 @@ public class MenuPrincipal implements Observer {
 					//MenuPrincipal window = new MenuPrincipal();
 					Menu m = new Menu();
 					m.setJeuSelectionne(0);
-					//m.setNbJoueursSelectionne(4);
-					m.setNbJoueursSelectionne(3);
+					m.setNbJoueursSelectionne(4);
+					//m.setNbJoueursSelectionne(3);
 					m.validerPageCreerPartie();
 					m.validerUnJoueur("Reel", "Nina",0);
 					m.validerUnJoueur("Reel", "Em",0);
 					m.validerUnJoueur("Virtu", "Robo",1);
-					//m.validerUnJoueur("Virtu", "Robo2",0);
+					m.validerUnJoueur("Virtu", "Robo2",0);
 					System.out.println("\n SETTINGS :\n"+m.getPartieEnCours()+"\n\n");
 					TestPartie window = new TestPartie(m.getPartieEnCours());
 					window.getFrame().setVisible(true);

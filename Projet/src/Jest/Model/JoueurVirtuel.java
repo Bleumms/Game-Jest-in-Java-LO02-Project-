@@ -32,10 +32,6 @@ public class JoueurVirtuel extends Joueur {
 
 	public void attendreUneOffre(){
 		this.faireUneOffre();
-		this.etat=EtatJoueur.OffreFaite;
-		this.setChanged();
-		this.notifyObservers("offre faite");
-		System.out.println("DEBUG : joueur : "+getNom()+" offre faite");
 	}
 
 	/* 
