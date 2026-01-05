@@ -1,6 +1,7 @@
 package Jest.Vue;
 
 import Jest.Controler.PartieControler;
+import Jest.Controler.ChoisiCarteControler;
 import  Jest.Model.Partie;
 import  Jest.Model.Carte;
 import Jest.Model.EtatJoueur;
@@ -81,7 +82,7 @@ public class TestPartie implements Observer {
         // si le choix est en attente - > donc on laisse l'utilisateur choisir la carte qu'il veux
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteChoix){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" attend son choix ");
-            
+            this.choisirUneCarte(((Joueur)instanceObservable));
         }
     }
 
@@ -108,6 +109,34 @@ public class TestPartie implements Observer {
             e.printStackTrace();
         }
         new PartieControler(this.partie,this.jouer);
+    }
+
+    private void choisirUneCarte(Joueur j){
+        List<Joueur> joueursDispo = this.partie.getPasEncoreDeCartePrise();
+        boolean etaitDansLaListe=false;
+        if(joueursDispo.contains(j)){
+            joueursDispo.remove(j);
+            etaitDansLaListe=true;
+        }
+        // partie visuel
+        for (Joueur jDispo : joueursDispo){
+            System.out.println("DEBUG : joueur "+jDispo.getID()+" est dispo");
+            ButtonGroup offreDuJoueur = this.toutesLesOffres.get(jDispo.getID());
+            Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
+            while (buttons.hasMoreElements()) {
+                AbstractButton btn = buttons.nextElement();
+                btn.setBorderPainted(true);
+                btn.setBorder(new LineBorder(Color.GREEN, 5));
+            }
+        }
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();   
+
+        new ChoisiCarteControler(j,joueursDispo,this.toutesLesOffres);
+
+        if (etaitDansLaListe==true){
+            joueursDispo.add(j.getID(),j);
+        }
     }
 
     private void pauseAvantAjoutCollection( Joueur j ){
@@ -177,7 +206,15 @@ public class TestPartie implements Observer {
     }
 
     private void afficheProchainJoueur() throws IOException{
-        System.out.println("DEBUG : étape 6");
+        // remettre les cartes sans bordures 
+        for (ButtonGroup b : toutesLesOffres){
+            Enumeration<AbstractButton> buttons = b.getElements();
+            while (buttons.hasMoreElements()) {
+                AbstractButton btn = buttons.nextElement();
+                btn.setBorderPainted(false);
+            }
+        }
+
         //qui joue ?
         Joueur j = this.partie.getfaisSonChoix();
 

@@ -27,14 +27,12 @@ public class JoueurPhysique extends Joueur{
 		this.etat=EtatJoueur.AttenteOffre;
 		this.setChanged();
 		this.notifyObservers("en attente d'une offre");
-		System.out.println("DEBUG : joueur : "+getNom()+" offre en attente");
 	}
 
 	public void attendreUnChoix(List<Joueur> joueurs){
 		this.etat=EtatJoueur.AttenteChoix;
 		this.setChanged();
 		this.notifyObservers("en attente d'un choix");
-		System.out.println("DEBUG : joueur : "+getNom()+" choix en attente");
 	}
 
 	/* 
