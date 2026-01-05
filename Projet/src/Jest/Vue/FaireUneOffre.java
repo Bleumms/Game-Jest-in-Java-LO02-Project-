@@ -30,7 +30,7 @@ public class FaireUneOffre implements Observer {
 
     public void update(Observable instanceObservable, Object arg1){
          if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
-            System.out.println("DEBUG : UPDATE JOUEUR : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
+            //System.out.println("DEBUG : UPDATE JOUEUR : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
             frame.dispose();
         }
     }

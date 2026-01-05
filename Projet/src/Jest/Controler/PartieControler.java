@@ -21,7 +21,7 @@ public class PartieControler {
     private void initJouer(){
 		this.jouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("DEBUG : Bouton jouer activé");
+				//System.out.println("DEBUG : Bouton jouer activé");
                 partie.distribuer();
                 partie.attendreUneOffre();
 			}

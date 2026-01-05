@@ -64,6 +64,7 @@ public class Partie extends Observable implements Serializable {
 	private int compteurOffreFaite;
 	private Joueur faisSonChoix;
 	private List<Joueur> pasEncoreJoue;
+	private List<Joueur> pasEncoreDeCartePrise;
 
 	/*
 	 * Constructeur de la partie
@@ -77,7 +78,6 @@ public class Partie extends Observable implements Serializable {
 		this.etat=EtatPartie.Initial;
 		this.faisSonChoix=null;
 		this.compteurOffreFaite=0;
-		this.pasEncoreJoue= new ArrayList<Joueur>();
 	}
 
 
@@ -87,11 +87,14 @@ public class Partie extends Observable implements Serializable {
 	*/
 	public void ajouterUnJoueur(Joueur j) {
 		this.participants.add(j);
-		this.pasEncoreJoue.add(j);
 	}
 
 	public List<Joueur> getParticipants() {
 		return this.participants;
+	}
+
+	public List<Joueur> getPasEncoreDeCartePrise(){
+		return this.pasEncoreDeCartePrise;
 	}
 
 	public List<Carte> getTrophes(){
@@ -106,11 +109,27 @@ public class Partie extends Observable implements Serializable {
 		return this.faisSonChoix;
 	}
 
+	public void aPrisUneCarte(Joueur jAJouer, Joueur jPersSaCarte, int numCarte){
+		pasEncoreJoue.remove(jAJouer);
+		pasEncoreDeCartePrise.remove(jPersSaCarte);
+		Carte c = jPersSaCarte.recupererCarte(numCarte);
+		jAJouer.ajouteASaCollection(c);
+		if (pasEncoreJoue.contains(jPersSaCarte)) {
+			this.faisSonChoix=jPersSaCarte;
+		} else {
+			this.faisSonChoix=null;
+		}
+
+	}
+
 	public void prochainJoueur(){
-		if (faisSonChoix==null) {
+		System.out.println("DEBUG : étape 7 ");
+		if (faisSonChoix==null && this.pasEncoreJoue.size()!=0) {
 			faisSonChoix = definirJoueurSuivant();
 		} 
-		System.out.println("DEBUG : C'est à "+ faisSonChoix.getNom()+" de jouer");
+		if (this.pasEncoreJoue.size()==0){
+			this.etat=EtatPartie.ChoixFinis;
+		}
 	}
 
 	public void ajouterCompteurOffreFaite(){
@@ -118,20 +137,22 @@ public class Partie extends Observable implements Serializable {
 		finDesOffres();
 	}
 
+	public void initialiserLeChoix(){
+		this.pasEncoreJoue= new ArrayList<Joueur>(this.participants);
+		this.pasEncoreDeCartePrise= new ArrayList<Joueur>(this.participants);
+		this.faisSonChoix=definirJoueurSuivant();
+	}
+
 	public void finDesOffres(){
-		System.out.println("DEBUG : compteur : "+this.compteurOffreFaite+" ; nb participants : "+this.participants.size());
+		//System.out.println("DEBUG : compteur : "+this.compteurOffreFaite+" ; nb participants : "+this.participants.size());
 		if (this.compteurOffreFaite==this.participants.size()){
+			System.out.println("DEBUG : étape 3 ");
 			this.etat=EtatPartie.OffreFinis;
-			prochainJoueur();
-			System.out.println("DEBUG : on passe au choix de carte");
+			this.initialiserLeChoix();
+			//System.out.println("DEBUG : on passe au choix de carte");
 			this.setChanged();
 			this.notifyObservers();
-			try{
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			this.faisSonChoix.attendreUnChoix(this.pasEncoreJoue);	
+			
 		}
 	}
 
@@ -379,7 +400,7 @@ public class Partie extends Observable implements Serializable {
 	 * @return Le joueur qui doit jouer
 	*/
 	public Joueur definirJoueurSuivant() {
-		System.out.println("DEBUG : this.pasEncoreJoue : "+this.pasEncoreJoue);
+		System.out.println("DEBUG : étape 4 ");
 		Carte CarteMax=this.pasEncoreJoue.get(0).getCarteVisible();
 		int indexJoueur = 0;
 		for (int i=1;i<this.pasEncoreJoue.size();i++) {

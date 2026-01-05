@@ -140,6 +140,7 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		this.carteVisible = this.cartesDistribuees.remove(i);
 		this.carteCachee = this.cartesDistribuees.remove(0);
 		this.etat=EtatJoueur.OffreFaite;
+		System.out.println("DEBUG : étape 1 ");
 		this.setChanged();
 		this.notifyObservers("offre faite");
 		System.out.println("DEBUG : joueur : "+getNom()+" offre faite");

@@ -27,7 +27,7 @@ public class JoueurControler {
 
 		this.Carte1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("DEBUG : Carte 1 choisie");
+				//System.out.println("DEBUG : Carte 1 choisie");
                 joueur.choisirCarteVisible(0);
                 partie.ajouterCompteurOffreFaite();
 			}
@@ -35,7 +35,7 @@ public class JoueurControler {
 
         this.Carte2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("DEBUG : Carte 2 choisie");
+				//System.out.println("DEBUG : Carte 2 choisie");
                 joueur.choisirCarteVisible(1);
                 partie.ajouterCompteurOffreFaite();
 			}
