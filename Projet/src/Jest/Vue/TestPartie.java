@@ -114,7 +114,7 @@ public class TestPartie implements Observer {
     private void choisirUneCarte(Joueur j){
         List<Joueur> joueursDispo = this.partie.getPasEncoreDeCartePrise();
         boolean etaitDansLaListe=false;
-        if(joueursDispo.contains(j)){
+        if(joueursDispo.size()>1 && joueursDispo.contains(j)){
             joueursDispo.remove(j);
             etaitDansLaListe=true;
         }
