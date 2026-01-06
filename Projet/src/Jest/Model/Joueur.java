@@ -70,6 +70,13 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		this.cartesDistribuees.add(c);
 	}
 
+	public void choixFait(){
+		System.out.println("DEBUG : choix validé ");
+		this.etat=EtatJoueur.ChoixFait;
+		this.setChanged();
+		this.notifyObservers("offre faite");
+	}
+	
 	/* 
 	 * Récupère les cartes visibles et cachées à la fin de la partie.
 	 * Ajoute ces cartes à la collection du joueur.
@@ -285,6 +292,14 @@ public class Joueur extends Observable implements Visitable, Serializable{
 	*/
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public void setChoix(int idJoueur, int indexCarte){
+		System.out.println("DEBUG : choix intégré ");
+		List<Integer> c = new ArrayList<Integer>();
+		c.add(idJoueur);
+		c.add(indexCarte);
+		this.choix=c;
 	}
 
 }

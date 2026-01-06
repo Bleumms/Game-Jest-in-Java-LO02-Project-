@@ -1,5 +1,6 @@
 package Jest.Controler;
 import Jest.Model.Joueur;
+import Jest.Model.Partie;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
@@ -8,13 +9,15 @@ import java.util.List;
 import javax.swing.*;
 
 public class ChoisiCarteControler {
+    private Partie partie;
     private Joueur j;
     private List<Joueur> jDispos;
     private List<ButtonGroup> toutesLesOffres;
     private boolean actif;
 
 
-    public ChoisiCarteControler(Joueur j, List<Joueur> jDispos, List<ButtonGroup> toutesLesOffres){
+    public ChoisiCarteControler(Partie partie, Joueur j, List<Joueur> jDispos, List<ButtonGroup> toutesLesOffres){
+        this.partie=partie;
         this.j=j;
         this.jDispos=jDispos;
         this.toutesLesOffres=toutesLesOffres;
@@ -27,14 +30,19 @@ public class ChoisiCarteControler {
         if (actif){
             for (Joueur jD : this.jDispos){
                 Enumeration<AbstractButton> buttons = this.toutesLesOffres.get(jD.getID()).getElements();
-
                 while (buttons.hasMoreElements()) {
                     AbstractButton btn = buttons.nextElement();
-
                     btn.addActionListener(e -> {
                         if (!actif) return;
-                        System.out.println("DEBUG : Bouton carte choisie");
-                        //menu.setNbJoueursSelectionne(index);
+                        System.out.println("DEBUG : Bouton carte choisie ");
+                        AbstractButton source = (AbstractButton) e.getSource();
+                        String regex = "[;]";
+                        String[] arrayContenuBouton = source.getActionCommand().split(regex);
+                        int idJoueur = Integer.parseInt(arrayContenuBouton[0]);
+                        int indexCarte = Integer.parseInt(arrayContenuBouton[1]);
+                        System.out.println("DEBUG : joueur id : "+idJoueur+" index carte : "+indexCarte);
+                        this.j.setChoix(idJoueur,indexCarte);
+                        j.choixFait();
                         actif=false;
                     });
                 }

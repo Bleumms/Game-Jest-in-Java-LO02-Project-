@@ -132,7 +132,7 @@ public class TestPartie implements Observer {
         frame.getContentPane().revalidate();
         frame.getContentPane().repaint();   
 
-        new ChoisiCarteControler(j,joueursDispo,this.toutesLesOffres);
+        new ChoisiCarteControler(this.partie,j,joueursDispo,this.toutesLesOffres);
 
         if (etaitDansLaListe==true){
             joueursDispo.add(j.getID(),j);
@@ -157,11 +157,10 @@ public class TestPartie implements Observer {
     private void ajouterASaCollection(Joueur j) throws IOException{
         List<Integer> choix = j.getChoix();
         List<Joueur> joueurs = this.partie.getPasEncoreDeCartePrise();
-        Joueur jDontLaCarteEstPrise = joueurs.get(choix.get(0));
         System.out.println("DEBUG : ajout a la collection");
 
         // partie visuel
-        ButtonGroup offreDuJoueur = this.toutesLesOffres.get(jDontLaCarteEstPrise.getID());
+        ButtonGroup offreDuJoueur = this.toutesLesOffres.get(choix.get(0));
         Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
         AbstractButton btn;
         btn = buttons.nextElement();
@@ -173,7 +172,7 @@ public class TestPartie implements Observer {
         }
 
         // partie model
-        this.partie.aPrisUneCarte(j, jDontLaCarteEstPrise, choix.get(1));
+        this.partie.aPrisUneCarte(j, this.partie.getParticipants().get(choix.get(0)), choix.get(1));
         System.out.println("DEBUG : j : "+j.getCollection());
 
         // ensuite affiche le prochain joueur
@@ -275,6 +274,7 @@ public class TestPartie implements Observer {
         //carte visible
         BufferedImage imgV = ImageIO.read(new File("Test_carte.png"));
         JButton btnCarteVisible = new JButton(new ImageIcon(imgV));
+        btnCarteVisible.setActionCommand(String.valueOf(numeroJ)+";"+String.valueOf(0));
         btnCarteVisible.setBounds(positionCentre-105, 320, 105, 155);
         btnCarteVisible.setLayout(new BorderLayout());
 
@@ -294,6 +294,7 @@ public class TestPartie implements Observer {
         //carte cachée
         BufferedImage imgC = ImageIO.read(new File("Test_carte_dos.png"));
         JButton btnCarteCachee = new JButton(new ImageIcon(imgC));
+        btnCarteCachee.setActionCommand(String.valueOf(numeroJ)+";"+String.valueOf(1));
         btnCarteCachee.setBounds(positionCentre, 320, 105, 155);
         btnCarteCachee.setLayout(new BorderLayout());
 

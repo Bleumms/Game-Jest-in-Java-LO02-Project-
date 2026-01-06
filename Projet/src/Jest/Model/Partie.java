@@ -110,6 +110,7 @@ public class Partie extends Observable implements Serializable {
 	}
 
 	public void aPrisUneCarte(Joueur jAJouer, Joueur jPersSaCarte, int numCarte){
+		System.out.println("DEBUG : "+jAJouer.getNom()+" a pris la carte "+numCarte+" de "+jPersSaCarte.getNom());
 		pasEncoreJoue.remove(jAJouer);
 		pasEncoreDeCartePrise.remove(jPersSaCarte);
 		Carte c = jPersSaCarte.recupererCarte(numCarte);
