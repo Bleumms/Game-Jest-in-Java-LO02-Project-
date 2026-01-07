@@ -183,10 +183,9 @@ public class Partie extends Observable implements Serializable {
 		}
 		for (Joueur j : this.participants){
 			if (j.getEtat()==EtatJoueur.OffreFaite){
-				compteurOffreFaite++;
+				ajouterCompteurOffreFaite();
 			}
 		}
-		finDesOffres();
 	}
 	
 	/*
@@ -466,7 +465,7 @@ public class Partie extends Observable implements Serializable {
 	 * Termine la partie en affichant les scores finaux et le gagnant
 	 * Supprime la sauvegarde de la partie
 	*/
-	public void finDePartie(){
+	public void finDePartie(){ 
 		System.out.println("\n\nFin de partie : ");
 		
 		// Attribuer les trophés

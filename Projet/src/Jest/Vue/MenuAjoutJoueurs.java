@@ -47,7 +47,6 @@ public class MenuAjoutJoueurs implements Observer {
 	}
 
     private void ajoutMessageErreur(){
-        System.out.println("DEBUG : Mal saisi ");
 		JLabel label3 = new JLabel("Attention, les informations sont mal remplis !");
         JLabel label4 = new JLabel("(Pensez a faire Entrer pour contabiliser la saisie)");
 		label3.setBounds(50, 170, 350,20);
@@ -66,7 +65,7 @@ public class MenuAjoutJoueurs implements Observer {
         for (Component c : components) {
             if (c instanceof JPanel) {
                 compteur ++;
-                if (compteur<=2){    // ça compte a partir du bas jsp pq, j'ai vu en testant
+                if (compteur<=2){    // ça compte a partir du bas parce qu'on parcours les panels
                     frame.getContentPane().remove(c); // supprime les boutons radios sauf ceux pour le type
                 }
             }
