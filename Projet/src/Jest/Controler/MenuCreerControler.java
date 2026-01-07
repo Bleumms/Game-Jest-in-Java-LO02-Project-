@@ -37,7 +37,6 @@ public class MenuCreerControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 int index = Integer.parseInt(source.getActionCommand());
-                System.out.println("DEBUG : Radio bouton sélectionné index = " + index);
                 menu.setJeuSelectionne(index);
             });
         }
@@ -52,7 +51,6 @@ public class MenuCreerControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 int index = Integer.parseInt(source.getActionCommand());
-                System.out.println("DEBUG : Bouton sélectionné " + index+" joueurs");
                 menu.setNbJoueursSelectionne(index);
             });
         }
@@ -61,7 +59,6 @@ public class MenuCreerControler {
 	private void initValider(){
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("DEBUG : Bouton validé activé");
 				menu.validerPageCreerPartie();
 			}
 		});

@@ -77,7 +77,6 @@ public class Partie extends Observable implements Serializable {
 		this.ID = -1;
 		this.etat=EtatPartie.Initial;
 		this.faisSonChoix=null;
-		this.compteurOffreFaite=0;
 	}
 
 
@@ -93,6 +92,10 @@ public class Partie extends Observable implements Serializable {
 		return this.participants;
 	}
 
+	public List<Carte> getPioche(){
+		return this.pioche;
+	}
+	
 	public List<Joueur> getPasEncoreDeCartePrise(){
 		return this.pasEncoreDeCartePrise;
 	}
@@ -124,12 +127,32 @@ public class Partie extends Observable implements Serializable {
 	}
 
 	public void prochainJoueur(){
-		System.out.println("DEBUG : étape 7 ");
 		if (faisSonChoix==null && this.pasEncoreJoue.size()!=0) {
 			faisSonChoix = definirJoueurSuivant();
 		} 
 		if (this.pasEncoreJoue.size()==0){
 			this.etat=EtatPartie.ChoixFinis;
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	public boolean isFinDePartie(){
+		boolean plusRienADistribuer = this.pioche.size()<this.participants.size();
+		return plusRienADistribuer;
+	}
+
+	public void remettreDansPioche(){
+		List<Carte> recup = new ArrayList<Carte>();
+		for (Joueur j : this.participants) {
+			recup.add(j.remiseALaPioche());
+		}
+		this.remiseALaPioche(recup);
+	}
+
+	public void garderDerniereCarte(){
+		for (Joueur j : this.participants) {
+			j.recupFinDePartie();
 		}
 	}
 
@@ -145,12 +168,9 @@ public class Partie extends Observable implements Serializable {
 	}
 
 	public void finDesOffres(){
-		//System.out.println("DEBUG : compteur : "+this.compteurOffreFaite+" ; nb participants : "+this.participants.size());
 		if (this.compteurOffreFaite==this.participants.size()){
-			System.out.println("DEBUG : étape 3 ");
 			this.etat=EtatPartie.OffreFinis;
 			this.initialiserLeChoix();
-			//System.out.println("DEBUG : on passe au choix de carte");
 			this.setChanged();
 			this.notifyObservers();
 			
@@ -203,16 +223,18 @@ public class Partie extends Observable implements Serializable {
 	 * On enlève à chaque fois les cartes distribuées de la pioche, pour ne pas les redonner
 	*/
 	public void distribuer() {
-		if (this.pioche.size() >= 2*this.participants.size()) {
-			for (int i = 0; i < participants.size(); i++) {
-				Joueur j = participants.get(i);
-				j.assignerCarteDistribuees(pioche.remove(0));
-			}
-			for (int i = 0; i < participants.size(); i++) {
-				Joueur j = participants.get(i);
-				j.assignerCarteDistribuees(pioche.remove(0));
-			}
-		} 
+		//if (this.pioche.size() >= 2*this.participants.size()) { A FAIRE : PLUTOT CREER UNE EXCEPTION
+		for (int i = 0; i < participants.size(); i++) {
+			Joueur j = participants.get(i);
+			j.assignerCarteDistribuees(pioche.remove(0));
+			// j'en profite pour mettre les etats a l'inital
+			j.setEtat(EtatJoueur.Initial);
+		}
+		for (int i = 0; i < participants.size(); i++) {
+			Joueur j = participants.get(i);
+			j.assignerCarteDistribuees(pioche.remove(0));
+		}
+		this.compteurOffreFaite=0;
 		this.etat=EtatPartie.Distribué;
 		this.setChanged();
 		this.notifyObservers();
@@ -401,7 +423,6 @@ public class Partie extends Observable implements Serializable {
 	 * @return Le joueur qui doit jouer
 	*/
 	public Joueur definirJoueurSuivant() {
-		System.out.println("DEBUG : étape 4 ");
 		Carte CarteMax=this.pasEncoreJoue.get(0).getCarteVisible();
 		int indexJoueur = 0;
 		for (int i=1;i<this.pasEncoreJoue.size();i++) {
