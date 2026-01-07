@@ -34,13 +34,11 @@ public class ChoisiCarteControler {
                     AbstractButton btn = buttons.nextElement();
                     btn.addActionListener(e -> {
                         if (!actif) return;
-                        System.out.println("DEBUG : Bouton carte choisie ");
                         AbstractButton source = (AbstractButton) e.getSource();
                         String regex = "[;]";
                         String[] arrayContenuBouton = source.getActionCommand().split(regex);
                         int idJoueur = Integer.parseInt(arrayContenuBouton[0]);
                         int indexCarte = Integer.parseInt(arrayContenuBouton[1]);
-                        System.out.println("DEBUG : joueur id : "+idJoueur+" index carte : "+indexCarte);
                         this.j.setChoix(idJoueur,indexCarte);
                         j.choixFait();
                         actif=false;

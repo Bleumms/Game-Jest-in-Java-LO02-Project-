@@ -1,6 +1,8 @@
 package Jest.Controler;
 
 import Jest.Model.Partie;
+import Jest.Vue.AffichageTour;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,8 +23,9 @@ public class PartieControler {
     private void initJouer(){
 		this.jouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//System.out.println("DEBUG : Bouton jouer activé");
                 partie.distribuer();
+                AffichageTour window2 = new AffichageTour(1);
+			    window2.getFrame().setVisible(true);
                 partie.attendreUneOffre();
 			}
 		});

@@ -48,9 +48,7 @@ public class MenuJoueursControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 int index = Integer.parseInt(source.getActionCommand());
-                System.out.println("DEBUG : Radio bouton sélectionné index = " + index);
                 this.strategieSelectionne = index;
-                System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
             });
         }
     }
@@ -64,9 +62,7 @@ public class MenuJoueursControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 String type = source.getActionCommand();
-                System.out.println("DEBUG : Bouton sélectionné joueurs " + type);
                 this.typeJoueur = type;
-                System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
             });
         }
     }
@@ -74,17 +70,13 @@ public class MenuJoueursControler {
     private void intiZoneDeTexte(){
         zoneTexte.addActionListener(e -> {
             String contenu = zoneTexte.getText();
-            System.out.println("DEBUG : Zone texte entrée validée : " + contenu);
             this.nom = contenu;
-            System.out.println("DEBUG :  type : " + this.typeJoueur+" ; nom : "+this.nom+" ; strat : "+this.strategieSelectionne);
         });
     }
 
 	private void initValider(){
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("DEBUG : Bouton validé activé");
-                System.out.println("DEBUG :  type : " + typeJoueur+" ; nom : "+nom+" ; strat : "+strategieSelectionne);
                 Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
                 while (buttons.hasMoreElements()) {
                     AbstractButton btn = buttons.nextElement();

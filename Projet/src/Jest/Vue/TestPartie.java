@@ -7,6 +7,8 @@ import  Jest.Model.Carte;
 import Jest.Model.EtatJoueur;
 import Jest.Model.EtatPartie;
 import Jest.Model.Joueur;
+import Jest.Model.JoueurPhysique;
+import Jest.Model.JoueurVirtuel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -33,6 +35,7 @@ public class TestPartie implements Observer {
     private ButtonGroup boutonsFaireMonOffre;
     private List<Integer> possedeUnBouton;
     private JPanel flecheProchainJoueurQuiJoue;
+    private int numTour;
 
     public void update(Observable instanceObservable, Object arg1){
         //on l'enlève dès la première intéraction
@@ -40,14 +43,14 @@ public class TestPartie implements Observer {
 
         // lorsqu'on attend une offre -> donc on propose a l'utilisateur de faire son offre
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteOffre){
-            //System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre en attente");
+            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a son offre en attente");
             this.ajouterBoutonOffre((Joueur)instanceObservable);
         }
 
 
         // lorsqu'on a obtenu l'offre de l'utilisateur -> la rendre visible
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
-            //System.out.println("DEBUG : UPDATE : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite ");
+            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" présente la carte "+((Joueur)instanceObservable).getCarteVisible().getNom()+ " et cache "+((Joueur)instanceObservable).getCarteCachee().getNom());
             // si il y avait un bouton on l'enlève
             if (this.possedeUnBouton.contains(((Joueur)instanceObservable).getID())){
                 this.supprimerBoutonJoueur(((Joueur)instanceObservable).getID());
@@ -65,7 +68,6 @@ public class TestPartie implements Observer {
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.OffreFinis){
             System.out.println("DEBUG : UPDATE : on passe au choix de carte");
             // affiche qui joue
-            System.out.println("DEBUG : étape 5 ");
             try{
                 this.initialiserAfficheProchainJoueur();
             } catch (IOException e ){
@@ -73,16 +75,48 @@ public class TestPartie implements Observer {
             }
         }
 
-        // si le choix a été fait 
-        if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
+
+        // si le choix a été fait (par un utilisateur)
+        if (instanceObservable instanceof JoueurPhysique && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());
-            this.pauseAvantAjoutCollection((Joueur)instanceObservable);
+            try{
+                this.ajouterASaCollection((Joueur)instanceObservable);
+            } catch (IOException e ){
+                e.printStackTrace();
+            }
         }
+
+        // si le choix a été fait (par un joueur virtuel) -> on rajoute un délais sinon on y comprend plus rien
+        if (instanceObservable instanceof JoueurVirtuel && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
+            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());    
+            this.pauseAvantAjouterCollection((Joueur)instanceObservable);
+        }
+
 
         // si le choix est en attente - > donc on laisse l'utilisateur choisir la carte qu'il veux
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteChoix){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" attend son choix ");
             this.choisirUneCarte(((Joueur)instanceObservable));
+        }
+
+
+        // si touts les choix ont été fais
+        if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.ChoixFinis){
+            System.out.println("DEBUG : UPDATE : le choix est finis");
+            this.enleverLaFleche();
+            this.remiseALaPioche();
+            if(this.partie.isFinDePartie()==false){
+                this.partie.remettreDansPioche();
+                this.numTour++;
+                partie.distribuer();
+                AffichageTour window2 = new AffichageTour(numTour);
+			    window2.getFrame().setVisible(true);
+                this.reinitialiser();
+                partie.attendreUneOffre();
+            } else {
+                this.partie.garderDerniereCarte();
+                //Finir la partie !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
         }
     }
 
@@ -95,13 +129,14 @@ public class TestPartie implements Observer {
         this.toutesLesOffres = new ArrayList<ButtonGroup>();
         this.possedeUnBouton = new ArrayList<Integer>();
         this.flecheProchainJoueurQuiJoue = new JPanel();
+        this.numTour=1;
         this.partie = p;
 		this.partie.addObserver(this);
-        for (int i =0 ; i<this.partie.getParticipants().size(); i++){ 
-            this.toutesLesOffres.add(null);
-        }
         for (Joueur j : this.partie.getParticipants()){
             j.addObserver(this);
+        }
+        for (int i =0 ; i<this.partie.getParticipants().size(); i++){ 
+            this.toutesLesOffres.add(null);
         }
         try {
 		    interfaceTableDeJeu();
@@ -109,6 +144,27 @@ public class TestPartie implements Observer {
             e.printStackTrace();
         }
         new PartieControler(this.partie,this.jouer);
+    }
+
+    private void reinitialiser(){
+        this.boutonsFaireMonOffre=new ButtonGroup();
+        this.toutesLesOffres.clear();
+        this.possedeUnBouton.clear();
+        for (int i =0 ; i<this.partie.getParticipants().size(); i++){ 
+            this.toutesLesOffres.add(null);
+        }
+    }
+
+    private void remiseALaPioche(){
+        // Visuelement 
+        for (ButtonGroup b: this.toutesLesOffres){
+            Enumeration<AbstractButton> buttons = b.getElements();
+            while (buttons.hasMoreElements()) {
+                AbstractButton btn = buttons.nextElement();
+                btn.setVisible(false);
+            }
+        }
+        // Dans le code
     }
 
     private void choisirUneCarte(Joueur j){
@@ -120,7 +176,6 @@ public class TestPartie implements Observer {
         }
         // partie visuel
         for (Joueur jDispo : joueursDispo){
-            System.out.println("DEBUG : joueur "+jDispo.getID()+" est dispo");
             ButtonGroup offreDuJoueur = this.toutesLesOffres.get(jDispo.getID());
             Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
             while (buttons.hasMoreElements()) {
@@ -139,12 +194,29 @@ public class TestPartie implements Observer {
         }
     }
 
-    private void pauseAvantAjoutCollection( Joueur j ){
+    private void pauseAvantProhainJoueur( ){
         // Pause VISUELLE de 1 seconde, pour qu'on voit ce qu'il se passe avec les joueurs virtuels
-        System.out.println("DEBUG : je fais ma pause");
         Timer timer = new Timer(1000, e -> {
             try {
-                ajouterASaCollection(j);
+                this.partie.prochainJoueur();
+                // attention cas où il a pas de prochain
+                if ( this.partie.getEtat()!=EtatPartie.ChoixFinis){
+                    this.afficheProchainJoueur();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        timer.setRepeats(false);
+        timer.start(); 
+    }
+
+    private void pauseAvantAjouterCollection(Joueur j){
+        // Pause VISUELLE de 1 seconde, pour qu'on voit ce qu'il se passe avec les joueurs virtuels
+        Timer timer = new Timer(1000, e -> {
+            try {
+                this.ajouterASaCollection(j);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -156,8 +228,6 @@ public class TestPartie implements Observer {
 
     private void ajouterASaCollection(Joueur j) throws IOException{
         List<Integer> choix = j.getChoix();
-        List<Joueur> joueurs = this.partie.getPasEncoreDeCartePrise();
-        System.out.println("DEBUG : ajout a la collection");
 
         // partie visuel
         ButtonGroup offreDuJoueur = this.toutesLesOffres.get(choix.get(0));
@@ -173,14 +243,9 @@ public class TestPartie implements Observer {
 
         // partie model
         this.partie.aPrisUneCarte(j, this.partie.getParticipants().get(choix.get(0)), choix.get(1));
-        System.out.println("DEBUG : j : "+j.getCollection());
 
-        // ensuite affiche le prochain joueur
-        this.partie.prochainJoueur();
-        // attention cas où il a pas de prochain
-        if ( this.partie.getEtat()!=EtatPartie.ChoixFinis){
-            this.afficheProchainJoueur();
-        }
+        // ensuite affiche le prochain joueur (avec un délais d'abord)
+        pauseAvantProhainJoueur();
     }
 
     private void initialiserAfficheProchainJoueur() throws IOException{
@@ -193,6 +258,7 @@ public class TestPartie implements Observer {
 
         // Fleche pour savoir qui joue
         flecheProchainJoueurQuiJoue.setBounds(positionCentre-25, 250, 55, 55);
+        flecheProchainJoueurQuiJoue.setVisible(true);
         BufferedImage img = ImageIO.read(new File("Test_fleche.png"));
         JLabel pic = new JLabel(new ImageIcon(img));
         flecheProchainJoueurQuiJoue.add(pic);
@@ -220,15 +286,19 @@ public class TestPartie implements Observer {
         // position
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
-        //System.out.println("DEBUG : id : "+numeroJ+" ; position : "+positionCentre);
 
         // Fleche pour savoir qui joue
         this.flecheProchainJoueurQuiJoue.setBounds(positionCentre-25, 250, 55, 55);
         frame.getContentPane().revalidate();
         frame.getContentPane().repaint();    
         
-		System.out.println("DEBUG : C'est à "+ j.getNom()+" de jouer");
 		j.attendreUnChoix(this.partie.getPasEncoreDeCartePrise());	
+    }
+
+    private void enleverLaFleche(){
+        this.flecheProchainJoueurQuiJoue.setVisible(false);
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();   
     }
 
     private void supprimerBoutonJouer(){
@@ -362,8 +432,6 @@ public class TestPartie implements Observer {
         // pour chaques trophés :
         for (int i=0; i<this.partie.getParticipants().size(); i++){
             Joueur j  = this.partie.getParticipants().get(i);
-
-            //System.out.println("DEBUG : icones\n joueur :"+j.getNom());
 
             JPanel panelUnJoueur = new JPanel();
             panelUnJoueur.setBounds(position+(225*i), 0, 55, 80);

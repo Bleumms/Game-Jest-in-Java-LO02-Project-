@@ -71,10 +71,9 @@ public class Joueur extends Observable implements Visitable, Serializable{
 	}
 
 	public void choixFait(){
-		System.out.println("DEBUG : choix validé ");
 		this.etat=EtatJoueur.ChoixFait;
 		this.setChanged();
-		this.notifyObservers("offre faite");
+		this.notifyObservers("choix faite");
 	}
 	
 	/* 
@@ -147,10 +146,8 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		this.carteVisible = this.cartesDistribuees.remove(i);
 		this.carteCachee = this.cartesDistribuees.remove(0);
 		this.etat=EtatJoueur.OffreFaite;
-		System.out.println("DEBUG : étape 1 ");
 		this.setChanged();
 		this.notifyObservers("offre faite");
-		System.out.println("DEBUG : joueur : "+getNom()+" offre faite");
 	}
 
 	/* 
@@ -295,11 +292,14 @@ public class Joueur extends Observable implements Visitable, Serializable{
 	}
 
 	public void setChoix(int idJoueur, int indexCarte){
-		System.out.println("DEBUG : choix intégré ");
 		List<Integer> c = new ArrayList<Integer>();
 		c.add(idJoueur);
 		c.add(indexCarte);
 		this.choix=c;
+	}
+
+	public void setEtat(EtatJoueur ej){
+		this.etat=ej;
 	}
 
 }
