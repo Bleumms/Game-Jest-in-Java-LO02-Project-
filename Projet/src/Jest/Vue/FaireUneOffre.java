@@ -64,7 +64,7 @@ public class FaireUneOffre implements Observer {
 
         List<Carte> cartes = this.joueur.getCartesDistribuees();
         //carte 1
-        BufferedImage img1 = ImageIO.read(new File("Test_carte.png"));
+        BufferedImage img1 = ImageIO.read(new File("Carte.png"));
         btnCarte1 = new JButton(new ImageIcon(img1));
         btnCarte1.setBounds(90, 75, 100, 150);
         btnCarte1.setLayout(new BorderLayout());
@@ -79,7 +79,7 @@ public class FaireUneOffre implements Observer {
         frame.getContentPane().add(btnCarte1);
 
         //carte 2
-        BufferedImage img2 = ImageIO.read(new File("Test_carte.png"));
+        BufferedImage img2 = ImageIO.read(new File("Carte.png"));
         btnCarte2 = new JButton(new ImageIcon(img2));
         btnCarte2.setBounds(210, 75, 100, 150);
         btnCarte2.setLayout(new BorderLayout());

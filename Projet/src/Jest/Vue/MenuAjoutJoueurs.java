@@ -19,12 +19,12 @@ public class MenuAjoutJoueurs implements Observer {
     private JTextField  zoneTexte;
     private ButtonGroup radiosBoutonsStrat;
     private ButtonGroup radiosBoutonsType;
-    private int compteNumeroJoueur;
+    private static int compteNumeroJoueur;
 
 
 
 	public void update(Observable instanceObservable, Object arg1){
-		// La validation n'a pas fonctionné POUR L'INSTANT MARCHE PAS DU TOUT
+		// La validation n'a pas fonctionné 
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueursAvecErreur){
             System.out.println("DEBUG : Mal saisi!");
             this.ajoutMessageErreur();

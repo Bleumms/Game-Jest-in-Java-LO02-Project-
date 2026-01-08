@@ -97,7 +97,8 @@ public class MenuPrincipal implements Observer {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//MenuPrincipal window = new MenuPrincipal();
+					MenuPrincipal window = new MenuPrincipal();
+					/*
 					Menu m = new Menu();
 					m.setJeuSelectionne(0);
 					m.setNbJoueursSelectionne(4);
@@ -109,7 +110,7 @@ public class MenuPrincipal implements Observer {
 					m.validerUnJoueur("Virtu", "Robo2",0);
 					System.out.println("\n SETTINGS :\n"+m.getPartieEnCours()+"\n\n");
 					TestPartie window = new TestPartie(m.getPartieEnCours());
-					window.getFrame().setVisible(true);
+					window.getFrame().setVisible(true);*/
 					
 				} catch (Exception e) {
 					e.printStackTrace();
