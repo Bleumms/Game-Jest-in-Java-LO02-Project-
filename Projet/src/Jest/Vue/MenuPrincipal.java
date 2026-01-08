@@ -2,9 +2,9 @@ package Jest.Vue;
 
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
-import  Jest.Model.Menu;
+import Jest.Model.Menu;
 import Jest.Model.EtatMenu;
-import  Jest.Model.Jeu;
+import Jest.Model.Jeu;
 
 import java.awt.*;
 import java.util.*;
