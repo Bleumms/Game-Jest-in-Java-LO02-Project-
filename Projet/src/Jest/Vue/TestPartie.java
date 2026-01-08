@@ -259,7 +259,7 @@ public class TestPartie implements Observer {
         // Fleche pour savoir qui joue
         flecheProchainJoueurQuiJoue.setBounds(positionCentre-25, 250, 55, 55);
         flecheProchainJoueurQuiJoue.setVisible(true);
-        BufferedImage img = ImageIO.read(new File("Test_fleche.png"));
+        BufferedImage img = ImageIO.read(new File("Fleche.png"));
         JLabel pic = new JLabel(new ImageIcon(img));
         flecheProchainJoueurQuiJoue.add(pic);
         frame.getContentPane().add(flecheProchainJoueurQuiJoue);
@@ -342,7 +342,7 @@ public class TestPartie implements Observer {
         // on click dessus tant qu'on est pas au choix
         ButtonGroup offre = new ButtonGroup();
         //carte visible
-        BufferedImage imgV = ImageIO.read(new File("Test_carte.png"));
+        BufferedImage imgV = ImageIO.read(new File("Carte.png"));
         JButton btnCarteVisible = new JButton(new ImageIcon(imgV));
         btnCarteVisible.setActionCommand(String.valueOf(numeroJ)+";"+String.valueOf(0));
         btnCarteVisible.setBounds(positionCentre-105, 320, 105, 155);
@@ -362,7 +362,7 @@ public class TestPartie implements Observer {
         content.setComponentZOrder(btnCarteVisible, 0); // devant
 
         //carte cachée
-        BufferedImage imgC = ImageIO.read(new File("Test_carte_dos.png"));
+        BufferedImage imgC = ImageIO.read(new File("Carte_dos.png"));
         JButton btnCarteCachee = new JButton(new ImageIcon(imgC));
         btnCarteCachee.setActionCommand(String.valueOf(numeroJ)+";"+String.valueOf(1));
         btnCarteCachee.setBounds(positionCentre, 320, 105, 155);
@@ -405,7 +405,7 @@ public class TestPartie implements Observer {
         panelTrophe.setBounds(250, 30, taille, 155);
         // pour chaques trophés :
         for (Carte c : this.partie.getTrophes()){
-            BufferedImage img = ImageIO.read(new File("Test_carte.png"));
+            BufferedImage img = ImageIO.read(new File("Carte.png"));
             JLabel pic = new JLabel(new ImageIcon(img));
             pic.setLayout(new BorderLayout());
             JLabel nom = new JLabel(c.getNom(), SwingConstants.CENTER);
@@ -417,7 +417,7 @@ public class TestPartie implements Observer {
         // Pioche
         JPanel panelPioche = new JPanel();
         panelPioche.setBounds(525, 30, 105, 155);
-        BufferedImage img = ImageIO.read(new File("Test_carte_dos.png"));
+        BufferedImage img = ImageIO.read(new File("Carte_dos.png"));
         JLabel pic = new JLabel(new ImageIcon(img));
         panelPioche.add(pic);
         frame.getContentPane().add(panelPioche);
@@ -436,7 +436,7 @@ public class TestPartie implements Observer {
             JPanel panelUnJoueur = new JPanel();
             panelUnJoueur.setBounds(position+(225*i), 0, 55, 80);
 
-            BufferedImage imgJ = ImageIO.read(new File("Test_joueur.png"));
+            BufferedImage imgJ = ImageIO.read(new File("Joueur.png"));
             JLabel picJ = new JLabel(new ImageIcon(imgJ));
 
             JLabel nom = new JLabel(j.getNom());
