@@ -49,6 +49,10 @@ public class MenuPrincipal implements Observer {
         
 	}
 
+	public JFrame getFrame(){
+		return this.frame;
+	}
+
 	private void interfaceLancementPremierMenu() {
 
 		//Creating the Frame

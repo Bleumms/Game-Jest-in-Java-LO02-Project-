@@ -65,6 +65,7 @@ public class Partie extends Observable implements Serializable {
 	private Joueur faisSonChoix;
 	private List<Joueur> pasEncoreJoue;
 	private List<Joueur> pasEncoreDeCartePrise;
+	private List<Joueur> gagnants;
 
 	/*
 	 * Constructeur de la partie
@@ -72,6 +73,7 @@ public class Partie extends Observable implements Serializable {
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
+		this.gagnants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
 		this.ID = -1;
@@ -106,6 +108,10 @@ public class Partie extends Observable implements Serializable {
 
 	public EtatPartie getEtat(){
 		return this.etat;
+	}
+
+	public List<Joueur> getGagnant(){
+		return this.gagnants;
 	}
 
 	public Joueur getfaisSonChoix(){
@@ -456,7 +462,6 @@ public class Partie extends Observable implements Serializable {
 			int indexJ = c.JoueurGagnantCarte(this.participants);
 			if (indexJ>=0){
 				this.participants.get(indexJ).ajouteASaCollection(c);
-				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ).getNom() + "\n("+c.getConditionVictoire()+")");
 			}
 		}
 	}
@@ -465,50 +470,29 @@ public class Partie extends Observable implements Serializable {
 	 * Termine la partie en affichant les scores finaux et le gagnant
 	 * Supprime la sauvegarde de la partie
 	*/
-	public void finDePartie(){ 
-		System.out.println("\n\nFin de partie : ");
-		
+	public void finDePartie(){ 		
 		// Attribuer les trophés
 		this.attribuerLesTrophes();
 
 		this.calculScore();
 
 		int maxscore = this.participants.get(0).getScore();
-		List<Joueur> jMaxScore= new ArrayList<Joueur>();
-		jMaxScore.add(this.participants.get(0));
-		System.out.println("\nJoueur 1 : "+this.participants.get(0).getNom()+"\n   Score : "+this.participants.get(0).getScore()+"\n    Cartes : "+this.participants.get(0).getCollection());
+		gagnants.add(this.participants.get(0));
 		for (int i=1; i < this.participants.size(); i++){
 			Joueur j = this.participants.get(i);
-			System.out.println("\nJoueur "+(i+1)+" : "+j.getNom()+"\n   Score : "+j.getScore()+"\n    Cartes : "+j.getCollection());
 			if (j.getScore() == maxscore){
-				jMaxScore.add(j);
+				gagnants.add(j);
 			}
 			if (j.getScore() > maxscore){
 				maxscore=j.getScore();
-				jMaxScore.clear();
-				jMaxScore.add(j);
+				gagnants.clear();
+				gagnants.add(j);
 			}
 		}
-		if (jMaxScore.size()==1){
-			System.out.println("\n\nLe gagnant de la partie est "+jMaxScore.get(0).getNom()+" avec un score de "+maxscore);
-		} else {
-			System.out.println("\n\nEgalité !");
-			System.out.print("Les joueurs ");
-			for(int i=0; i<jMaxScore.size();i++){
-				System.out.print(jMaxScore.get(i));
-				if (i<jMaxScore.size()-2){
-					System.out.print(", ");
-				} else {
-					if (i<jMaxScore.size()-1){
-						System.out.print(" et ");
-					}
-				}
-			}
-			System.out.println(" ont un score de "+maxscore);
-		}
-
+		// A FAIRE PLUS TARD
+		/*
 		// Supprimer des sauvegardes parce qu'on peux pas reprendre cette partie
-		Partie.supprimerPartie(this.ID);
+		Partie.supprimerPartie(this.ID); */
 
 	}
 
