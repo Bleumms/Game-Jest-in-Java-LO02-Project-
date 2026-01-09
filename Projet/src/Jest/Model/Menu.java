@@ -634,7 +634,7 @@ public class Menu extends Observable {
 		List<Carte> toutesCartes = creerToutesCartes();
 		List<Carte> cartesExtension = creerCartesExtension();
 		for (int i=0; i<cartesExtension.size(); i++){
-			toutesCartes.add(creerCarte(symb,num));
+			toutesCartes.add(cartesExtension.get(i));
 		}
 		toutesCartes.add(creerCarte(0,0));
 		return toutesCartes;
@@ -645,7 +645,7 @@ public class Menu extends Observable {
 		List<Carte> toutesCartes = creerMiniCartes();
 		List<Carte> cartesExtension = creerCartesExtension();
 		for (int i=0; i<cartesExtension.size(); i++){
-			toutesCartes.add(creerCarte(symb,num));
+			toutesCartes.add(cartesExtension.get(i));
 		}
 		toutesCartes.add(creerCarte(0,0));
 		return toutesCartes;
@@ -655,7 +655,7 @@ public class Menu extends Observable {
 		List<Carte> toutesCartes = creerEtenduCartes();
 		List<Carte> cartesExtension = creerCartesExtension();
 		for (int i=0; i<cartesExtension.size(); i++){
-			toutesCartes.add(creerCarte(symb,num));
+			toutesCartes.add(cartesExtension.get(i));
 		}
 		toutesCartes.add(creerCarte(0,0));
 		return toutesCartes;
