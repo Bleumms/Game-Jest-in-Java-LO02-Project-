@@ -35,7 +35,8 @@ public class MenuPrincipal implements Observer {
 		//  après le premier menu l'utilisateur a choisi de reprendre une par
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.ReprendrePartie){
 			frame.dispose();
-			// A FAIRE
+			ReprendrePartie window = new ReprendrePartie(menu);
+			window.getFrame().setVisible(true);
 		}
 	}
 
