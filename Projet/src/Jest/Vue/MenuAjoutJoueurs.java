@@ -19,7 +19,7 @@ public class MenuAjoutJoueurs implements Observer {
     private JTextField  zoneTexte;
     private ButtonGroup radiosBoutonsStrat;
     private ButtonGroup radiosBoutonsType;
-    private static int compteNumeroJoueur;
+    private int compteNumeroJoueur;
 
 
 
@@ -30,12 +30,13 @@ public class MenuAjoutJoueurs implements Observer {
             this.ajoutMessageErreur();
 		}
         // Un nouveau joueur a été ajouté et il faut en recréer un
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur){
-            System.out.println("DEBUG : Encore un joueur");
+		if (instanceObservable instanceof Menu && (((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur || ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueurEncore)){
+            System.out.println("DEBUG : Encore un joueur : "+(compteNumeroJoueur+1));
             enleverMessageErreur();
             frame.dispose();
             compteNumeroJoueur++;
             this.interfaceAjouteUnJoueur();
+            new MenuJoueursControler(this.menu, this.zoneTexte,  this.valider, this.radiosBoutonsStrat, this.radiosBoutonsType);
 		}
         // Tous les joueurs ont étés ajoutés
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.LancerPartie){

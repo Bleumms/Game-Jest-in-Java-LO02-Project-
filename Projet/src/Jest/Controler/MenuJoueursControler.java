@@ -48,6 +48,7 @@ public class MenuJoueursControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 int index = Integer.parseInt(source.getActionCommand());
+                System.out.println("DEBUG : CONTROLER : strat "+index);
                 this.strategieSelectionne = index;
             });
         }
@@ -62,6 +63,7 @@ public class MenuJoueursControler {
             btn.addActionListener(e -> {
                 AbstractButton source = (AbstractButton) e.getSource();
                 String type = source.getActionCommand();
+                System.out.println("DEBUG : CONTROLER : type "+type);
                 this.typeJoueur = type;
             });
         }
@@ -70,6 +72,7 @@ public class MenuJoueursControler {
     private void intiZoneDeTexte(){
         zoneTexte.addActionListener(e -> {
             String contenu = zoneTexte.getText();
+            System.out.println("DEBUG : CONTROLER : nom "+contenu);
             this.nom = contenu;
         });
     }
@@ -77,11 +80,7 @@ public class MenuJoueursControler {
 	private void initValider(){
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-                Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
-                while (buttons.hasMoreElements()) {
-                    AbstractButton btn = buttons.nextElement();
-                    System.out.println(btn);
-                }
+                System.out.println("DEBUG : CONTROLER : valider ");
 				menu.validerUnJoueur(typeJoueur, nom,  strategieSelectionne);
 			}
 		});

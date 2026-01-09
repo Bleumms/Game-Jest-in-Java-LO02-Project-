@@ -94,7 +94,12 @@ public class Menu extends Observable {
 				this.etat=EtatMenu.LancerPartie;
 				this.partieEnCours.initialiserLaPartie();
 			} else {
-				this.etat=EtatMenu.SelectionnerJoueur;
+				if (this.etat==EtatMenu.SelectionnerJoueur){
+					this.etat=EtatMenu.SelectionnerJoueurEncore;
+				} else {
+					this.etat=EtatMenu.SelectionnerJoueur;
+				}
+				
 			}
 		}
 		this.setChanged();
