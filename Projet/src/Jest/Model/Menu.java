@@ -626,7 +626,7 @@ public class Menu extends Observable {
 				cartesExtension.add(creerCarte(symb,num));
 			}
 		}
-		toutesCartes.add(creerCarte(0,0));
+		cartesExtension.add(creerCarte(0,0));
 		return cartesExtension;
 	}
 
