@@ -31,11 +31,15 @@ public class TestPartie implements Observer {
     private Partie partie;
 
     private JButton jouer;
+    private JPanel panelTrophe;
     private List<ButtonGroup> toutesLesOffres;
+    private List<JPanel> toutesLesCollections;
     private ButtonGroup boutonsFaireMonOffre;
     private List<Integer> possedeUnBouton;
     private JPanel flecheProchainJoueurQuiJoue;
+    private JPanel panelJoueurs;
     private int numTour;
+    private int numJoueurPresente;
 
     public void update(Observable instanceObservable, Object arg1){
         //on l'enlève dès la première intéraction
@@ -66,7 +70,7 @@ public class TestPartie implements Observer {
 
         // si toutes les offres ont été faites
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.OffreFinis){
-            System.out.println("DEBUG : UPDATE : on passe au choix de carte");
+            System.out.println("DEBUG : UPDATE : on passe au choix de carte; Panels : "+this.toutesLesCollections);
             // affiche qui joue
             try{
                 this.initialiserAfficheProchainJoueur();
@@ -102,9 +106,11 @@ public class TestPartie implements Observer {
 
         // si touts les choix ont été fais
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.ChoixFinis){
-            System.out.println("DEBUG : UPDATE : le choix est finis");
+            System.out.println("DEBUG : UPDATE : le choix est finis ; Panels : "+this.toutesLesCollections);
             this.enleverLaFleche();
             this.remiseALaPioche();
+            this.partie.calculScore();
+            // A FAIRE : GERER LES SAUVEGARDES
             if(this.partie.isFinDePartie()==false){
                 this.partie.remettreDansPioche();
                 this.numTour++;
@@ -115,18 +121,27 @@ public class TestPartie implements Observer {
                 partie.attendreUneOffre();
             } else {
                 this.partie.garderDerniereCarte();
-                //Finir la partie !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                this.partie.finDePartie();
+                System.out.println("DEBUG : UPDATE : fin de partie ");
+                this.donnerLesTrophes();
             }
         }
     }
+
+
+
 
     public JFrame getFrame(){
         return this.frame;
     }
 
+
+
+
     public TestPartie(Partie p){
         this.boutonsFaireMonOffre=new ButtonGroup();
         this.toutesLesOffres = new ArrayList<ButtonGroup>();
+        this.toutesLesCollections = new ArrayList<JPanel>();
         this.possedeUnBouton = new ArrayList<Integer>();
         this.flecheProchainJoueurQuiJoue = new JPanel();
         this.numTour=1;
@@ -146,6 +161,9 @@ public class TestPartie implements Observer {
         new PartieControler(this.partie,this.jouer);
     }
 
+
+
+
     private void reinitialiser(){
         this.boutonsFaireMonOffre=new ButtonGroup();
         this.toutesLesOffres.clear();
@@ -164,35 +182,11 @@ public class TestPartie implements Observer {
                 btn.setVisible(false);
             }
         }
-        // Dans le code
     }
 
-    private void choisirUneCarte(Joueur j){
-        List<Joueur> joueursDispo = this.partie.getPasEncoreDeCartePrise();
-        boolean etaitDansLaListe=false;
-        if(joueursDispo.size()>1 && joueursDispo.contains(j)){
-            joueursDispo.remove(j);
-            etaitDansLaListe=true;
-        }
-        // partie visuel
-        for (Joueur jDispo : joueursDispo){
-            ButtonGroup offreDuJoueur = this.toutesLesOffres.get(jDispo.getID());
-            Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
-            while (buttons.hasMoreElements()) {
-                AbstractButton btn = buttons.nextElement();
-                btn.setBorderPainted(true);
-                btn.setBorder(new LineBorder(Color.GREEN, 5));
-            }
-        }
-        frame.getContentPane().revalidate();
-        frame.getContentPane().repaint();   
 
-        new ChoisiCarteControler(this.partie,j,joueursDispo,this.toutesLesOffres);
 
-        if (etaitDansLaListe==true){
-            joueursDispo.add(j.getID(),j);
-        }
-    }
+    ////////////////// ICI TOUT CE QUI EST PAUSES
 
     private void pauseAvantProhainJoueur( ){
         // Pause VISUELLE de 1 seconde, pour qu'on voit ce qu'il se passe avec les joueurs virtuels
@@ -226,10 +220,42 @@ public class TestPartie implements Observer {
         timer.start(); 
     }
 
+
+    ////////////////// ICI TOUT CE QUI RELEVE DE L'ETAPE "CHOIX"
+    
+    private void choisirUneCarte(Joueur j){
+        List<Joueur> joueursDispo = this.partie.getPasEncoreDeCartePrise();
+        boolean etaitDansLaListe=false;
+        if(joueursDispo.size()>1 && joueursDispo.contains(j)){
+            joueursDispo.remove(j);
+            etaitDansLaListe=true;
+        }
+
+        // On rend plus visible les cartes qu'on peut prendre
+        for (Joueur jDispo : joueursDispo){
+            ButtonGroup offreDuJoueur = this.toutesLesOffres.get(jDispo.getID());
+            Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
+            while (buttons.hasMoreElements()) {
+                AbstractButton btn = buttons.nextElement();
+                btn.setBorderPainted(true);
+                btn.setBorder(new LineBorder(Color.GREEN, 5));
+            }
+        }
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();   
+        // On surveille l'action du joueur
+        new ChoisiCarteControler(this.partie,j,joueursDispo,this.toutesLesOffres);
+
+        if (etaitDansLaListe==true){
+            joueursDispo.add(j.getID(),j);
+        }
+    }
+
+
     private void ajouterASaCollection(Joueur j) throws IOException{
         List<Integer> choix = j.getChoix();
 
-        // partie visuel
+        // partie visuel 1 : on enlève la carte des offres
         ButtonGroup offreDuJoueur = this.toutesLesOffres.get(choix.get(0));
         Enumeration<AbstractButton> buttons = offreDuJoueur.getElements();
         AbstractButton btn;
@@ -240,6 +266,17 @@ public class TestPartie implements Observer {
             btn = buttons.nextElement();
             btn.setVisible(false);
         }
+
+        // partie visuel 2 : on l'ajoute a la collection
+        JPanel panel =this.toutesLesCollections.get(j.getID());
+        ImageIcon icon = new ImageIcon("Carte_dos.png");
+        Image img = icon.getImage().getScaledInstance(30, 45, Image.SCALE_SMOOTH);
+        JLabel pic = new JLabel(new ImageIcon(img));
+        pic.setBounds((numTour-1)*10, 0, 30, 45);
+        panel.add(pic);
+        panel.setComponentZOrder(pic, 0);
+        panel.revalidate();
+        panel.repaint();
 
         // partie model
         this.partie.aPrisUneCarte(j, this.partie.getParticipants().get(choix.get(0)), choix.get(1));
@@ -299,6 +336,146 @@ public class TestPartie implements Observer {
         this.flecheProchainJoueurQuiJoue.setVisible(false);
         frame.getContentPane().revalidate();
         frame.getContentPane().repaint();   
+    }
+
+
+
+
+    private void annonceScores(){
+        try {
+            presenterJoueur(numJoueurPresente);
+        } catch ( IOException e){
+            e.printStackTrace();
+        }
+        
+    }
+
+    private void presenterJoueur(int i) throws IOException{
+        System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
+        Component[] components = this.panelJoueurs.getComponents();
+        components[i].setVisible(false);
+        JPanel panel =this.toutesLesCollections.get(i);
+        panel.setVisible(false);
+        Joueur j = this.partie.getParticipants().get(i);
+        System.out.println("DEBUG : joueur : "+j.getNom());
+
+        JPanel panelUnJoueur = new JPanel();
+        panelUnJoueur.setBounds(100, 325, 55, 80);
+        BufferedImage imgJ = ImageIO.read(new File("Joueur.png"));
+        JLabel picJ = new JLabel(new ImageIcon(imgJ));
+
+        JLabel nomJ = new JLabel(j.getNom());
+        panelUnJoueur.add(picJ);
+        panelUnJoueur.add(nomJ);
+        frame.getContentPane().add(panelUnJoueur);
+
+        JLabel score = new JLabel("Score : "+j.getScore());
+        score.setBounds(75, 280, 100, 20);
+        frame.add(score);
+        int compte=0;
+        List<JLabel> toutesMesCartes= new ArrayList<JLabel>();
+        for (Carte carte : j.getCollection()){
+            System.out.println("DEBUG : carte : "+carte.getNom());
+            BufferedImage img = ImageIO.read(new File("Carte.png"));
+            JLabel pic = new JLabel(new ImageIcon(img));
+            pic.setLayout(new BorderLayout());
+            JLabel nom = new JLabel(carte.getNom(), SwingConstants.CENTER);
+            pic.add(nom, BorderLayout.CENTER);
+            pic.setBounds(250+(compte*150), 280, 100, 150);
+            frame.getContentPane().add(pic);
+            toutesMesCartes.add(pic);
+            compte++;
+        }
+
+        JButton boutonSuivant = new JButton("Suivant");
+        boutonSuivant.setBounds(75, 425, 100,25);
+        boutonSuivant.addActionListener(event -> this.enleverPresenterJoueur(toutesMesCartes, panelUnJoueur, score, boutonSuivant));
+        frame.getContentPane().add(boutonSuivant);
+        
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();
+    }
+
+    private void enleverPresenterJoueur(List<JLabel> toutesMesCartes, JPanel c, JLabel score, JButton boutonSuivant){
+        System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
+        frame.getContentPane().remove(score);
+        frame.getContentPane().remove(c);
+        for (JLabel lb : toutesMesCartes) {
+            frame.getContentPane().remove(lb);
+        }
+        frame.getContentPane().remove(boutonSuivant);
+        this.numJoueurPresente++;
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint(); 
+        if (numJoueurPresente<this.partie.getParticipants().size()) {
+            System.out.println("DEBUG : suivant");
+            annonceScores();
+        } else {
+            annonceGagnants();
+        }
+          
+    }
+
+
+    private void annonceGagnants(){
+        
+        frame.dispose();
+        FinDePartie window2 = new FinDePartie(this.partie);
+		window2.getFrame().setVisible(true);
+        
+    }
+
+
+    private void donnerLesTrophes (){
+        Component[] components = this.panelTrophe.getComponents();
+        int compte=0;
+        List<JLabel> labels = new ArrayList<JLabel>();
+        for (Component c : components){
+            //dans le modèle
+            Carte trophe = this.partie.getTrophes().get(compte);
+            int indexJ = trophe.JoueurGagnantCarte(this.partie.getParticipants());
+            if (indexJ>=0){
+                Joueur gagnantTrophe = this.partie.getParticipants().get(indexJ);
+
+                // petit message explicatif 
+                JLabel labelTrophe = new JLabel("Le trophe "+trophe.getNom()+" est donné à "+gagnantTrophe.getNom()+ " car "+trophe.getConditionVictoire());
+                labelTrophe.setBounds(100, 275+(compte*30), 800, 20);
+                frame.getContentPane().add(labelTrophe);
+                labels.add(labelTrophe);
+
+                // partie visuel  : on l'ajoute a la collection
+                JPanel panel =this.toutesLesCollections.get(gagnantTrophe.getID());
+                ImageIcon icon = new ImageIcon("Carte_dos.png");
+                Image img = icon.getImage().getScaledInstance(30, 45, Image.SCALE_SMOOTH);
+                JLabel pic = new JLabel(new ImageIcon(img));
+                pic.setBounds((numTour)*10, 0, 30, 45);
+                panel.add(pic);
+                panel.setComponentZOrder(pic, 0);
+                panel.revalidate();
+                panel.repaint();
+                frame.getContentPane().revalidate();
+                frame.getContentPane().repaint();   
+            }
+            c.setVisible(false);
+            compte++;
+        }
+        JButton boutonOK = new JButton("ok");
+        boutonOK.setBounds(450, 275+(compte*50), 100,25);
+        boutonOK.addActionListener(event -> this.suppressionMessageTrophe(labels, boutonOK));
+        frame.getContentPane().add(boutonOK);
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint();   
+        
+    }
+
+    private void suppressionMessageTrophe(List<JLabel> labels, JButton boutonOK){
+        for (JLabel l : labels){
+            frame.getContentPane().remove(l);
+        }
+        frame.getContentPane().remove(boutonOK);
+        frame.getContentPane().revalidate();
+        frame.getContentPane().repaint(); 
+        this.annonceScores();  
     }
 
     private void supprimerBoutonJouer(){
@@ -400,7 +577,7 @@ public class TestPartie implements Observer {
 
         //Trophés
 
-        JPanel panelTrophe = new JPanel();
+        panelTrophe = new JPanel();
         int taille = 105*this.partie.getTrophes().size();
         panelTrophe.setBounds(250, 30, taille, 155);
         // pour chaques trophés :
@@ -425,7 +602,7 @@ public class TestPartie implements Observer {
 
         //Un icone par joueur
         
-        JPanel panelJoueurs = new JPanel();
+        panelJoueurs = new JPanel();
         panelJoueurs.setBounds(0, 475, 1000, 85);
         panelJoueurs.setLayout(null);
         int position=100;
@@ -443,6 +620,13 @@ public class TestPartie implements Observer {
             panelUnJoueur.add(picJ);
             panelUnJoueur.add(nom);
             panelJoueurs.add(panelUnJoueur);
+
+            // j'en profite pour initialiser leur panels vide de collection
+            JPanel panelCollectionJoueurs = new JPanel();
+            panelCollectionJoueurs.setBounds(position+(225*i)+50, 520, 90, 45);
+            panelCollectionJoueurs.setLayout(null);
+            this.toutesLesCollections.add(panelCollectionJoueurs);
+            frame.getContentPane().add(panelCollectionJoueurs);
         }
         frame.getContentPane().add(panelJoueurs);
 

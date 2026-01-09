@@ -39,7 +39,7 @@ public class MenuCreerPartie implements Observer {
 		}
 
 		// Validation réussie
-		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur){
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerPremierJoueur){
 			frame.dispose();
 			MenuAjoutJoueurs window2 = new MenuAjoutJoueurs(this.menu);
 			window2.getFrame().setVisible(true);

@@ -59,7 +59,7 @@ public class Menu extends Observable {
 		System.out.println("DEBUG : jeu selectionné :  "+jeuSelectionne+" ; nbJoueur selectionné : "+nbJoueursSelectionne);
 		String message="";
 		if (this.jeuSelectionne>=0 && this.jeuSelectionne<this.jeuxExistants.size() && (this.nbJoueursSelectionne==3  || this.nbJoueursSelectionne==4)){
-			this.etat=EtatMenu.SelectionnerJoueur;
+			this.etat=EtatMenu.SelectionnerPremierJoueur;
 			message="selectionner les joueurs";
 			Partie p = new Partie();
 			p.choisirUnJeu(this.jeuxExistants.get(this.jeuSelectionne));
@@ -94,7 +94,12 @@ public class Menu extends Observable {
 				this.etat=EtatMenu.LancerPartie;
 				this.partieEnCours.initialiserLaPartie();
 			} else {
-				this.etat=EtatMenu.SelectionnerJoueur;
+				if (this.etat==EtatMenu.SelectionnerJoueur){
+					this.etat=EtatMenu.SelectionnerJoueurEncore;
+				} else {
+					this.etat=EtatMenu.SelectionnerJoueur;
+				}
+				
 			}
 		}
 		this.setChanged();
