@@ -110,6 +110,7 @@ public class TestPartie implements Observer {
             this.enleverLaFleche();
             this.remiseALaPioche();
             this.partie.calculScore();
+            Partie.sauvegarder(this.partie);
             // A FAIRE : GERER LES SAUVEGARDES
             if(this.partie.isFinDePartie()==false){
                 this.partie.remettreDansPioche();
@@ -313,7 +314,9 @@ public class TestPartie implements Observer {
             Enumeration<AbstractButton> buttons = b.getElements();
             while (buttons.hasMoreElements()) {
                 AbstractButton btn = buttons.nextElement();
-                btn.setBorderPainted(false);
+                if (btn!=null){
+                    btn.setBorderPainted(false);
+                }
             }
         }
 
@@ -418,7 +421,7 @@ public class TestPartie implements Observer {
 
 
     private void annonceGagnants(){
-        
+        Partie.supprimerPartie(this.partie.getID()); 
         frame.dispose();
         FinDePartie window2 = new FinDePartie(this.partie);
 		window2.getFrame().setVisible(true);
