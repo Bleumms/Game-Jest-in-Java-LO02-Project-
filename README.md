@@ -37,6 +37,7 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 - Patterns de conception (Visitor, Strategy)
 - Sérialisation et persistance
 - Architecture modulaire et extensible
+- Interface graphique (Swing)
 
 ---
 
@@ -51,8 +52,9 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 ### 🔧 Fonctionnalités Techniques
 - **Sauvegarde/Chargement** : Reprenez vos parties à tout moment
 - **Interface console** : Interaction claire et intuitive
+- **Interface graphique** : Swing avec pattern MVC
 - **Architecture modulaire** : Ajout facile de nouvelles règles et stratégies
-- **Jeux personnalisables** : Mode "MINI" (9 cartes) et "TOUT" (17 cartes)
+- **Jeux personnalisables** : Mode "MINI" (9 cartes) et "TOUT" (17 cartes), susceptible d'y avoir des ajouts
 
 ### 🧩 Composants du Jeu
 - **17 cartes** : 4 couleurs (♠️ Pique, ♣️ Trèfle, ♦️ Carreau, ♥️ Cœur) × 4 valeurs (1-4) + 1 Jocker
@@ -86,7 +88,7 @@ cd Game-Jest-in-Java-LO02-Project-
 mvn clean install
 ```
 
-### 3️⃣ Générer la documentation Javadoc (optionnel)
+### 3️⃣ Générer la documentation Javadoc
 
 ```bash
 mvn javadoc:javadoc
@@ -113,7 +115,8 @@ java -cp target/classes Jest.Main
 
 1. **Choix du mode** : Nouvelle partie ou reprendre une sauvegarde
 2. **Configuration** :
-   - Sélection du jeu (MINI ou TOUT)
+   - Sélection du jeu (variantes disponibles)
+   - Ajout ou non d'extention au jeu
    - Nombre de joueurs (3 ou 4)
    - Type de joueurs (Réel ou Virtuel + stratégie)
 3. **Phase de jeu** :
@@ -121,6 +124,9 @@ java -cp target/classes Jest.Main
    - Chaque joueur choisit une carte visible et une cachée
    - Tour par tour, les joueurs volent des cartes aux autres
    - Le joueur avec la carte visible la plus haute joue en premier
+   - La carte récupéré est ajouté à la collection du joueur
+   - Les cartes non prises retournent à la pioche
+   - Un nouveau tour commence jusqu'à épuisement de la pioche
 4. **Fin de partie** :
    - Attribution des trophées selon leurs conditions
    - Calcul des scores finaux
@@ -131,7 +137,7 @@ java -cp target/classes Jest.Main
 ## Règles du Jeu
 
 ### Valeur de Base
-Chaque carte a une valeur égale à son numéro (1 à 4).
+Chaque carte a une valeur égale à son numéro.
 
 ### Les 5 Règles Modificatrices
 
@@ -169,56 +175,67 @@ Exemples de conditions :
 ### Structure du Projet
 
 ```
-Jest/
-├── 📁 Cartes
-│   ├── Carte.java (abstraite)
+src/Jest/
+├── 📁 Model/        
+│   ├── Carte.java         
 │   ├── CarteClassique.java
-│   └── Jocker.java
-│
-├── 📁 Joueurs
-│   ├── Joueur.java (abstraite)
+│   ├── Jocker.java        
+│   │
+│   ├── Joueur.java        
 │   ├── JoueurPhysique.java
-│   └── JoueurVirtuel.java
-│
-├── 📁 Stratégies
-│   ├── Strategie.java (interface)
+│   ├── JoueurVirtuel.java  
+│   │
+│   ├── Strategie.java   
 │   ├── StrategieRandom.java
-│   └── StrategieIntelligent.java
-│
-├── 📁 Règles
-│   ├── Regle.java (abstraite)
-│   ├── RegleCoeur.java
-│   ├── RegleCarreau.java
-│   ├── RegleAs.java
-│   ├── RegleDoubleNoir.java
-│   └── RegleJocker.java
-│
-├── 📁 Conditions
-│   ├── ConditionVictoire.java (interface)
+│   ├── StrategieIntelligent.java
+│   │
+│   ├── Regle.java         
+│   ├── RegleCoeur.java 
+│   ├── RegleCarreau.java  
+│   ├── RegleAs.java      
+│   ├── RegleDoubleNoir.java 
+│   ├── RegleJocker.java  
+│   │
+│   ├── ConditionVictoire.java
 │   ├── ConditionMaxScore.java
 │   ├── ConditionMaxMinSymbole.java
 │   ├── ConditonPlusCarteValeur.java
-│   └── ConditionJocker.java
+│   ├── ConditionJocker.java
+│   │
+│   ├── Jeu.java   
+│   ├── Partie.java     
+│   ├── Reference.java   
+│   ├── CalculateurScore.java 
+│   ├── ValeurParCarte.java  
+│   ├── Menu.java   
+│   │
+│   ├── Visitor.java     
+│   ├── Visitable.java
+│   │
+│   └── 📁 Enums/
+│       ├── Symbole.java
+│       ├── EtatJoueur.java
+│       ├── EtatPartie.java
+│       └── EtatMenu.java
 │
-├── 📁 Gestion
-│   ├── Jeu.java
-│   ├── Partie.java
-│   ├── Reference.java
-│   ├── CalculateurScore.java
-│   ├── ValeurParCarte.java
-│   └── Menu.java
+├── 📁 Vue/    
+│   ├── MenuPrincipal.java
+│   ├── MenuCreerPartie.java
+│   ├── MenuAjoutJoueurs.java
+│   ├── TestPartie.java
+│   ├── FaireUneOffre.java
+│   └── AffichageTour.java
 │
-├── 📁 Patterns
-│   ├── Visitor.java (interface)
-│   └── Visitable.java (interface)
-│
-├── 📁 Enums
-│   └── Symbole.java
-│
-└── Main.java
+└── 📁 Controler/   
+    ├── MenuDebutControler.java
+    ├── MenuCreerControler.java
+    ├── MenuJoueursControler.java
+    ├── PartieControler.java
+    ├── JoueurControler.java
+    └── ChoisiCarteControler.java
 ```
 
-### Diagramme de Classes Simplifié
+### Diagrammes de Classes Simplifiés
 
 ```
 ┌─────────────┐
@@ -250,7 +267,28 @@ Jest/
                                 │  └──────────┘  │
                                 └────────────────┘
 ```
-
+┌─────────────────────────────────────────────┐
+│                   VUE                       │
+│  (MenuPrincipal, TestPartie, FaireUneOffre) │
+│              Observer Pattern               │
+└──────────────────┬──────────────────────────┘
+                   │ update()
+                   │
+      ┌────────────▼───────────────┐
+      │      CONTRÔLEUR            │
+      │  (ActionListener)          │
+      │  MenuControler             │
+      │  PartieControler           │
+      │  JoueurControler           │
+      └────────────┬───────────────┘
+                   │ commandes
+                   │
+      ┌────────────▼───────────────┐
+      │        MODÈLE              │
+      │  (Observable)              │
+      │  Partie, Menu, Joueur      │
+      │  Jeu, Carte, Regle         │
+      └────────────────────────────┘
 ---
 
 ## Patterns de Conception
@@ -292,17 +330,40 @@ public interface Strategie {
 - ✅ Ajout facile de nouvelles Stratégies
 - ✅ Code des joueurs simplifié
 
-### 3. **Template Method**
-*Dans la classe Regle*
+### 3. **Observer Pattern**
+*Communication Vue-Modèle*
 
-```java
-public abstract class Regle {
-    public void modifierValeurCarte(List<Carte> cartes, List<ValeurParCarte> valeurs) {
-        // Implémenté dans les sous-classes
+```
+public class Partie extends Observable {
+    public void distribuer() {
+        // ... logique ...
+        this.setChanged();
+        this.notifyObservers();
+    }
+}
+
+public class TestPartie implements Observer {
+    public void update(Observable o, Object arg) {
+        if (o instanceof Partie) {
+            // Mettre à jour l'affichage
+        }
     }
 }
 ```
+### 4. **MVC Pattern**
+*Architecture de l'application*
 
+- Modèle : Classes métier (Partie, Joueur, Carte...)
+- Vue : Interfaces Swing (TestPartie, MenuPrincipal...)
+- Contrôleur : Gestionnaires d'événements (PartieControler...)
+
+**Avantages** :
+- ✅ Séparation des responsabilités
+- ✅  Vue interchangeable (Swing → JavaFX)
+- ✅ Testabilité du modèle
+
+### 3. **Observer Pattern**
+*Communication Vue-Modèle*
 ---
 
 ## Tests
@@ -343,7 +404,6 @@ open target/site/apidocs/index.html
 
 ## Améliorations Possibles
 
-- [ ] Interface graphique
 - [ ] Mode en ligne multijoueur
 - [ ] Statistiques et historique des parties
 - [ ] Système de classement
