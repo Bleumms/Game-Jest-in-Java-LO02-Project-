@@ -1,16 +1,19 @@
+/*
+* MenuPrincipal : gère l'affichage du menu graphique
+* @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
-import  Jest.Model.Menu;
+import Jest.Model.Menu;
 import Jest.Model.EtatMenu;
-import  Jest.Model.Jeu;
+import Jest.Model.Jeu;
 
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-
-//import com.sun.java.swing.plaf.windows.resources.windows;
 
 
 public class MenuPrincipal implements Observer {
@@ -19,11 +22,17 @@ public class MenuPrincipal implements Observer {
 
     private Menu menu;
 
-	// Les element de la page interfaceLancementPremierMenu
+	/*
+	* Les élement de la page de lancement du tout premier menu
+	*/ 
 	private JButton creer;
     private JButton reprendre;
 	
-
+	/*
+	* Met à jour l'affichage en fonction de l'état du menu (soit on crée une partie, soit on en reprend une)
+	* @param instanceObservable : l'objet observable (le menu)
+	* @param arg1 : argument supplémentaire (non utilisé)
+	*/
 	public void update(Observable instanceObservable, Object arg1){
 		// après le premier menu l'utilisateur a choisi de creer une partie
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartie){
@@ -40,6 +49,9 @@ public class MenuPrincipal implements Observer {
 		}
 	}
 
+	/*
+	* Constructeur MenuPrincipal : initialise l'interface du menu principal
+	*/
 	public MenuPrincipal() {
 
         this.menu = new Menu();
@@ -50,10 +62,17 @@ public class MenuPrincipal implements Observer {
         
 	}
 
+	/*
+	* Retourne la frame du menu principal
+	* @return JFrame : la frame du menu principal
+	*/
 	public JFrame getFrame(){
 		return this.frame;
 	}
 
+	/*
+	* Initialise et affiche la fenêtre de lancement du tout premier menu
+	*/
 	private void interfaceLancementPremierMenu() {
 
 		//Creating the Frame
@@ -93,6 +112,9 @@ public class MenuPrincipal implements Observer {
 		frame.setVisible(true);
 	}
 
+	/*
+	* Lancement de l'application
+	*/
 	public static void main(String[] args) {
 		
 		EventQueue.invokeLater(new Runnable() {

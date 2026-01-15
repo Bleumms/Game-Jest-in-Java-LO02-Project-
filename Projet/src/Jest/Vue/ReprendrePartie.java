@@ -1,12 +1,17 @@
+/*
+* ReprendrePartie : Classe représentant le menu de reprise de partie sauvegardée
+* @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
 import Jest.Controler.MenuReprendreControler;
-import  Jest.Model.Menu;
+import Jest.Model.Menu;
 import Jest.Model.Partie;
 import Jest.Model.EtatMenu;
-import  Jest.Model.Jeu;
+import Jest.Model.Jeu;
 
 import java.awt.*;
 import java.io.IOException;
@@ -22,15 +27,25 @@ public class ReprendrePartie implements Observer {
 
     private Menu menu;
 
+	/*
+	* Les élement de la page de lancement du menu reprendre partie
+	*/
 	private List<JButton> boutonsJeu;
     private List<String> fichiers;
 
-	
-
+	/*
+	* Met à jour l'affichage en fonction de l'état du menu
+	* @param instanceObservable : l'objet observable (le menu)
+	* @param arg1 : argument supplémentaire (non utilisé)
+	*/
 	public void update(Observable instanceObservable, Object arg1){
 		
 	}
 
+	/*
+	* Constructeur ReprendrePartie : initialise l'interface du menu de reprise de partie
+	* @param m : le menu principal
+	*/
 	public ReprendrePartie(Menu m) {
 
         this.menu = m;
@@ -42,15 +57,26 @@ public class ReprendrePartie implements Observer {
         
 	}
 
+	/*
+	* Retourne la frame de l'interface de reprise de partie
+	* @return JFrame : la frame de l'interface de reprise de partie
+	*/
 	public JFrame getFrame(){
 		return this.frame;
 	}
 
+	/*
+	* Permet de retourner au menu principal
+	*/
     private void retour() {
         frame.dispose();
         MenuPrincipal m = new MenuPrincipal();
     }
 
+	/*
+	* Initialise et affiche la fenêtre de lancement du menu reprendre, avec la liste des parties sauvegardées
+	* Si aucune partie sauvegardée, affiche un message et un bouton retour
+	*/
 	private void interfaceLancementMenuReprendre() {
 
         fichiers=null;

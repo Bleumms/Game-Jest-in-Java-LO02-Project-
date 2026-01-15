@@ -1,17 +1,19 @@
+/* 
+ * MenuCreerPartie: interface pour créer une nouvelle partie
+ * @author Nina et Emeline
+ */
+
 package Jest.Vue;
 
 import Jest.Controler.MenuCreerControler;
 import Jest.Controler.MenuDebutControler;
-import  Jest.Model.Menu;
+import Jest.Model.Menu;
 import Jest.Model.EtatMenu;
-import  Jest.Model.Jeu;
+import Jest.Model.Jeu;
 
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
-
-//import com.sun.java.swing.plaf.windows.resources.windows;
-
 
 public class MenuCreerPartie implements Observer {
 	
@@ -19,18 +21,28 @@ public class MenuCreerPartie implements Observer {
 
     private Menu menu;
 
-	// Les element de la page interfaceCreerUnePartie
+	/*
+	* Les element de la page interfaceCreerUnePartie
+	*/ 
 	private ButtonGroup radiosBoutonsJeux;
     private ButtonGroup boutonsNbJoueurs;
 	private JButton valider;
     private int compte;
 
 	
-
+	/*
+	* Retourne la frame de l'interface de création de partie
+	* @return JFrame : la frame de l'interface de création de partie
+	*/
     public JFrame getFrame(){
         return this.frame;
     }
 
+	/*
+	* Met à jour l'affichage en fonction de l'état du menu
+	* @param instanceObservable : l'objet observable (le menu)
+	* @param arg1 : argument supplémentaire (non utilisé)
+	*/
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartieAvecErreur){
@@ -46,7 +58,10 @@ public class MenuCreerPartie implements Observer {
 		}
 	}
 
-	
+	/*
+	* Constructeur MenuCreerPartie : initialise l'interface de création de partie
+	* @param m : le menu principal
+	*/
 	public MenuCreerPartie(Menu m) {
 
         this.menu = m;
@@ -57,6 +72,9 @@ public class MenuCreerPartie implements Observer {
         
 	}
 
+	/*
+	* Ajoute du message d'erreur à l'interface
+	*/
     private void ajoutMessageErreur(){
         System.out.println("DEBUG : Mal saisi "+compte);
 		JLabel label5 = new JLabel("Attention, les informations sont mal remplis !");
@@ -67,10 +85,13 @@ public class MenuCreerPartie implements Observer {
         content.repaint();
     }
 
+	/*
+	* Initialise et affiche la fenêtre de création de partie
+	* On demande de choisir un jeu de cartes et le nombre de joueurs
+	*/
 	private void interfaceCreerUnePartie(){
-		//Creating the Frame
-    	frame = new JFrame();
-		frame.setBounds(100, 100, 400, 400);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 400, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -98,7 +119,7 @@ public class MenuCreerPartie implements Observer {
 		}
 
 		//Combien de joueurs
-		JLabel label3 = new JLabel("A combien de joueurs voulez vous jouer");
+		JLabel label3 = new JLabel("A combien de joueurs voulez vous jouer ?");
 		compte = 120 + 20*compte +30;
 		label3.setBounds(75, compte, 250,20);
 		frame.getContentPane().add(label3);
@@ -118,7 +139,7 @@ public class MenuCreerPartie implements Observer {
 		frame.getContentPane().add(j4);
 		this.boutonsNbJoueurs.add(j4);
 
-		// valider
+		//Valider le choix
 		valider = new JButton("Valider");
 		compte = compte +70;
 		valider.setBounds(125, compte, 150,25);

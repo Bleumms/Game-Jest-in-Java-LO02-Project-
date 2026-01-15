@@ -1,9 +1,15 @@
+/*
+* TesPartie : Classe mettant à jour le visuel de la partie en fonction de l'état de la partie et des joueurs
+* (Ne pas se fier au nom, on a pas pu le changer)
+* @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Controler.PartieControler;
 import Jest.Controler.ChoisiCarteControler;
-import  Jest.Model.Partie;
-import  Jest.Model.Carte;
+import Jest.Model.Partie;
+import Jest.Model.Carte;
 import Jest.Model.EtatJoueur;
 import Jest.Model.EtatPartie;
 import Jest.Model.Joueur;
@@ -41,11 +47,17 @@ public class TestPartie implements Observer {
     private int numTour;
     private int numJoueurPresente;
 
+    /*
+    * Met à jour l'affichage en fonction de l'état de la partie et des joueurs
+    * On gère ici toutes les différentes étapes : attente offre, offre faite, attente choix, choix fait, fin de partie
+    * @param instanceObservable : l'objet observable (la partie ou un joueur)
+    * @param arg1 : argument supplémentaire (non utilisé)
+    */
     public void update(Observable instanceObservable, Object arg1){
-        //on l'enlève dès la première intéraction
+        //on l'enlève dès la première interaction
         this.supprimerBoutonJouer();
 
-        // lorsqu'on attend une offre -> donc on propose a l'utilisateur de faire son offre
+        // lorsqu'on attend une offre -> on propose a l'utilisateur de faire son offre
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteOffre){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a son offre en attente");
             this.ajouterBoutonOffre((Joueur)instanceObservable);
@@ -80,7 +92,7 @@ public class TestPartie implements Observer {
         }
 
 
-        // si le choix a été fait (par un utilisateur)
+        // si le choix a été fait (par un joueur physique)
         if (instanceObservable instanceof JoueurPhysique && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());
             try{
@@ -90,34 +102,33 @@ public class TestPartie implements Observer {
             }
         }
 
-        // si le choix a été fait (par un joueur virtuel) -> on rajoute un délais sinon on y comprend plus rien
+        // si le choix a été fait (par un joueur virtuel) -> on rajoute un délais sinon l'action est pas clair pours les joueurs
         if (instanceObservable instanceof JoueurVirtuel && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());    
             this.pauseAvantAjouterCollection((Joueur)instanceObservable);
         }
 
 
-        // si le choix est en attente - > donc on laisse l'utilisateur choisir la carte qu'il veux
+        // si le choix est en attente - > on laisse l'utilisateur choisir la carte qu'il veux
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteChoix){
             System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" attend son choix ");
             this.choisirUneCarte(((Joueur)instanceObservable));
         }
 
 
-        // si touts les choix ont été fais
+        // si tous les choix ont été fais
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.ChoixFinis){
             System.out.println("DEBUG : UPDATE : le choix est finis ; Panels : "+this.toutesLesCollections);
             this.enleverLaFleche();
             this.remiseALaPioche();
             this.partie.calculScore();
             Partie.sauvegarder(this.partie);
-            // A FAIRE : GERER LES SAUVEGARDES
             if(this.partie.isFinDePartie()==false){
                 this.partie.remettreDansPioche();
                 this.numTour++;
                 partie.distribuer();
                 AffichageTour window2 = new AffichageTour(numTour);
-			    window2.getFrame().setVisible(true);
+                window2.getFrame().setVisible(true);
                 this.reinitialiser();
                 partie.attendreUneOffre();
             } else {

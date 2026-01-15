@@ -1,3 +1,8 @@
+/*
+* Classe FinDePartie : gère l'affichage de la fin de partie et des résultats
+* @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Controler.JoueurControler;
@@ -19,23 +24,43 @@ import javax.swing.*;
 public class FinDePartie {
     
     private JFrame frame;
+
+    /*
+    * Partie en cours dont on va afficher les résultats 
+    */
     private Partie partie;
 
+    /*
+    * Constructeur FinDePartie : initialise l'affichage des résultats de la partie
+    * @param p : la partie en cours
+    */
     public FinDePartie(Partie p){
         this.partie=p;
         interfaceResultat();
     }
 
+    /*
+    * Retourne la frame de l'affichage des résultats de la partie
+    * @return JFrame : la frame de l'affichage des résultats de la partie
+    */
     public JFrame getFrame(){
         return this.frame;
     }
 
+    /*
+    * Relance le menu principal pour commencer une nouvelle partie
+    */
     private void relancerDebut(){
         frame.dispose();
         MenuPrincipal window = new MenuPrincipal();
         window.getFrame().setVisible(true);
     }
 
+    /*
+    * Initialise et affiche la fenêtre des résultats de la partie
+    * On affiche le ou les gagnants et leur score
+    * Puis on propose un bouton pour relancer une partie
+    */
     public void interfaceResultat(){
         frame = new JFrame();
 		frame.setBounds(150, 110, 400, 200);
