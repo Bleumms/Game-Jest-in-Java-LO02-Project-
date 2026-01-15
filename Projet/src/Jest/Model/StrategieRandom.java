@@ -23,6 +23,10 @@ public class StrategieRandom implements Strategie, Serializable{
 		return "Stratégie random";
 	}
 
+	/*
+	* Retourne le nom de la stratégie
+	* @return Le nom de la stratégie
+	*/
 	public String getNom(){
 		return "Stratégie random";
 	}

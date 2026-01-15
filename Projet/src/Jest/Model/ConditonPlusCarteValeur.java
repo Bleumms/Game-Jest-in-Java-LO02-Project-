@@ -52,7 +52,7 @@ public class ConditonPlusCarteValeur implements ConditionVictoire, Serializable 
             for (int j=0; j<joueurs.get(i).getCollection().size(); j++){
                 Carte c =joueurs.get(i).getCollection().get(j);
                 if (c instanceof CarteClassique){
-                   CarteClassique cc = (CarteClassique) c;
+                    CarteClassique cc = (CarteClassique) c;
                     if (cc.getNumero() == num){
                         nbCartesPossedes.set(i,nbCartesPossedes.get(i)+1);
                     }

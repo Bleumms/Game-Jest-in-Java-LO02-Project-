@@ -16,6 +16,7 @@ public class CarteClassique extends Carte {
 	*/
 
 	public int numero;
+	
 	/* 
 	 * Symbole de la carte (COEUR, CARREAU, TREFLE, PIQUE) 
 	*/

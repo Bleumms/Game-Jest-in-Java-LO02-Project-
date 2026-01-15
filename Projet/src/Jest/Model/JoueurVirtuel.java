@@ -30,10 +30,17 @@ public class JoueurVirtuel extends Joueur {
 		this.strat = strategie;
 	}
 
+	/* 
+	 * Permet au joueur virtuel d'attendre une offre des autres joueurs
+	*/
 	public void attendreUneOffre(){
 		this.faireUneOffre();
 	}
-
+	
+	/* 
+	 * Permet au joueur virtuel de choisir un joueur
+	 * @param joueurs La liste des joueurs en compétition
+	*/
 	public void attendreUnChoix(List<Joueur> joueurs){
 		this.choix = choisirUneCarte(joueurs);
 		this.etat=EtatJoueur.ChoixFait;

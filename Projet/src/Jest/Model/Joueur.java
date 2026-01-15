@@ -22,30 +22,46 @@ public class Joueur extends Observable implements Visitable, Serializable{
 
 	
 	private String nom;
+
 	/*
 	* Collection de cartes gagnées par le joueur
 	*/
 	private List<Carte> collection;
+
 	/*
 	 * Cartes distribuées au début d'un tour 
 	 * (une carte visible et une carte cachée)
 	*/
 	private List<Carte> cartesDistribuees;
+
 	/*
 	 * Carte visible choisie par le joueur
 	*/
 	private Carte carteVisible;
+
 	/*
 	 * Carte cachée choisie par le joueur
 	*/
 	private Carte carteCachee;
+
 	/*
 	 * Score du joueur
 	*/
 	private int score;
 
+	/*
+	 * État actuel du joueur dans la partie
+	*/
 	protected EtatJoueur etat;
+
+	/*
+	 * ID unique du joueur
+	*/
 	private int ID;
+
+	/*
+	 * Liste des choix faits par le joueur (utilisée pour les joueurs virtuels)
+	*/
 	protected List<Integer> choix;
 	
 	/* 
@@ -176,12 +192,19 @@ public class Joueur extends Observable implements Visitable, Serializable{
 	public void faireUneOffre () {
 	}
 
-	public void attendreUneOffre(){
 
+	/* 
+	 * Méthode pour attendre une offre des autres joueurs
+	*/
+	public void attendreUneOffre(){
 	}
 
+	/* 
+	 * Méthode pour choisir un joueur parmi les autres joueurs
+	 * @param joueurs La liste des joueurs en compétition
+	 * @return L'indice du joueur choisi dans la liste
+	*/
 	public void attendreUnChoix(List<Joueur> joueurs){
-
 	}
 
 	/* 
@@ -212,6 +235,10 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		return this.score;
 	}
 
+	/* 
+	 * Renvoi les choix faits par le joueur.
+	 * @return les choix faits par le joueur
+	*/
 	public List<Integer> getChoix(){
 		return this.choix;
 	}
@@ -256,10 +283,18 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		return this.carteCachee;
 	}
 
+	/* 
+	 * Renvoi l'état actuel du joueur.
+	 * @return l'état actuel du joueur
+	*/
 	public EtatJoueur getEtat(){
 		return this.etat;
 	}
 
+	/* 
+	 * Renvoi l'ID unique du joueur.
+	 * @return l'ID unique du joueur
+	*/
 	public int getID(){
 		return this.ID;
 	}
@@ -291,6 +326,11 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		this.score = score;
 	}
 
+	/* 
+	 * Permet de définir les choix faits par le joueur.
+	 * @param idJoueur L'ID du joueur choisi
+	 * @param indexCarte L'indice de la carte choisie
+	*/
 	public void setChoix(int idJoueur, int indexCarte){
 		List<Integer> c = new ArrayList<Integer>();
 		c.add(idJoueur);
@@ -298,10 +338,12 @@ public class Joueur extends Observable implements Visitable, Serializable{
 		this.choix=c;
 	}
 
+	/* 
+	 * Permet de modifier l'état actuel du joueur.
+	 * @param ej Le nouvel état du joueur
+	*/
 	public void setEtat(EtatJoueur ej){
 		this.etat=ej;
 	}
 
 }
-
-

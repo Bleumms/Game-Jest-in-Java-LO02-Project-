@@ -39,6 +39,10 @@ public class Jeu implements Serializable{
 		this.nom=n;
 	}
 
+	/* 
+	 * Retourne le nom du jeu.
+	 * @return Le nom du jeu
+	*/
 	public String getNom(){
 		return this.nom;
 	}

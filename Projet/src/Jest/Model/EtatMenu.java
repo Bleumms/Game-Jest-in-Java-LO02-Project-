@@ -1,3 +1,8 @@
+/*
+* Enum représentant les différents états du menu
+* @author Nina et Emeline
+*/
+
 package Jest.Model;
 
 public enum EtatMenu {

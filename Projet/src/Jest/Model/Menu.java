@@ -47,14 +47,27 @@ public class Menu extends Observable {
 		this.jouer();*/
 	}
 
+	/*
+	 * Permet de définir le jeu sélectionné.
+	 * @param i L'indice du jeu sélectionné
+	*/
 	public void setJeuSelectionne(int i){
 		this.jeuSelectionne=i;
 	}
 
+	/*
+	 * Permet de définir le nombre de joueurs sélectionné.
+	 * @param i Le nombre de joueurs sélectionné
+	*/
 	public void setNbJoueursSelectionne(int i){
 		this.nbJoueursSelectionne=i;
 	}
 
+	/*
+	* S'assure de la validité de la page de création de partie en fonction des choix faits
+	* Met à jour l'état du menu et la partie en cours
+	*
+	*/
 	public void validerPageCreerPartie(){
 		System.out.println("DEBUG : jeu selectionné :  "+jeuSelectionne+" ; nbJoueur selectionné : "+nbJoueursSelectionne);
 		String message="";
@@ -74,6 +87,13 @@ public class Menu extends Observable {
 		this.notifyObservers(message);
 	}
 
+	/* 
+	 * S'assure de la validité de la création d'un joueur et l'ajoute à la partie en cours.
+	 * Met à jour l'état du menu en fonction du nombre de joueurs ajoutés.
+	 * @param typeJoueur Le type de joueur ("Virtu" ou "Reel")
+	 * @param nom Le nom du joueur
+	 * @param strategieSelectionne L'indice de la stratégie sélectionnée (pour les joueurs virtuels)
+	*/
 	public void validerUnJoueur(String typeJoueur, String nom, int strategieSelectionne){
 		String message="";
 		if (nom=="" || (typeJoueur=="Virtu" && strategieSelectionne==-1)){
@@ -106,27 +126,45 @@ public class Menu extends Observable {
 		this.notifyObservers(message);
 	}
 	
+	/* 
+	 * Permet de lancer la création d'une nouvelle partie.
+	*/
 	public void creerPartie(){
 		this.etat=EtatMenu.CreerPartie;
 		this.setChanged();
 		this.notifyObservers("creer une partie");
-
 	}
 
+	/* 
+	 * Permet de lancer la reprise d'une partie sauvegardée.
+	 * Met à jour l'état du menu.
+	*/
 	public void reprendrePartie(){
 		this.etat=EtatMenu.ReprendrePartie;
 		this.setChanged();
 		this.notifyObservers("reprendre une partie");
 	}
 
+	/* 
+	 * Retourne l'état actuel du menu.
+	 * @return l'état actuel du menu
+	*/
 	public EtatMenu getEtat(){
 		return this.etat;
 	}
 
+	/* 
+	 * Retourne la liste des jeux disponibles.
+	 * @return la liste des jeux disponibles
+	*/
 	public List<Jeu> getJeux(){
 		return this.jeuxExistants;
 	}
 
+	/* 
+	 * Retourne la liste des stratégies disponibles.
+	 * @return la liste des stratégies disponibles
+	*/
 	public List<Strategie> getStrats(){
 		return this.strategiesDisponibles;
 	}
@@ -391,6 +429,9 @@ public class Menu extends Observable {
 
 	// CREER LES ELEMENTS DE BASE
 
+	/*
+	 * Crée les éléments de base du menu : jeux et stratégies disponibles
+	*/
 	public void creerLesElementsDeBase(){
 		// Le jeu n°1:
 		Jeu jeu = creerUnJeu("TOUT");
@@ -403,6 +444,10 @@ public class Menu extends Observable {
 		this.strategiesDisponibles.add(new StrategieIntelligent());
 	}
 
+	/*
+	 * Crée la référence des règles du jeu
+	 * @return La référence créée
+	*/
 	public static Reference creerReference(){
 		Reference r = new Reference();
 		Regle r1 = new RegleCoeur();
@@ -418,6 +463,12 @@ public class Menu extends Observable {
 		return r;
 	}
 
+	/*
+	 * Crée une carte en fonction de son symbole et de sa valeur
+	 * @param symb Le symbole de la carte (0=PIQUE, 1=TREFLE, 2=CARREAU, 3=COEUR)
+	 * @param num La valeur de la carte (1 à 4 pour les cartes classiques, 0 pour le jocker)
+	 * @return La carte créée
+	*/
 	public static Carte creerCarte(int symb, int num){
 		Carte c;
 		ConditionVictoire cv=null;
@@ -515,6 +566,10 @@ public class Menu extends Observable {
 		return c;
 	}
 
+	/*
+	 * Crée toutes les cartes classiques du jeu
+	 * @return La liste de toutes les cartes classiques
+	*/
 	public static List<Carte> creerToutesCartes(){
 		List<Carte> toutesCartes = new ArrayList<Carte>();
 		for (int symb=0; symb<4; symb++){
@@ -526,6 +581,10 @@ public class Menu extends Observable {
 		return toutesCartes;
 	}
 
+	/*
+	 * Crée un jeu de cartes mini (8 cartes + 1 jocker)
+	 * @return Le jeu de cartes mini créé
+	*/
 	public static List<Carte> creerMiniCartes(){
 		List<Carte> toutesCartes = new ArrayList<Carte>();
 		for (int symb=0; symb<4; symb++){
@@ -537,7 +596,11 @@ public class Menu extends Observable {
 		return toutesCartes;
 	}
 
-
+	/*
+	 * Crée un jeu de cartes en fonction du type demandé
+	 * @param type Le type de jeu ("MINI" ou autre pour le jeu complet)
+	 * @return Le jeu de cartes créé
+	*/
 	public static Jeu creerUnJeu(String type){
 		Jeu jeu = new Jeu("Jeu de carte "+type);
 
