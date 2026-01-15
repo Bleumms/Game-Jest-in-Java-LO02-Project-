@@ -28,14 +28,21 @@ public class Jeu implements Serializable{
 	*/
 	private Reference ref;
 
+	private String nom;
+
 	/*
 	 * Constructeur de Jeu initialisant la liste des cartes.
 	 * Construit un jeu vide.
 	*/
-	public Jeu() {
+	public Jeu(String n) {
 		this.cartes = new ArrayList<Carte>();
+		this.nom=n;
 	}
 
+	public String getNom(){
+		return this.nom;
+	}
+	
 	/* 
 	 * Ajoute une carte au jeu.
 	 * @param c La carte à ajouter

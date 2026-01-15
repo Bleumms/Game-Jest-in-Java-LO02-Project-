@@ -14,8 +14,9 @@ package Jest.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Joueur implements Visitable, Serializable{
+public class Joueur extends Observable implements Visitable, Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -42,17 +43,23 @@ public class Joueur implements Visitable, Serializable{
 	 * Score du joueur
 	*/
 	private int score;
+
+	protected EtatJoueur etat;
+	private int ID;
+	protected List<Integer> choix;
 	
 	/* 
 	 * Constructeur avec paramètre.
 	 * Initialise le nom du joueur et crée des listes vides pour la collection et les cartes distribuées.
 	 * @param n Le nom du joueur
 	*/
-	public Joueur(String n) {
+	public Joueur(String n, int i) {
 		this.setNom(n);
 		collection = new ArrayList<Carte>();
 		cartesDistribuees = new ArrayList<Carte>();
 		score=0;
+		this.ID=i;
+		this.etat=EtatJoueur.Initial;
 	}
 
 	/* 
@@ -63,6 +70,12 @@ public class Joueur implements Visitable, Serializable{
 		this.cartesDistribuees.add(c);
 	}
 
+	public void choixFait(){
+		this.etat=EtatJoueur.ChoixFait;
+		this.setChanged();
+		this.notifyObservers("choix faite");
+	}
+	
 	/* 
 	 * Récupère les cartes visibles et cachées à la fin de la partie.
 	 * Ajoute ces cartes à la collection du joueur.
@@ -132,6 +145,9 @@ public class Joueur implements Visitable, Serializable{
 	public void choisirCarteVisible(int i) {
 		this.carteVisible = this.cartesDistribuees.remove(i);
 		this.carteCachee = this.cartesDistribuees.remove(0);
+		this.etat=EtatJoueur.OffreFaite;
+		this.setChanged();
+		this.notifyObservers("offre faite");
 	}
 
 	/* 
@@ -160,14 +176,22 @@ public class Joueur implements Visitable, Serializable{
 	public void faireUneOffre () {
 	}
 
+	public void attendreUneOffre(){
+
+	}
+
+	public void attendreUnChoix(List<Joueur> joueurs){
+
+	}
+
 	/* 
 	 * Méthode pour choisir une carte parmi les cartes des autres joueurs
 	 * @param j La liste des joueurs en compétition
 	 * @return La liste des indices des cartes choisies
-	*/
+	*/ /*
 	public List<Integer> choisirUneCarte (List<Joueur> j){
 		return null;
-	}
+	}*/
 
 	/* 
 	 * Méthode pour choisir une de ses propres cartes à offrir
@@ -186,6 +210,10 @@ public class Joueur implements Visitable, Serializable{
 	*/
 	public int getScore() {
 		return this.score;
+	}
+
+	public List<Integer> getChoix(){
+		return this.choix;
 	}
 
 	/* 
@@ -227,6 +255,14 @@ public class Joueur implements Visitable, Serializable{
 	public Carte getCarteCachee() {
 		return this.carteCachee;
 	}
+
+	public EtatJoueur getEtat(){
+		return this.etat;
+	}
+
+	public int getID(){
+		return this.ID;
+	}
 	
 	
 	
@@ -253,6 +289,17 @@ public class Joueur implements Visitable, Serializable{
 	*/
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public void setChoix(int idJoueur, int indexCarte){
+		List<Integer> c = new ArrayList<Integer>();
+		c.add(idJoueur);
+		c.add(indexCarte);
+		this.choix=c;
+	}
+
+	public void setEtat(EtatJoueur ej){
+		this.etat=ej;
 	}
 
 }

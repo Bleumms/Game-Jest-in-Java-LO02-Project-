@@ -25,9 +25,20 @@ public class JoueurVirtuel extends Joueur {
 	 * @param n Le nom du joueur
 	 * @param strategie La stratégie à utiliser
 	*/
-	public JoueurVirtuel(String n, Strategie strategie) {
-		super(n);
+	public JoueurVirtuel(String n, int i, Strategie strategie) {
+		super(n,i);
 		this.strat = strategie;
+	}
+
+	public void attendreUneOffre(){
+		this.faireUneOffre();
+	}
+
+	public void attendreUnChoix(List<Joueur> joueurs){
+		this.choix = choisirUneCarte(joueurs);
+		this.etat=EtatJoueur.ChoixFait;
+		this.setChanged();
+		this.notifyObservers("choix fait");
 	}
 
 	/* 

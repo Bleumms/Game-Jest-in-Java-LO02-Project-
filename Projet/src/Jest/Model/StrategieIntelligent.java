@@ -28,6 +28,10 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		return "Stratégie intelligente";
 	}
 
+	public String getNom(){
+		return "Stratégie intelligente";
+	}
+
 	/*
 	 * Exécute la stratégie de faire une offre
 	 * Il choisit la carte à rendre visible en fonction de sa valeur et de son symbole.
@@ -78,7 +82,7 @@ public class StrategieIntelligent implements Strategie, Serializable{
 	 * Détermine la carte qui correspond le plus aux priorités définies.
 	 * @param joueurs La liste des joueurs en jeu
 	 * @param moiMeme Le joueur virtuel qui exécute la stratégie
-	 * @return Une liste contenant l'index du joueur choisi et l'index de la carte choisie
+	 * @return Une liste contenant l'ID du joueur choisi et l'index de la carte choisie
 	*/
 	@Override
 	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
@@ -100,7 +104,7 @@ public class StrategieIntelligent implements Strategie, Serializable{
 
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size()==1 && joueurs.contains(moiMeme)){
-			res.add(0);
+			res.add(moiMeme.getID());
 			res.add(executeChoisiUneDeSesCartes(moiMeme, aUnJocker, nbCoeurs, interesseParCoeur));
 		} else {
 			List <Joueur> joueursSansMoi = new ArrayList<Joueur>(joueurs);
@@ -158,15 +162,10 @@ public class StrategieIntelligent implements Strategie, Serializable{
 				numJoueur = Double.valueOf(alea).intValue();
 			}
 		
-			// juste l'index du joueur est pas bon car il s'est enlevé de la liste 
-			if (joueurs.contains(moiMeme)){
-				int indexMoi = joueurs.indexOf(moiMeme);
-				if (numJoueur>=indexMoi){
-					numJoueur++;
-				}
-			}
+			// récupère son ID 
+			int idJoueur = joueursSansMoi.get(numJoueur).getID();
 		
-			res.add(numJoueur);
+			res.add(idJoueur);
 			res.add(numCarte);
 		}
 		return res;

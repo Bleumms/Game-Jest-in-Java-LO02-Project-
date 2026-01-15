@@ -22,6 +22,10 @@ public class StrategieRandom implements Strategie, Serializable{
 	public String toString(){
 		return "Stratégie random";
 	}
+
+	public String getNom(){
+		return "Stratégie random";
+	}
 	
 	/*
 	 * Exécute la stratégie de faire une offre
@@ -48,23 +52,27 @@ public class StrategieRandom implements Strategie, Serializable{
 	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size() == 1 && joueurs.contains(moiMeme)) {
-			res.add(0); // de toute façon il y a qu'un joueur dans la liste donc c'est dans celui la qu'on prend la carte
+			res.add(moiMeme.getID()); // de toute façon il y a qu'un joueur dans la liste donc c'est dans celui la qu'on prend la carte
 			res.add(this.executeChoisiUneDeSesCartes());
 		} else {
 			double aleaJoueur = Math.random();
-			int numJoueur =0;
+			int idJoueur =0;
 			if (joueurs.contains(moiMeme)){
+				int numJoueur =0;
 				aleaJoueur = aleaJoueur*(joueurs.size()-1);
 				numJoueur = Double.valueOf(aleaJoueur).intValue();
 				int indexMoiMeme = joueurs.indexOf(moiMeme);
 				if (numJoueur>=indexMoiMeme){
 					numJoueur++;
 				}
+				idJoueur=joueurs.get(numJoueur).getID();
 			} else {
+				int numJoueur =0;
 				aleaJoueur = aleaJoueur*joueurs.size();
 				numJoueur = Double.valueOf(aleaJoueur).intValue();
+				idJoueur=joueurs.get(numJoueur).getID();
 			}
-			res.add(numJoueur);
+			res.add(idJoueur);
 			double aleaCarte = Math.random()*2;
 			int numCarte = Double.valueOf(aleaCarte).intValue();
 			res.add(numCarte);

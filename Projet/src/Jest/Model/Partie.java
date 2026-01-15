@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Observable;
 
 import java.io.Serializable;
 import java.io.FileOutputStream;
@@ -25,7 +26,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.*;
 
-public class Partie implements Serializable {
+public class Partie extends Observable implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,15 +60,25 @@ public class Partie implements Serializable {
 	*/
 	private int ID;
 
+	private EtatPartie etat;
+	private int compteurOffreFaite;
+	private Joueur faisSonChoix;
+	private List<Joueur> pasEncoreJoue;
+	private List<Joueur> pasEncoreDeCartePrise;
+	private List<Joueur> gagnants;
+
 	/*
 	 * Constructeur de la partie
 	*/
 	public Partie() {
 		this.dateHeureDeCreation = new Date();
 		this.participants = new ArrayList<Joueur>();
+		this.gagnants = new ArrayList<Joueur>();
 		this.pioche = new ArrayList<Carte>();
 		this.trophe = new ArrayList<Carte>();
 		this.ID = -1;
+		this.etat=EtatPartie.Initial;
+		this.faisSonChoix=null;
 	}
 
 
@@ -79,6 +90,110 @@ public class Partie implements Serializable {
 		this.participants.add(j);
 	}
 
+	public List<Joueur> getParticipants() {
+		return this.participants;
+	}
+
+	public List<Carte> getPioche(){
+		return this.pioche;
+	}
+	
+	public List<Joueur> getPasEncoreDeCartePrise(){
+		return this.pasEncoreDeCartePrise;
+	}
+
+	public List<Carte> getTrophes(){
+		return this.trophe;
+	}
+
+	public EtatPartie getEtat(){
+		return this.etat;
+	}
+
+	public List<Joueur> getGagnant(){
+		return this.gagnants;
+	}
+
+	public Joueur getfaisSonChoix(){
+		return this.faisSonChoix;
+	}
+
+	public void aPrisUneCarte(Joueur jAJouer, Joueur jPersSaCarte, int numCarte){
+		System.out.println("DEBUG : "+jAJouer.getNom()+" a pris la carte "+numCarte+" de "+jPersSaCarte.getNom());
+		pasEncoreJoue.remove(jAJouer);
+		pasEncoreDeCartePrise.remove(jPersSaCarte);
+		Carte c = jPersSaCarte.recupererCarte(numCarte);
+		jAJouer.ajouteASaCollection(c);
+		if (pasEncoreJoue.contains(jPersSaCarte)) {
+			this.faisSonChoix=jPersSaCarte;
+		} else {
+			this.faisSonChoix=null;
+		}
+
+	}
+
+	public void prochainJoueur(){
+		if (faisSonChoix==null && this.pasEncoreJoue.size()!=0) {
+			faisSonChoix = definirJoueurSuivant();
+		} 
+		if (this.pasEncoreJoue.size()==0){
+			this.etat=EtatPartie.ChoixFinis;
+			this.setChanged();
+			this.notifyObservers();
+		}
+	}
+
+	public boolean isFinDePartie(){
+		boolean plusRienADistribuer = this.pioche.size()<this.participants.size();
+		return plusRienADistribuer;
+	}
+
+	public void remettreDansPioche(){
+		List<Carte> recup = new ArrayList<Carte>();
+		for (Joueur j : this.participants) {
+			recup.add(j.remiseALaPioche());
+		}
+		this.remiseALaPioche(recup);
+	}
+
+	public void garderDerniereCarte(){
+		for (Joueur j : this.participants) {
+			j.recupFinDePartie();
+		}
+	}
+
+	public void ajouterCompteurOffreFaite(){
+		this.compteurOffreFaite++;
+		finDesOffres();
+	}
+
+	public void initialiserLeChoix(){
+		this.pasEncoreJoue= new ArrayList<Joueur>(this.participants);
+		this.pasEncoreDeCartePrise= new ArrayList<Joueur>(this.participants);
+		this.faisSonChoix=definirJoueurSuivant();
+	}
+
+	public void finDesOffres(){
+		if (this.compteurOffreFaite==this.participants.size()){
+			this.etat=EtatPartie.OffreFinis;
+			this.initialiserLeChoix();
+			this.setChanged();
+			this.notifyObservers();
+			
+		}
+	}
+
+	public void attendreUneOffre(){
+		for (int i=0;i<this.participants.size();i++) {
+			this.participants.get(i).attendreUneOffre();
+		}
+		for (Joueur j : this.participants){
+			if (j.getEtat()==EtatJoueur.OffreFaite){
+				ajouterCompteurOffreFaite();
+			}
+		}
+	}
+	
 	/*
 	 * Définit le jeu à utiliser pour la partie
 	 * @param j Le jeu à définir
@@ -113,16 +228,21 @@ public class Partie implements Serializable {
 	 * On enlève à chaque fois les cartes distribuées de la pioche, pour ne pas les redonner
 	*/
 	public void distribuer() {
-		if (this.pioche.size() >= 2*this.participants.size()) {
-			for (int i = 0; i < participants.size(); i++) {
-				Joueur j = participants.get(i);
-				j.assignerCarteDistribuees(pioche.remove(0));
-			}
-			for (int i = 0; i < participants.size(); i++) {
-				Joueur j = participants.get(i);
-				j.assignerCarteDistribuees(pioche.remove(0));
-			}
-		} 
+		//if (this.pioche.size() >= 2*this.participants.size()) { A FAIRE : PLUTOT CREER UNE EXCEPTION
+		for (int i = 0; i < participants.size(); i++) {
+			Joueur j = participants.get(i);
+			j.assignerCarteDistribuees(pioche.remove(0));
+			// j'en profite pour mettre les etats a l'inital
+			j.setEtat(EtatJoueur.Initial);
+		}
+		for (int i = 0; i < participants.size(); i++) {
+			Joueur j = participants.get(i);
+			j.assignerCarteDistribuees(pioche.remove(0));
+		}
+		this.compteurOffreFaite=0;
+		this.etat=EtatPartie.Distribué;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	/*
@@ -193,7 +313,7 @@ public class Partie implements Serializable {
 	/*
 	 * Déroulement d'un tour de jeu complet
 	 * Retourne true si la partie est terminée, false sinon
-	*/	
+	*/	/*
 	public boolean faireUnTourDeJeu() {
 		if (this.pioche.size()<this.participants.size()){
 			return true;
@@ -218,7 +338,7 @@ public class Partie implements Serializable {
 		while (joueursPasEncoreJoue.size()>0) {
 			// choisir le 1er joueur
 			if (jFaisSonChoix==null) {
-				jFaisSonChoix = definirJoueurSuivant(joueursPasEncoreJoue);
+				jFaisSonChoix = definirJoueurSuivant();
 			} 
 			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
 
@@ -254,7 +374,7 @@ public class Partie implements Serializable {
 			} else {
 				jFaisSonChoix=null;
 			}
-		}
+		} 
 		
 		// on remet a la pioche seulement si on peut encore faire un tour
 		boolean finDePartie = false;
@@ -274,7 +394,7 @@ public class Partie implements Serializable {
 		calculScore();
 		Partie.sauvegarder(this);
 		return finDePartie;
-	}
+	} */
 	
 
 	/*
@@ -307,18 +427,18 @@ public class Partie implements Serializable {
 	 * @param joueursPasEncoreJoue La liste des joueurs n'ayant pas encore joué ce tour
 	 * @return Le joueur qui doit jouer
 	*/
-	public Joueur definirJoueurSuivant(List<Joueur> joueursPasEncoreJoue) {
-		Carte CarteMax=joueursPasEncoreJoue.get(0).getCarteVisible();
+	public Joueur definirJoueurSuivant() {
+		Carte CarteMax=this.pasEncoreJoue.get(0).getCarteVisible();
 		int indexJoueur = 0;
-		for (int i=1;i<joueursPasEncoreJoue.size();i++) {
-			Carte c = joueursPasEncoreJoue.get(i).getCarteVisible();
+		for (int i=1;i<this.pasEncoreJoue.size();i++) {
+			Carte c = this.pasEncoreJoue.get(i).getCarteVisible();
 			boolean besoinChanger = this.jeu.estSupperieur(c,CarteMax);
 			if (besoinChanger) {
 				CarteMax = c;
 				indexJoueur = i;
 			}
 		}
-		return joueursPasEncoreJoue.get(indexJoueur);
+		return this.pasEncoreJoue.get(indexJoueur);
 	}
 
 	/*
@@ -342,7 +462,6 @@ public class Partie implements Serializable {
 			int indexJ = c.JoueurGagnantCarte(this.participants);
 			if (indexJ>=0){
 				this.participants.get(indexJ).ajouteASaCollection(c);
-				System.out.println("\nLe trophé "+c+" est attribué à "+this.participants.get(indexJ).getNom() + "\n("+c.getConditionVictoire()+")");
 			}
 		}
 	}
@@ -351,50 +470,29 @@ public class Partie implements Serializable {
 	 * Termine la partie en affichant les scores finaux et le gagnant
 	 * Supprime la sauvegarde de la partie
 	*/
-	public void finDePartie(){
-		System.out.println("\n\nFin de partie : ");
-		
+	public void finDePartie(){ 		
 		// Attribuer les trophés
 		this.attribuerLesTrophes();
 
 		this.calculScore();
 
 		int maxscore = this.participants.get(0).getScore();
-		List<Joueur> jMaxScore= new ArrayList<Joueur>();
-		jMaxScore.add(this.participants.get(0));
-		System.out.println("\nJoueur 1 : "+this.participants.get(0).getNom()+"\n   Score : "+this.participants.get(0).getScore()+"\n    Cartes : "+this.participants.get(0).getCollection());
+		gagnants.add(this.participants.get(0));
 		for (int i=1; i < this.participants.size(); i++){
 			Joueur j = this.participants.get(i);
-			System.out.println("\nJoueur "+(i+1)+" : "+j.getNom()+"\n   Score : "+j.getScore()+"\n    Cartes : "+j.getCollection());
 			if (j.getScore() == maxscore){
-				jMaxScore.add(j);
+				gagnants.add(j);
 			}
 			if (j.getScore() > maxscore){
 				maxscore=j.getScore();
-				jMaxScore.clear();
-				jMaxScore.add(j);
+				gagnants.clear();
+				gagnants.add(j);
 			}
 		}
-		if (jMaxScore.size()==1){
-			System.out.println("\n\nLe gagnant de la partie est "+jMaxScore.get(0).getNom()+" avec un score de "+maxscore);
-		} else {
-			System.out.println("\n\nEgalité !");
-			System.out.print("Les joueurs ");
-			for(int i=0; i<jMaxScore.size();i++){
-				System.out.print(jMaxScore.get(i));
-				if (i<jMaxScore.size()-2){
-					System.out.print(", ");
-				} else {
-					if (i<jMaxScore.size()-1){
-						System.out.print(" et ");
-					}
-				}
-			}
-			System.out.println(" ont un score de "+maxscore);
-		}
-
+		// A FAIRE PLUS TARD
+		/*
 		// Supprimer des sauvegardes parce qu'on peux pas reprendre cette partie
-		Partie.supprimerPartie(this.ID);
+		Partie.supprimerPartie(this.ID); */
 
 	}
 
