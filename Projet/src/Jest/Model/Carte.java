@@ -67,10 +67,11 @@ public class Carte implements Serializable{
 		return "Carte "+this.nom;
 	}
 
-	/* Détermine quel joueur remporte cette carte en fonction de la condition de victoire.
-	 * @param joueurs La liste des joueurs en compétition
-	 * @return L'indice du joueur gagnant dans la liste
-	 */
+	/* 
+	* Détermine quel joueur remporte cette carte en fonction de la condition de victoire.
+	* @param joueurs La liste des joueurs en compétition
+	* @return L'indice du joueur gagnant dans la liste
+	*/
 	public int JoueurGagnantCarte(List<Joueur> joueurs) {
 		return this.condition.VerificationVictoire(joueurs);
 	}

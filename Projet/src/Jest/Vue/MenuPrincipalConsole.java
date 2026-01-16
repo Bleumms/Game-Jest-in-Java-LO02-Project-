@@ -1,3 +1,8 @@
+/*
+*MenuPrincipalConsole : Classe représentant le menu principal en ligne de commande
+*@author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import java.util.Observable;
@@ -8,12 +13,15 @@ import Jest.Model.EtatMenu;
 import Jest.Model.Menu;
 import java.util.Scanner;
 
+
 public class MenuPrincipalConsole implements Observer {
 
     private Menu menu;
     private Scanner scanner;
 
-
+    /*
+    * Constructeur MenuPrincipalConsole : initialise le menu
+    */
     public MenuPrincipalConsole() {
 
         this.menu = new Menu();
@@ -23,11 +31,18 @@ public class MenuPrincipalConsole implements Observer {
 		affichage();
 	}
 
+    /*
+    * Récupère la réponse de l'utilisateur (1 ou 2)
+    * @return String : la réponse de l'utilisateur
+    */
     private String ecouterReponse(){
         System.out.print("Votre réponse : ");
         return scanner.nextLine();
     }
 
+    /*
+    * Affiche le menu principal dans le terminal de commande
+    */
     private void affichage(){
         System.out.println("     JEST     -     by Nina et Emeline     \n\n");
         System.out.println("\nQue souhaitez vous faire ?");
@@ -50,6 +65,11 @@ public class MenuPrincipalConsole implements Observer {
         }
     }
 
+    /*
+    * Met à jour l'affichage en fonction de l'état du menu
+    * @param instanceObservable : l'objet observable (le menu)
+    * @param arg1 : argument supplémentaire (non utilisé)
+    */
     public void update(Observable instanceObservable, Object arg1){
 
         // après le premier menu l'utilisateur a choisi de creer une partie
@@ -64,6 +84,9 @@ public class MenuPrincipalConsole implements Observer {
 
     }
 
+    /*
+    * Lancement de l'application
+    */
     public static void main(String[] args) {
 		MenuPrincipalConsole m = new MenuPrincipalConsole();
 	}

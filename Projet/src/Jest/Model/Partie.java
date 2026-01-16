@@ -90,34 +90,69 @@ public class Partie extends Observable implements Serializable {
 		this.participants.add(j);
 	}
 
+	/*
+	 * Retourne la liste des joueurs participants à la partie
+	 * @return La liste des joueurs
+	*/
 	public List<Joueur> getParticipants() {
 		return this.participants;
 	}
 
+	/*
+	 * Retourne la pioche de la partie
+	 * @return La liste des cartes dans la pioche
+	*/	
 	public List<Carte> getPioche(){
 		return this.pioche;
 	}
 	
+	/*
+	 * Retourne la liste des joueurs n'ayant pas encore joué ce tour
+	 * @return La liste des joueurs n'ayant pas encore joué
+	*/
 	public List<Joueur> getPasEncoreDeCartePrise(){
 		return this.pasEncoreDeCartePrise;
 	}
 
+	/*
+	 * Retourne la liste des trophées de la partie
+	 * @return La liste des cartes trophées
+	*/
 	public List<Carte> getTrophes(){
 		return this.trophe;
 	}
 
+	/*
+	 * Retourne l'état actuel de la partie
+	 * @return L'état de la partie
+	*/
 	public EtatPartie getEtat(){
 		return this.etat;
 	}
 
+	/*
+	 * Retourne la liste des gagnants de la partie
+	 * @return La liste des joueurs gagnants
+	*/
 	public List<Joueur> getGagnant(){
 		return this.gagnants;
 	}
 
+	/*
+	 * Retourne le joueur qui doit faire son choix actuellement
+	 * @return Le joueur qui doit faire son choix
+	*/
 	public Joueur getfaisSonChoix(){
 		return this.faisSonChoix;
 	}
 
+	/*
+	 * Gère le fait qu'un joueur a pris une carte à un autre joueur
+	 * Met à jour les listes des joueurs n'ayant pas encore joué et n'ayant pas encore fait prendre une carte
+	 * @param jAJouer Le joueur qui a pris la carte
+	 * @param jPersSaCarte Le joueur qui a perdu la carte
+	 * @param numCarte Le numéro de la carte prise
+	*/
 	public void aPrisUneCarte(Joueur jAJouer, Joueur jPersSaCarte, int numCarte){
 		System.out.println("DEBUG : "+jAJouer.getNom()+" a pris la carte "+numCarte+" de "+jPersSaCarte.getNom());
 		pasEncoreJoue.remove(jAJouer);
@@ -129,9 +164,11 @@ public class Partie extends Observable implements Serializable {
 		} else {
 			this.faisSonChoix=null;
 		}
-
 	}
 
+	/*
+	 * Passe au joueur suivant pour faire son choix
+	*/
 	public void prochainJoueur(){
 		if (faisSonChoix==null && this.pasEncoreJoue.size()!=0) {
 			faisSonChoix = definirJoueurSuivant();
@@ -143,11 +180,18 @@ public class Partie extends Observable implements Serializable {
 		}
 	}
 
+	/*
+	 * Vérifie si la partie doit se terminer
+	 * @return true si la partie est terminée, false sinon
+	*/
 	public boolean isFinDePartie(){
 		boolean plusRienADistribuer = this.pioche.size()<this.participants.size();
 		return plusRienADistribuer;
 	}
 
+	/*
+	 * Remet toutes les cartes des joueurs dans la pioche
+	*/
 	public void remettreDansPioche(){
 		List<Carte> recup = new ArrayList<Carte>();
 		for (Joueur j : this.participants) {
@@ -156,23 +200,37 @@ public class Partie extends Observable implements Serializable {
 		this.remiseALaPioche(recup);
 	}
 
+	/*
+	 * Chaque joueur garde sa dernière carte
+	*/
 	public void garderDerniereCarte(){
 		for (Joueur j : this.participants) {
 			j.recupFinDePartie();
 		}
 	}
 
+	/*
+	 * Retourne l'identifiant unique de la partie
+	 * @return L'identifiant de la partie
+	*/
 	public void ajouterCompteurOffreFaite(){
 		this.compteurOffreFaite++;
 		finDesOffres();
 	}
 
+	/*
+	 * Initialise les listes pour le choix des cartes
+	*/
 	public void initialiserLeChoix(){
 		this.pasEncoreJoue= new ArrayList<Joueur>(this.participants);
 		this.pasEncoreDeCartePrise= new ArrayList<Joueur>(this.participants);
 		this.faisSonChoix=definirJoueurSuivant();
 	}
 
+	/*
+	 * Vérifie si toutes les offres ont été faites
+	 * Si oui, met à jour l'état de la partie et initialise le choix des cartes
+	*/
 	public void finDesOffres(){
 		if (this.compteurOffreFaite==this.participants.size()){
 			this.etat=EtatPartie.OffreFinis;
@@ -183,6 +241,10 @@ public class Partie extends Observable implements Serializable {
 		}
 	}
 
+	/*
+	 * Demande à chaque joueur d'attendre une offre des autres joueurs
+	 * Met à jour le compteur des offres faites
+	*/
 	public void attendreUneOffre(){
 		for (int i=0;i<this.participants.size();i++) {
 			this.participants.get(i).attendreUneOffre();
@@ -248,6 +310,7 @@ public class Partie extends Observable implements Serializable {
 	/*
 	 * Affiche les informations de la partie
 	 * Inclut l'ID, la date de création, les participants et les trophées
+	 * @return Une chaîne de caractères représentant la partie
 	*/
 	@Override
 	public String toString() {
@@ -272,7 +335,7 @@ public class Partie extends Observable implements Serializable {
 		for (int i=0; i<this.trophe.size();i++){
 			Carte c = this.trophe.get(i);
 			message=message+c.getNom()+" : "+c.getConditionVictoire();
-			 if (i<this.participants.size()-1){
+			if (i<this.participants.size()-1){
 				message=message+"   ;   ";
 			} 
 		}
@@ -489,10 +552,6 @@ public class Partie extends Observable implements Serializable {
 				gagnants.add(j);
 			}
 		}
-		// A FAIRE PLUS TARD
-		/*
-		// Supprimer des sauvegardes parce qu'on peux pas reprendre cette partie
-		Partie.supprimerPartie(this.ID); */
 
 	}
 
@@ -529,17 +588,16 @@ public class Partie extends Observable implements Serializable {
 			}
 			//dernier nom de sauvegarde
 			int max = -1;
-	    	for (String s : fichiers) {
-    	    	int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
-		        if (x > max) {
-    		        max = x;
-        		}
-	    	}
+			for (String s : fichiers) {
+				int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
+				if (x > max) {
+					max = x;
+				}
+			}
 			p.setID(max+1);
 		}
 		String titre = "Partie_"+(p.getID())+".obj";
-        try (ObjectOutputStream oos =
-                     new ObjectOutputStream(new FileOutputStream(titre))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(titre))) {
 
             oos.writeObject(p);
 
@@ -558,9 +616,9 @@ public class Partie extends Observable implements Serializable {
 		String titre = "Partie_"+ID+".obj";
 		Partie p=null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(titre))) {
-	        p = (Partie) ois.readObject();
-    	    System.out.println("Partie chargée avec succès");
-        	
+			p = (Partie) ois.readObject();
+			System.out.println("Partie chargée avec succès");
+        
 		} catch (IOException | ClassNotFoundException e){
 			System.out.println("Problème de chargement de la partie");
 		}
@@ -575,9 +633,9 @@ public class Partie extends Observable implements Serializable {
 	public static Partie charger(String nomFichier) {
         Partie p=null;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFichier))) {
-	        p = (Partie) ois.readObject();
-    	    System.out.println("Partie chargée avec succès");
-        	
+			p = (Partie) ois.readObject();
+			System.out.println("Partie chargée avec succès");
+        
 		} catch (IOException | ClassNotFoundException e){
 			System.out.println("Problème de chargement de la partie");
 		}
@@ -599,12 +657,12 @@ public class Partie extends Observable implements Serializable {
 	 * @return true si la suppression a réussi, false sinon
 	*/
 	public static boolean supprimerPartie(int ID) {
-    	String nomFichier = "Partie_" + ID + ".obj";
-    	File f = new File(nomFichier);
-	    if (f.exists()) {
+		String nomFichier = "Partie_" + ID + ".obj";
+		File f = new File(nomFichier);
+		if (f.exists()) {
     	    return f.delete(); // true si suppression OK
-	    } else {
+		} else {
     	    return false; // fichier inexistant
-    	}
+		}
 	}
 }

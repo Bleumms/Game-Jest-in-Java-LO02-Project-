@@ -205,7 +205,7 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		// PRIORITE 2
 		if (nbCoeurs==0) {
 			if (cV instanceof Jocker){
-				 return 0;
+				return 0;
 			}
 			if (cC instanceof Jocker){
 				return 1;

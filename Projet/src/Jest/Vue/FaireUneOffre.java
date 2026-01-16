@@ -1,3 +1,9 @@
+/* 
+ * Classe FaireUneOffre : affiche une fenêtre permettant au joueur de faire une offre en choisissant une carte à rendre visible
+ * 
+ * @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Model.EtatJoueur;
@@ -28,13 +34,23 @@ public class FaireUneOffre implements Observer {
     private JButton btnCarte1;
     private JButton btnCarte2;
 
+    /*
+    * Met à jour l'affichage lorsque le joueur a fait son offre
+    * @param instanceObservable : l'objet observable (le joueur)
+    * @param arg1 : argument supplémentaire (non utilisé)
+    */
     public void update(Observable instanceObservable, Object arg1){
-         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
+        if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
             //System.out.println("DEBUG : UPDATE JOUEUR : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
             frame.dispose();
         }
     }
 
+    /*
+    * Constructeur FaireUneOffre : initialise l'affichage pour que le joueur fasse une offre
+    * @param p : la partie en cours
+    * @param j : le joueur qui fait l'offre
+    */
     public FaireUneOffre(Partie p, Joueur j){
         this.joueur=j;
         this.partie=p;
@@ -47,23 +63,31 @@ public class FaireUneOffre implements Observer {
         new JoueurControler(this.partie, this.joueur, this.btnCarte1, this.btnCarte2);
     }
 
+    /*
+    * Retourne la frame de l'affichage pour faire une offre
+    * @return JFrame : la frame de l'affichage pour faire une offre
+    */
     public JFrame getFrame(){
         return this.frame;
     }
 
+    /*
+    * Initialise et affiche la fenêtre permettant au joueur de faire une offre en choisissant une carte à rendre visible
+    */
     private void interfaceFaireUneOffre() throws IOException{
         //Creating the Frame
-    	frame = new JFrame();
+        frame = new JFrame();
 		frame.setBounds(150, 110, 400, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
+        //Affichage de la question
 		JLabel label = new JLabel("Quelle carte voulez vous rendre visible ? ");
 		label.setBounds(30, 30, 350, 20);
 		frame.getContentPane().add(label);
 
         List<Carte> cartes = this.joueur.getCartesDistribuees();
-        //carte 1
+        //Affichage carte 1
         BufferedImage img1 = ImageIO.read(new File("Carte.png"));
         btnCarte1 = new JButton(new ImageIcon(img1));
         btnCarte1.setBounds(90, 75, 100, 150);
@@ -78,7 +102,7 @@ public class FaireUneOffre implements Observer {
 
         frame.getContentPane().add(btnCarte1);
 
-        //carte 2
+        //Affichage carte 2
         BufferedImage img2 = ImageIO.read(new File("Carte.png"));
         btnCarte2 = new JButton(new ImageIcon(img2));
         btnCarte2.setBounds(210, 75, 100, 150);

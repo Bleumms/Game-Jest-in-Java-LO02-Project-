@@ -1,3 +1,8 @@
+/*
+* ChoisireCarteControler : Controleur pour le choix de carte lors d'une offre
+* @author Nina et Emeline
+*/
+
 package Jest.Controler;
 import Jest.Model.Joueur;
 import Jest.Model.Partie;
@@ -9,13 +14,40 @@ import java.util.List;
 import javax.swing.*;
 
 public class ChoisiCarteControler {
+
+    /*
+    *La partie en cours
+    */
     private Partie partie;
+
+    /*
+    * Le joueur qui doit faire un choix
+    */
     private Joueur j;
+
+    /*
+    * Les joueurs disposant d'offres
+    */
     private List<Joueur> jDispos;
+
+    /*
+    * Les boutons correspondant aux offres des joueurs
+    */
     private List<ButtonGroup> toutesLesOffres;
+
+    /*
+    * Indique si le controleur est actif ou non
+    */
     private boolean actif;
 
 
+    /*    
+    * Constructeur du controleur pour le choix de carte lors d'une offre
+    * @param partie La partie en cours
+    * @param j Le joueur qui doit faire un choix
+    * @param jDispos Les joueurs disposant d'offres
+    * @param toutesLesOffres Les boutons correspondant aux offres des joueurs
+    */
     public ChoisiCarteControler(Partie partie, Joueur j, List<Joueur> jDispos, List<ButtonGroup> toutesLesOffres){
         this.partie=partie;
         this.j=j;
@@ -26,6 +58,9 @@ public class ChoisiCarteControler {
         initBoutonsCarte();
     }
 
+    /*
+    * Initialise les boutons pour le choix de carte
+    */
     private void initBoutonsCarte(){
         if (actif){
             for (Joueur jD : this.jDispos){

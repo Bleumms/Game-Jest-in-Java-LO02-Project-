@@ -1,3 +1,8 @@
+/*
+* JoueurControler : Controleur pour les actions d'un joueur 
+* @author Nina et Emeline
+*/
+
 package Jest.Controler;
 
 import Jest.Model.Joueur;
@@ -17,6 +22,13 @@ public class JoueurControler {
     private JButton Carte1;
     private JButton Carte2;
 
+    /*    
+    * Constructeur du controleur pour les actions du joueur lors d'une offre
+    * @param p La partie en cours
+    * @param j Le joueur contrôlé
+    * @param Carte1 Le bouton de la première carte
+    * @param Carte2 Le bouton de la deuxième carte
+    */
     public JoueurControler(Partie p, Joueur j, JButton Carte1, JButton Carte2){
         this.joueur=j;
         this.partie=p;

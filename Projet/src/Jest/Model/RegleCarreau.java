@@ -45,17 +45,4 @@ public class RegleCarreau extends Regle {
 		}
 	}
 
-	/*
-	 * Modifie la valeur d'une carte spécifique selon la règle des Carreaux
-	 * @param c La carte à modifier
-	 * @param toutesLesCartes La liste de toutes les cartes du jeu
-	 * @return Une liste contenant la nouvelle valeur et le nouveau multiplicateur
-	*//*
-	 * // renvoie la bonne valeur ou à ignorer, ignorer si le deuxieme int =0 public
-	 * List<Integer> modifierValeurCarte(Carte c, List<Carte> toutesLesCartes) {
-	 * List<Integer> res = new ArrayList<Integer>(); if (c instanceof CarteClassique
-	 * && c.getSymbole() == Symbole.CARREAU) { int num = c.getNumero();
-	 * res.add(-num); res.add(1); return res; } else { return
-	 * super.modifierValeurCarte(c, toutesLesCartes); } }
-	*/
 }

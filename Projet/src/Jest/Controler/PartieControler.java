@@ -1,3 +1,8 @@
+/*
+* PartieControler : Controleur pour la gestion de la partie
+* @author Emeline et Nina
+*/
+
 package Jest.Controler;
 
 import Jest.Model.Partie;
@@ -13,6 +18,11 @@ public class PartieControler {
     private Partie partie;
     private JButton jouer;
 
+    /*    
+    * Constructeur du controleur pour la gestion de la partie
+    * @param partie La partie en cours
+    * @param jouer Le bouton pour jouer un tour
+    */
     public PartieControler(Partie partie, JButton jouer){
         this.partie=partie;
         this.jouer=jouer;
@@ -20,12 +30,15 @@ public class PartieControler {
         initJouer();
     }
 
+    /*
+    * Initialise le bouton pour jouer un tour
+    */
     private void initJouer(){
 		this.jouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
                 partie.distribuer();
                 AffichageTour window2 = new AffichageTour(1);
-			    window2.getFrame().setVisible(true);
+                window2.getFrame().setVisible(true);
                 partie.attendreUneOffre();
 			}
 		});

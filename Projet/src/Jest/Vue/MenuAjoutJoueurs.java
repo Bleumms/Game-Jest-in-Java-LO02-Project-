@@ -1,7 +1,12 @@
+/*
+* Classe MenuAjoutJoueurs : gère l'interface d'ajout des joueurs au menu principal
+* @author Nina et Emeline
+*/
+
 package Jest.Vue;
 
 import Jest.Controler.MenuJoueursControler;
-import  Jest.Model.Menu;
+import Jest.Model.Menu;
 import Jest.Model.Strategie;
 import Jest.Model.EtatMenu;
 
@@ -13,6 +18,9 @@ public class MenuAjoutJoueurs implements Observer {
 	
 	private JFrame frame;
 
+    /*
+    * Le menu principal dans lequel on ajoute les joueurs
+    */
     private Menu menu;
 
     private JButton valider;
@@ -22,7 +30,15 @@ public class MenuAjoutJoueurs implements Observer {
     private int compteNumeroJoueur;
 
 
-
+    /*
+    * Met à jour l'affichage en fonction de l'état du menu
+    * @param instanceObservable : l'objet observable (le menu)
+    * @param arg1 : argument supplémentaire (non utilisé)
+    * 
+    * - Si la validation a échoué, affiche un message d'erreur
+    * - Si un nouveau joueur doit être ajouté, réinitialise l'interface pour le prochain joueur
+    * - Si tous les joueurs ont été ajoutés, lance la partie
+    */
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné 
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueursAvecErreur){
@@ -47,6 +63,9 @@ public class MenuAjoutJoueurs implements Observer {
 		}
 	}
 
+    /*
+    * Ajoute du message d'erreur à l'interface
+    */
     private void ajoutMessageErreur(){
 		JLabel label3 = new JLabel("Attention, les informations sont mal remplis !");
         JLabel label4 = new JLabel("(Pensez a faire Entrer pour contabiliser la saisie)");
@@ -60,6 +79,9 @@ public class MenuAjoutJoueurs implements Observer {
         content.repaint();
     }
 
+    /*
+    * Enlève le message d'erreur de l'interface
+    */
     private void enleverMessageErreur(){
         Component[] components = frame.getContentPane().getComponents();
         int compteur =0;
@@ -75,10 +97,18 @@ public class MenuAjoutJoueurs implements Observer {
         frame.getContentPane().repaint();
     }
 
+    /*
+    * Retourne la frame de l'interface d'ajout des joueurs
+    * @return JFrame : la frame de l'interface d'ajout des joueurs
+    */
     public JFrame getFrame(){
         return this.frame;
     }
 
+    /*
+    * Constructeur MenuAjoutJoueurs : initialise l'interface d'ajout des joueurs
+    * @param m : le menu principal
+    */
 	public MenuAjoutJoueurs(Menu m) {
 
         this.menu = m;
@@ -90,6 +120,9 @@ public class MenuAjoutJoueurs implements Observer {
         
 	}
 
+    /*
+    * Affiche les options de stratégie si le joueur ajouté est un joueur virtuel
+    */
     private void interfaceAjouteUnJoueurVirtuel(){
         Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
         while (buttons.hasMoreElements()) {
@@ -98,6 +131,9 @@ public class MenuAjoutJoueurs implements Observer {
         }
     }
 
+    /*
+    * Cache les options de stratégie si le joueur ajouté est un joueur réel
+    */
     private void interfaceAjouteUnJoueurNonVirtuel(){
         Enumeration<AbstractButton> buttons = radiosBoutonsStrat.getElements();
         while (buttons.hasMoreElements()) {
@@ -106,6 +142,10 @@ public class MenuAjoutJoueurs implements Observer {
         }
     }
 
+    /*
+    * Initialise et affiche la fenêtre d'ajout d'un joueur
+    * Gestion des affichages des types de joueurs et des stratégies jusqu'à la validation
+    */
 	private void interfaceAjouteUnJoueur() {
 
 		//Creating the Frame

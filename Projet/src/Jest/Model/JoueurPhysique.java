@@ -23,12 +23,19 @@ public class JoueurPhysique extends Joueur{
 		super(n,i);
 	}
 
+	/* 
+	 * Permet au joueur physique d'attendre une offre des autres joueurs
+	*/
 	public void attendreUneOffre(){
 		this.etat=EtatJoueur.AttenteOffre;
 		this.setChanged();
 		this.notifyObservers("en attente d'une offre");
 	}
 
+	/* 
+	 * Permet au joueur physique de choisir un joueur
+	 * @param joueurs La liste des joueurs en compétition
+	*/
 	public void attendreUnChoix(List<Joueur> joueurs){
 		this.etat=EtatJoueur.AttenteChoix;
 		this.setChanged();

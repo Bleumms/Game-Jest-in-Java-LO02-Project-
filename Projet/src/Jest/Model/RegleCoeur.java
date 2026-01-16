@@ -58,23 +58,6 @@ public class RegleCoeur extends Regle {
 		}
 	}
 
-	/* 
-	 * Modifie la valeur d'une carte spécifique selon la règle des Cœurs
-	 * @param c La carte à modifier
-	 * @param toutesLesCartes La liste de toutes les cartes du jeu
-	 * @return Une liste contenant la nouvelle valeur et le nouveau multiplicateur
-	*//*
-	 * @Override
-	 * public List<Integer> modifierValeurCarte(Carte c, List<Carte>
-	 * toutesLesCartes) { if (c instanceof CarteClassique && c.getSymbole() ==
-	 * Symbole.COEUR) { List<Integer> res = new ArrayList<Integer>(); int num =
-	 * c.getNumero(); boolean possedeJocker = possedeUnJocker(toutesLesCartes);
-	 * boolean tousLesCoeurs = possedeTousLesCoeurs(toutesLesCartes); if
-	 * (possedeJocker == false) { res.add(0); } else { if (tousLesCoeurs==false) {
-	 * res.add(-num); } else { res.add(num); } } res.add(1); return res; } else {
-	 * return super.modifierValeurCarte(c, toutesLesCartes); } }
-	*/
-
 	/*
 	 * Vérifie si la liste de cartes contient un Jocker
 	 * @param cartes La liste des cartes à vérifier
