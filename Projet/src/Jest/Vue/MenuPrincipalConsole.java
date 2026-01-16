@@ -14,6 +14,7 @@ import Jest.Model.Menu;
 import java.util.Scanner;
 
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class MenuPrincipalConsole implements Observer {
 
     private Menu menu;

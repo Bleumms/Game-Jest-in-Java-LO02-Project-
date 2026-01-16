@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+@SuppressWarnings("unused")
 public class FinDePartie {
     
     private JFrame frame;

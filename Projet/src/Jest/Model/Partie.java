@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.*;
 
+@SuppressWarnings("deprecation")
 public class Partie extends Observable implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class MenuCreerPartie implements Observer {
 	
 	private JFrame frame;

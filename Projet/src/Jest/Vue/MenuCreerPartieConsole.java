@@ -8,6 +8,7 @@ import Jest.Model.EtatMenu;
 import Jest.Model.Menu;
 import java.util.Scanner;
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class MenuCreerPartieConsole implements Observer {
 
     private Menu menu;

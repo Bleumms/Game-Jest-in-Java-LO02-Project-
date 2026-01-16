@@ -21,6 +21,7 @@ import javax.swing.*;
 
 
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class ReprendrePartie implements Observer {
 	
 	private JFrame frame;

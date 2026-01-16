@@ -15,6 +15,7 @@ import java.util.Enumeration;
 import javax.swing.*;
 
 
+@SuppressWarnings("unused")
 public class MenuJoueursControler {
     private Menu menu;
 

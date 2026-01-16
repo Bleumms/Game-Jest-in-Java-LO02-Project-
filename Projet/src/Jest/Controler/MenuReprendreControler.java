@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.util.*;
 
 
+@SuppressWarnings("unused")
 public class MenuReprendreControler {
     private JFrame frame;
 	private List<JButton> boutonsJeu;

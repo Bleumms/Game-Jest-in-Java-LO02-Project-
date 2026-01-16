@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+@SuppressWarnings("deprecation")
 public class Joueur extends Observable implements Visitable, Serializable{
 
     private static final long serialVersionUID = 1L;

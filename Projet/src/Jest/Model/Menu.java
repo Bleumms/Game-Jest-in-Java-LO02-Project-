@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 
+@SuppressWarnings("deprecation")
 public class Menu extends Observable {
 	private EtatMenu etat;
 	private int jeuSelectionne;

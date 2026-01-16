@@ -15,6 +15,7 @@ import java.util.*;
 import javax.swing.*;
 
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class MenuPrincipal implements Observer {
 	
 	private JFrame frame;

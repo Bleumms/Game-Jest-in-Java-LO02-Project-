@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.*;
 
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class FaireUneOffre implements Observer {
     
     private JFrame frame;

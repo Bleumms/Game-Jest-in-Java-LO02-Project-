@@ -16,6 +16,7 @@ import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+@SuppressWarnings({ "unused", "deprecation" })
 public class ReprendrePartieConsole implements Observer {
 
     private Menu menu;

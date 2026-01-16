@@ -15,6 +15,7 @@ import javax.swing.*;
 
 import org.w3c.dom.events.MouseEvent;
 
+@SuppressWarnings("unused")
 public class JoueurControler {
 
     private Joueur joueur;

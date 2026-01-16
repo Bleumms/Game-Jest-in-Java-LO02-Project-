@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+@SuppressWarnings("unused")
 public class ChoisiCarteControler {
 
     /*

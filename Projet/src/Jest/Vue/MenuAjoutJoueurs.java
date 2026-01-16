@@ -14,6 +14,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+@SuppressWarnings("deprecation")
 public class MenuAjoutJoueurs implements Observer {
 	
 	private JFrame frame;

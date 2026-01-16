@@ -15,6 +15,7 @@ import java.util.Enumeration;
 import javax.swing.*;
 
 
+@SuppressWarnings("unused")
 public class MenuCreerControler {
     private Menu menu;
 	private ButtonGroup radiosBoutonsJeux;
