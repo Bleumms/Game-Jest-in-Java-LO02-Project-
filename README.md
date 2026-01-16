@@ -54,7 +54,7 @@ Le projet met en œuvre plusieurs concepts avancés de programmation orientée o
 - **Interface console** : Interaction claire et intuitive
 - **Interface graphique** : Swing avec pattern MVC
 - **Architecture modulaire** : Ajout facile de nouvelles règles et stratégies
-- **Jeux personnalisables** : Mode "MINI" (9 cartes) et "TOUT" (17 cartes), susceptible d'y avoir des ajouts
+- **Jeux personnalisables** : Mode "MINI" (9 cartes) et "Classique" (17 cartes), ainsi que 4 autres différents jeux possibles!
 
 ### 🧩 Composants du Jeu
 - **17 cartes** : 4 couleurs (♠️ Pique, ♣️ Trèfle, ♦️ Carreau, ♥️ Cœur) × 4 valeurs (1-4) + 1 Jocker
