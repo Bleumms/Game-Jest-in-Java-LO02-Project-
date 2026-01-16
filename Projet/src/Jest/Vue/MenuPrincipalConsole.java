@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import Jest.Controler.MenuDebutControler;
+import Jest.Model.EtatMenu;
 import Jest.Model.Menu;
 import java.util.Scanner;
 
@@ -53,10 +54,12 @@ public class MenuPrincipalConsole implements Observer {
             String rep = ecouterReponse();
             if (rep.charAt(0)=='1'){
                 System.out.println("\nVous avez choisi de créer une nouvelle partie !");
+                menu.creerPartie();
                 valide=true;
             } 
             if (rep.charAt(0)=='2' ){
                 System.out.println("\nVous avez choisi de reprendre une partie !");
+                menu.reprendrePartie();
                 valide=true;
             }
         }
@@ -68,6 +71,17 @@ public class MenuPrincipalConsole implements Observer {
     * @param arg1 : argument supplémentaire (non utilisé)
     */
     public void update(Observable instanceObservable, Object arg1){
+
+        // après le premier menu l'utilisateur a choisi de creer une partie
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartie){
+			new MenuCreerPartieConsole(this.menu);
+		}
+
+		//  après le premier menu l'utilisateur a choisi de reprendre une par
+		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.ReprendrePartie){
+			new ReprendrePartieConsole(menu);
+		}
+
     }
 
     /*
