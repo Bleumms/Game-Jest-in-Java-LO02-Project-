@@ -236,7 +236,7 @@ public class Menu extends Observable {
 			if (numero>0 && numero<=valsAcceptable.size()) {
 				repValide = true;
 			} else if (repValide==false) {
-				System.out.println("Réponse invalide, in n'y a pas de " + numero);
+				System.out.println("Réponse invalide, il n'y a pas de " + numero);
 			}
 		}
 		return numero;
@@ -256,9 +256,11 @@ public class Menu extends Observable {
 	*/
 	public Partie creerUnePartie() {
 		Partie p = new Partie();
+
 		// ajouter un jeu
 		Jeu jeu = choixDuJeu(this.jeuxExistants);
 		p.choisirUnJeu(jeu);
+
 		// ajouter des joueurs
 		List<Joueur> joueurs = choixDesJoueurs(this.strategiesDisponibles);
 		for (int i=0; i<joueurs.size(); i++) {
@@ -273,7 +275,6 @@ public class Menu extends Observable {
 	 * @return Le jeu choisi
 	*/
 	private Jeu choixDuJeu(List<Jeu> jeux) {
-		// Verifier que jeux non vide !!
 		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		boolean repValide = false;
@@ -388,16 +389,6 @@ public class Menu extends Observable {
 
 
 
-
-
-
-
-
-
-
-
-
-
 	// CREER LES ELEMENTS DE BASE
 
 	/*
@@ -405,11 +396,25 @@ public class Menu extends Observable {
 	*/
 	public void creerLesElementsDeBase(){
 		// Le jeu n°1:
-		Jeu jeu = creerUnJeu("TOUT");
+		// Le jeu de base
+		Jeu jeu = creerUnJeu("CLASSIQUE");
 		this.jeuxExistants.add(jeu);
 		// Le jeu n°2 :
+		// Le jeu version mini
 		Jeu jeu2 = creerUnJeu("MINI");
 		this.jeuxExistants.add(jeu2);
+		// Le jeu complet étendu
+		Jeu jeu3 = creerUnJeu("ETENDU");
+		this.jeuxExistants.add(jeu3);
+		//Le jeu simple avec les extensions en plus
+		Jeu jeu4 = creerUnJeu("CLASSIQUE+EXTENSION");
+		this.jeuxExistants.add(jeu4);
+		// Le jeu version mini avec extensions
+		Jeu jeu5 = creerUnJeu("MINI+EXTENSION");
+		this.jeuxExistants.add(jeu5);
+		// Le jeu étendu avec en plus extensions
+		Jeu jeu6 = creerUnJeu("ETENDU+EXTENSION");
+		this.jeuxExistants.add(jeu6);
 
 		this.strategiesDisponibles.add(new StrategieRandom());
 		this.strategiesDisponibles.add(new StrategieIntelligent());
@@ -436,6 +441,7 @@ public class Menu extends Observable {
 
 	/*
 	 * Crée une carte en fonction de son symbole et de sa valeur
+	 * Ajoute la condition de victoire associée à la carte
 	 * @param symb Le symbole de la carte (0=PIQUE, 1=TREFLE, 2=CARREAU, 3=COEUR)
 	 * @param num La valeur de la carte (1 à 4 pour les cartes classiques, 0 pour le jocker)
 	 * @return La carte créée
@@ -469,6 +475,26 @@ public class Menu extends Observable {
 							cv= new ConditionMaxMinSymbole(-1,Symbole.TREFLE);
 							break;
 
+						case 5: 
+							cv = new ConditionMaxMinSymbole(1, Symbole.PIQUE);
+							break;
+
+						case 6: 
+							cv = new ConditonPlusCarteValeur(7); 
+							break;
+
+						case 7:
+							cv = new ConditonPlusCarteValeur(8); 
+							break;
+
+						case 8: 
+							cv = new ConditionMaxMinSymbole(-1, Symbole.PIQUE); 
+							break;
+
+						case 9: 
+							cv = new ConditionMaxScore(true); 
+							break;
+
 						default:
 							break;
 					}
@@ -493,6 +519,26 @@ public class Menu extends Observable {
 							cv= new ConditionMaxMinSymbole(-1,Symbole.PIQUE);
 							break;
 
+						case 5: 
+							cv = new ConditonPlusCarteValeur(5); 
+							break;
+
+						case 6: 
+							cv = new ConditionMaxMinSymbole(1, Symbole.TREFLE); 
+							break;
+
+						case 7: 
+							cv = new ConditonPlusCarteValeur(6); 
+							break;
+
+						case 8: 
+							cv = new ConditionMaxMinSymbole(-1, Symbole.TREFLE); 
+							break;
+
+						case 9: 
+							cv = new ConditionJocker(); 
+							break;
+
 						default:
 							break;
 					}
@@ -515,6 +561,26 @@ public class Menu extends Observable {
 
 						case 4:
 							cv= new ConditionMaxScore(false);
+							break;
+
+						case 5: 
+							cv = new ConditonPlusCarteValeur(9); 
+							break;
+
+						case 6: 
+							cv = new ConditionMaxMinSymbole(1, Symbole.CARREAU); 
+							break;
+
+						case 7: 
+							cv = new ConditionMaxMinSymbole(-1, Symbole.CARREAU); 
+							break;
+
+						case 8: 
+							cv = new ConditonPlusCarteValeur(8); 
+							break;
+
+						case 9: 
+							cv = new ConditionMaxScore(false); 
 							break;
 
 						default:
@@ -568,19 +634,114 @@ public class Menu extends Observable {
 	}
 
 	/*
+	 * Crée un jeu de cartes étendu (28 cartes + Jocker)
+	 * @return Le jeu de cartes étendu créé
+	*/
+	public static List<Carte> creerEtenduCartes(){
+		List<Carte> toutesCartes = new ArrayList<Carte>();
+		for (int symb=0; symb<4; symb++){
+			for (int num=1; num<8 ; num++){
+				toutesCartes.add(creerCarte(symb,num));
+			}
+		}
+		toutesCartes.add(creerCarte(0,0));
+		return toutesCartes;
+	}
+
+	/*
+	 * Crée les cartes de l'extension (8 cartes)
+	 * @return La liste des cartes de l'extension
+	*/
+	public static List<Carte> creerCartesExtension(){
+		List<Carte> cartesExtension = new ArrayList<Carte>();
+		for (int symb=0; symb<4; symb++){
+			for (int num=8; num<10 ; num++){
+				cartesExtension.add(creerCarte(symb,num));
+			}
+		}
+		return cartesExtension;
+	}
+
+	/*
+	 * Crée toutes les cartes classiques du jeu avec les cartes de l'extension
+	 * @return La liste de toutes les cartes classiques avec extension
+	*/
+	public static List <Carte> creerToutesCartesAvecExtension(){
+		List<Carte> toutesCartes = creerToutesCartes();
+		List<Carte> cartesExtension = creerCartesExtension();
+		toutesCartes.addAll(cartesExtension);
+		return toutesCartes;
+	}
+
+	/*
+	 * Crée un jeu de cartes mini (8 cartes + 1 jocker) avec les cartes de l'extension
+	 * @return Le jeu de cartes mini avec extension créé
+	*/
+	public static List <Carte> creerMiniAvecExtension(){
+		List<Carte> toutesCartes = creerMiniCartes();
+		List<Carte> cartesExtension = creerCartesExtension();
+		toutesCartes.addAll(cartesExtension);
+		return toutesCartes;
+	}
+
+	/*
+	 * Crée un jeu de cartes étendu (28 cartes + Jocker) avec les cartes de l'extension
+	 * @return Le jeu de cartes étendu avec extension créé
+	*/
+	public static List <Carte> creerEtenduAvecExtension(){
+		List<Carte> toutesCartes = creerEtenduCartes();
+		List<Carte> cartesExtension = creerCartesExtension();
+		toutesCartes.addAll(cartesExtension);
+		return toutesCartes;
+	}
+
+
+	/*
 	 * Crée un jeu de cartes en fonction du type demandé
-	 * @param type Le type de jeu ("MINI" ou autre pour le jeu complet)
+	 * @param type Le type de jeu (String avec le nom du type)
 	 * @return Le jeu de cartes créé
 	*/
 	public static Jeu creerUnJeu(String type){
-		Jeu jeu = new Jeu("Jeu de carte "+type);
 
+		Jeu jeu = new Jeu("Jeu de carte "+type);
 		List<Carte> Cartes=null;
-		if (type=="MINI"){
-			Cartes = creerMiniCartes();
-		} else {
-			Cartes = creerToutesCartes();
+
+		switch (type) {
+			case "MINI":
+				// 9 cartes : 4 couleurs × 2 valeurs + Jocker
+				Cartes = creerMiniCartes();
+				break;
+
+			case "CLASSIQUE":
+				// 17 cartes : 4 couleurs × 4 valeurs + Jocker
+				Cartes = creerToutesCartes();
+				break;
+
+			case "ETENDU":
+				// 29 cartes : le Classique + cartes 5 jusqu'au 7
+				Cartes = creerToutesCartesAvecExtension();
+				break;
+
+			case "MINI+EXTENSION":
+				// Jeu mini avec extensions : 17 cartes : 4 couleurs × 2 valeurs + Jocker + extensions
+				Cartes = creerMiniCartes();
+				break;
+
+			case "CLASSIQUE+EXTENSION":
+				// Jeu basic avec extensions : 25 cartes : 4 couleurs × 4 valeurs + Jocker + extensions
+				Cartes = creerToutesCartes();
+				break;
+
+			case "ETENDU+EXTENSION":
+				// Jeu étendu avec extensions : 37 cartes : 4 couleurs × 7 valeurs + Jocker + extensions
+				Cartes = creerToutesCartesAvecExtension();
+				break;
+
+			default:
+				Cartes = creerToutesCartes();
+				break;
 		}
+
 		jeu.ajouterDesCartes(Cartes);
 
 		Reference r = creerReference();
