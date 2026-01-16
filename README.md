@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Java](https://img.shields.io/badge/Java-17+-orange?style=flat&logo=java)
+![Java](https://img.shields.io/badge/Java-21-orange?style=flat&logo=java)
 ![Maven](https://img.shields.io/badge/Maven-3.8+-blue?style=flat&logo=apachemaven)
 ![Last Commit](https://img.shields.io/github/last-commit/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&logo=git)
 
