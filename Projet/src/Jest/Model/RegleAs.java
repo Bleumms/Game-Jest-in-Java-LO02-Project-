@@ -27,12 +27,6 @@ public class RegleAs extends Regle {
 		return "RegleAs";
 	}
 
-	
-
-	// !! Ca marche qu'il passe avant ou après chaque règle SAUF la règle double
-	// dans le cas où on a double as noir.
-	// Pour cette raison, cette méthode doit nécessairement passer avant
-	// NORMALEMENT BUG PATCHER, A VERIFIER
 	/*
 	 * Modifie la valeur des cartes selon la règle des As
 	 * As vaut 5 s'il n'y a pas un autre As de même couleur
@@ -56,19 +50,6 @@ public class RegleAs extends Regle {
 		}
 	}
 
-	/*
-	 * Modifie la valeur d'une carte spécifique selon la règle des As
-	 * @param c La carte à modifier
-	 * @param toutesLesCartes La liste de toutes les cartes du jeu
-	 * @return Une liste contenant la nouvelle valeur et le nouveau multiplicateur
-	*//*
-	 * public List<Integer> modifierValeurCarte(Carte c, List<Carte>
-	 * toutesLesCartes) { if (c instanceof CarteClassique && c.getNumero()==1) {
-	 * List<Integer> res = new ArrayList<Integer>(); boolean unAutre =
-	 * possedeUnAutre(c.getSymbole(),toutesLesCartes); if (unAutre==true) {
-	 * res.add(1); } else { res.add(5); } res.add(1); return res; } else { return
-	 * super.modifierValeurCarte(c, toutesLesCartes); } }
-	*/
 
 	/*
 	 * Vérifie si la liste de cartes contient un autre As de même couleur

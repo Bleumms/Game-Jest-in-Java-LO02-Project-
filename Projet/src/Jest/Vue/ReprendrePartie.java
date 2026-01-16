@@ -87,7 +87,7 @@ public class ReprendrePartie implements Observer {
 		}
 
 		//Creating the Frame
-    	frame = new JFrame();
+		frame = new JFrame();
 		frame.setBounds(100, 100, 200, 100+(fichiers.size()*100));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

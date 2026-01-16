@@ -207,14 +207,6 @@ public class Joueur extends Observable implements Visitable, Serializable{
 	public void attendreUnChoix(List<Joueur> joueurs){
 	}
 
-	/* 
-	 * Méthode pour choisir une carte parmi les cartes des autres joueurs
-	 * @param j La liste des joueurs en compétition
-	 * @return La liste des indices des cartes choisies
-	*/ /*
-	public List<Integer> choisirUneCarte (List<Joueur> j){
-		return null;
-	}*/
 
 	/* 
 	 * Méthode pour choisir une de ses propres cartes à offrir

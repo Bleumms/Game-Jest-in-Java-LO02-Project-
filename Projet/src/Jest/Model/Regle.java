@@ -40,27 +40,4 @@ public class Regle implements Serializable {
 	public void modifierValeurCarte(List<Carte> cartes, List<ValeurParCarte> valeurs) {
 		
 	}
-
-	/*
-	 * Exemple de méthode à redéfinir dans les sous-classes
-	 * Modifie la valeur d'une carte spécifique selon la règle
-	 * @param c La carte à modifier
-	 * @param toutesLesCartes La liste de toutes les cartes du jeu
-	 * @return Une liste contenant la nouvelle valeur et le nouveau multiplicateur
-	*/
-	/*
-	public List<Integer> modifierValeurCarte(Carte c, List<Carte> toutesLesCartes) {
-		List<Integer> res = new ArrayList<Integer>();
-		if (c instanceof CarteClassique) {
-			int num = c.getNumero();
-			res.add(num);
-			res.add(0);
-			return res;
-		} else {
-			res.add(4);
-			res.add(0);
-			return res;
-		}
-	}
-	*/
 }

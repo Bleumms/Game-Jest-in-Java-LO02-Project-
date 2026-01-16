@@ -142,14 +142,21 @@ public class TestPartie implements Observer {
 
 
 
-
+    /*
+    * Getter pour le frame de la partie
+    * @return JFrame : le frame de la partie
+    */
     public JFrame getFrame(){
         return this.frame;
     }
 
 
 
-
+    /*    
+    * Constructeur de la classe TestPartie
+    * Initialise les composants graphiques et les observers
+    * @param p : la partie à afficher
+    */
     public TestPartie(Partie p){
         this.boutonsFaireMonOffre=new ButtonGroup();
         this.toutesLesOffres = new ArrayList<ButtonGroup>();
@@ -166,7 +173,7 @@ public class TestPartie implements Observer {
             this.toutesLesOffres.add(null);
         }
         try {
-		    interfaceTableDeJeu();
+            interfaceTableDeJeu();
         } catch (IOException e ){
             e.printStackTrace();
         }
@@ -175,7 +182,9 @@ public class TestPartie implements Observer {
 
 
 
-
+    /*
+    * Réinitialise les offres et les boutons pour un nouveau tour
+    */
     private void reinitialiser(){
         this.boutonsFaireMonOffre=new ButtonGroup();
         this.toutesLesOffres.clear();
@@ -185,8 +194,10 @@ public class TestPartie implements Observer {
         }
     }
 
+    /*
+    * Remet toutes les cartes offertes à la pioche visuellement
+    */
     private void remiseALaPioche(){
-        // Visuelement 
         for (ButtonGroup b: this.toutesLesOffres){
             Enumeration<AbstractButton> buttons = b.getElements();
             while (buttons.hasMoreElements()) {
@@ -196,10 +207,9 @@ public class TestPartie implements Observer {
         }
     }
 
-
-
-    ////////////////// ICI TOUT CE QUI EST PAUSES
-
+    /* 
+    * Pause avant de passer au prochain joueur, pour une meilleure lisibilité visuelle
+    */
     private void pauseAvantProhainJoueur( ){
         // Pause VISUELLE de 1 seconde, pour qu'on voit ce qu'il se passe avec les joueurs virtuels
         Timer timer = new Timer(1000, e -> {
@@ -218,6 +228,9 @@ public class TestPartie implements Observer {
         timer.start(); 
     }
 
+    /* 
+    * Pause avant d'ajouter une carte à la collection, pour une meilleure lisibilité visuelle
+    */
     private void pauseAvantAjouterCollection(Joueur j){
         // Pause VISUELLE de 1 seconde, pour qu'on voit ce qu'il se passe avec les joueurs virtuels
         Timer timer = new Timer(1000, e -> {
@@ -232,9 +245,10 @@ public class TestPartie implements Observer {
         timer.start(); 
     }
 
-
-    ////////////////// ICI TOUT CE QUI RELEVE DE L'ETAPE "CHOIX"
-    
+    /*
+    * Permet au joueur de choisir une carte parmi les offres disponibles
+    * @param j : le joueur qui doit choisir une carte
+    */
     private void choisirUneCarte(Joueur j){
         List<Joueur> joueursDispo = this.partie.getPasEncoreDeCartePrise();
         boolean etaitDansLaListe=false;
@@ -263,7 +277,10 @@ public class TestPartie implements Observer {
         }
     }
 
-
+    /*
+    * Ajoute la carte choisie par le joueur à sa collection visuellement et dans le modèle
+    * @param j : le joueur qui a choisi une carte
+    */
     private void ajouterASaCollection(Joueur j) throws IOException{
         List<Integer> choix = j.getChoix();
 
@@ -297,6 +314,9 @@ public class TestPartie implements Observer {
         pauseAvantProhainJoueur();
     }
 
+    /*
+    * Initialise l'affichage du prochain joueur qui doit jouer
+    */
     private void initialiserAfficheProchainJoueur() throws IOException{
         //qui joue ?
         Joueur j = this.partie.getfaisSonChoix();
@@ -319,6 +339,9 @@ public class TestPartie implements Observer {
 		j.attendreUnChoix(this.partie.getPasEncoreDeCartePrise());	
     }
 
+    /*
+    * Affiche le prochain joueur qui doit jouer
+    */
     private void afficheProchainJoueur() throws IOException{
         // remettre les cartes sans bordures 
         for (ButtonGroup b : toutesLesOffres){
@@ -346,15 +369,18 @@ public class TestPartie implements Observer {
 		j.attendreUnChoix(this.partie.getPasEncoreDeCartePrise());	
     }
 
+    /*
+    * Enlève la flèche indiquant le prochain joueur qui doit jouer
+    */
     private void enleverLaFleche(){
         this.flecheProchainJoueurQuiJoue.setVisible(false);
         frame.getContentPane().revalidate();
         frame.getContentPane().repaint();   
     }
 
-
-
-
+    /* 
+    * Annonce les scores des joueurs à la fin de la partie
+    */
     private void annonceScores(){
         try {
             presenterJoueur(numJoueurPresente);
@@ -364,6 +390,10 @@ public class TestPartie implements Observer {
         
     }
 
+    /* 
+    * Présente un joueur avec son score et sa collection
+    * @param i : l'index du joueur à présenter
+    */
     private void presenterJoueur(int i) throws IOException{
         System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
         Component[] components = this.panelJoueurs.getComponents();
@@ -410,6 +440,13 @@ public class TestPartie implements Observer {
         frame.getContentPane().repaint();
     }
 
+    /* 
+    * Enlève l'affichage du joueur présenté et passe au suivant
+    * @param toutesMesCartes : la liste des cartes affichées du joueur
+    * @param c : le panel du joueur affiché
+    * @param score : le label du score affiché
+    * @param boutonSuivant : le bouton pour passer au suivant
+    */
     private void enleverPresenterJoueur(List<JLabel> toutesMesCartes, JPanel c, JLabel score, JButton boutonSuivant){
         System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
         frame.getContentPane().remove(score);
@@ -427,10 +464,11 @@ public class TestPartie implements Observer {
         } else {
             annonceGagnants();
         }
-          
     }
 
-
+    /* 
+    * Annonce les gagnants de la partie et ouvre la fenêtre de fin de partie
+    */
     private void annonceGagnants(){
         Partie.supprimerPartie(this.partie.getID()); 
         frame.dispose();
@@ -439,7 +477,9 @@ public class TestPartie implements Observer {
         
     }
 
-
+    /* 
+    * Donne les trophés aux joueurs qui les ont gagnés, avec un message explicatif
+    */
     private void donnerLesTrophes (){
         Component[] components = this.panelTrophe.getComponents();
         int compte=0;
@@ -482,6 +522,11 @@ public class TestPartie implements Observer {
         
     }
 
+    /* 
+    * Supprime le message des trophés et passe à l'annonce des scores
+    * @param labels : la liste des labels des messages
+    * @param boutonOK : le bouton ok pour passer à la suite
+    */
     private void suppressionMessageTrophe(List<JLabel> labels, JButton boutonOK){
         for (JLabel l : labels){
             frame.getContentPane().remove(l);
@@ -492,10 +537,17 @@ public class TestPartie implements Observer {
         this.annonceScores();  
     }
 
+    /* 
+    * Supprime le bouton jouer
+    */
     private void supprimerBoutonJouer(){
         this.jouer.setVisible(false);
     }
 
+    /* 
+    * Supprime le bouton faire mon offre d'un joueur
+    * @param idJoueur : l'ID du joueur dont on supprime le bouton
+    */
     private void supprimerBoutonJoueur(int idJoueur){
         int n_ieme = this.possedeUnBouton.indexOf(idJoueur);
         Enumeration<AbstractButton> buttons = boutonsFaireMonOffre.getElements();
@@ -509,6 +561,10 @@ public class TestPartie implements Observer {
         }
     }
 
+    /* 
+    * Ajoute le bouton pour faire une offre pour un joueur
+    * @param j : le joueur qui doit faire une offre
+    */
     private void ajouterBoutonOffre(Joueur j){
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
@@ -525,6 +581,10 @@ public class TestPartie implements Observer {
         this.possedeUnBouton.add(numeroJ);
     }
 
+    /* 
+    * Présente l'offre d'un joueur visuellement
+    * @param j : le joueur qui présente son offre
+    */
     private void presenterOffre(Joueur j) throws IOException{
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
@@ -572,15 +632,22 @@ public class TestPartie implements Observer {
         this.toutesLesOffres.set(j.getID(),offre);
     }
 
+    /* 
+    * Ouvre la page pour faire une offre
+    * @param j : le joueur qui doit faire une offre
+    */
     private void ajouterPageOffre(Joueur j){
         // Ouvrir une page où le joueur choisi sa carte visible
         FaireUneOffre window2 = new FaireUneOffre(this.partie, j);
 		window2.getFrame().setVisible(true);
     }
 
+    /* 
+    * Initialise et affiche la fenêtre de la table de jeu
+    */
     private void interfaceTableDeJeu() throws IOException {
         //Creating the Frame
-    	frame = new JFrame();
+        frame = new JFrame();
 		frame.setBounds(100, 60, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

@@ -38,19 +38,6 @@ public class RegleJocker extends Regle {
 		}
 	}
 
-	/*
-	 * Modifie la valeur d'une carte spécifique selon la règle du Jocker
-	 * @param c La carte à modifier
-	 * @param toutesLesCartes La liste de toutes les cartes du jeu
-	 * @return Une liste contenant la nouvelle valeur et le nouveau multiplicateur
-	*//*
-	 * // renvoie la bonne valeur ou à ignorer, ignorer si le deuxieme int =0 public
-	 * List<Integer> modifierValeurCarte(Carte c, List<Carte> toutesLesCartes) { if
-	 * (c instanceof Jocker) { List<Integer> res = new ArrayList<Integer>(); boolean
-	 * unCoeur = possedeUnCoeur(toutesLesCartes); if (unCoeur==false) { res.add(4);
-	 * } else { res.add(0); } res.add(1); return res; } else { return
-	 * super.modifierValeurCarte(c, toutesLesCartes); } }
-	*/
 
 	/*
 	 * Vérifie si la liste de cartes contient au moins un Cœur
