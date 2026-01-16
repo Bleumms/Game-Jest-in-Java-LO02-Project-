@@ -102,13 +102,13 @@ mvn javadoc:javadoc
 ### Lancer le jeu
 
 ```bash
-mvn exec:java -Dexec.mainClass="Jest.Main"
+mvn exec:java -Dexec.mainClass="Jest.Vue.MenuPrincipal"
 ```
 
 Ou avec Java directement :
 
 ```bash
-java -cp target/classes Jest.Main
+java -cp target/classes Jest.Vue.MenuPrincipal
 ```
 
 ### Déroulement d'une partie

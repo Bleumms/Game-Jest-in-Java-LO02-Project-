@@ -60,14 +60,12 @@ public class TestPartie implements Observer {
 
         // lorsqu'on attend une offre -> on propose a l'utilisateur de faire son offre
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteOffre){
-            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a son offre en attente");
             this.ajouterBoutonOffre((Joueur)instanceObservable);
         }
 
 
         // lorsqu'on a obtenu l'offre de l'utilisateur -> la rendre visible
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
-            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" présente la carte "+((Joueur)instanceObservable).getCarteVisible().getNom()+ " et cache "+((Joueur)instanceObservable).getCarteCachee().getNom());
             // si il y avait un bouton on l'enlève
             if (this.possedeUnBouton.contains(((Joueur)instanceObservable).getID())){
                 this.supprimerBoutonJoueur(((Joueur)instanceObservable).getID());
@@ -83,7 +81,6 @@ public class TestPartie implements Observer {
 
         // si toutes les offres ont été faites
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.OffreFinis){
-            System.out.println("DEBUG : UPDATE : on passe au choix de carte; Panels : "+this.toutesLesCollections);
             // affiche qui joue
             try{
                 this.initialiserAfficheProchainJoueur();
@@ -95,7 +92,6 @@ public class TestPartie implements Observer {
 
         // si le choix a été fait (par un joueur physique)
         if (instanceObservable instanceof JoueurPhysique && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
-            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());
             try{
                 this.ajouterASaCollection((Joueur)instanceObservable);
             } catch (IOException e ){
@@ -105,21 +101,18 @@ public class TestPartie implements Observer {
 
         // si le choix a été fait (par un joueur virtuel) -> on rajoute un délais sinon l'action est pas clair pours les joueurs
         if (instanceObservable instanceof JoueurVirtuel && ((Joueur)instanceObservable).getEtat()==EtatJoueur.ChoixFait){
-            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" a fait son choix : "+((Joueur)instanceObservable).getChoix());    
             this.pauseAvantAjouterCollection((Joueur)instanceObservable);
         }
 
 
         // si le choix est en attente - > on laisse l'utilisateur choisir la carte qu'il veux
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.AttenteChoix){
-            System.out.println("DEBUG : UPDATE : le joueur : "+((Joueur)instanceObservable).getNom()+" attend son choix ");
             this.choisirUneCarte(((Joueur)instanceObservable));
         }
 
 
         // si tous les choix ont été fais
         if (instanceObservable instanceof Partie && ((Partie)instanceObservable).getEtat()==EtatPartie.ChoixFinis){
-            System.out.println("DEBUG : UPDATE : le choix est finis ; Panels : "+this.toutesLesCollections);
             this.enleverLaFleche();
             this.remiseALaPioche();
             this.partie.calculScore();
@@ -135,7 +128,6 @@ public class TestPartie implements Observer {
             } else {
                 this.partie.garderDerniereCarte();
                 this.partie.finDePartie();
-                System.out.println("DEBUG : UPDATE : fin de partie ");
                 this.donnerLesTrophes();
             }
         }
@@ -396,13 +388,11 @@ public class TestPartie implements Observer {
     * @param i : l'index du joueur à présenter
     */
     private void presenterJoueur(int i) throws IOException{
-        System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
         Component[] components = this.panelJoueurs.getComponents();
         components[i].setVisible(false);
         JPanel panel =this.toutesLesCollections.get(i);
         panel.setVisible(false);
         Joueur j = this.partie.getParticipants().get(i);
-        System.out.println("DEBUG : joueur : "+j.getNom());
 
         JPanel panelUnJoueur = new JPanel();
         panelUnJoueur.setBounds(100, 325, 55, 80);
@@ -420,7 +410,6 @@ public class TestPartie implements Observer {
         int compte=0;
         List<JLabel> toutesMesCartes= new ArrayList<JLabel>();
         for (Carte carte : j.getCollection()){
-            System.out.println("DEBUG : carte : "+carte.getNom());
             BufferedImage img = ImageIO.read(new File("Carte.png"));
             JLabel pic = new JLabel(new ImageIcon(img));
             pic.setLayout(new BorderLayout());
@@ -449,7 +438,6 @@ public class TestPartie implements Observer {
     * @param boutonSuivant : le bouton pour passer au suivant
     */
     private void enleverPresenterJoueur(List<JLabel> toutesMesCartes, JPanel c, JLabel score, JButton boutonSuivant){
-        System.out.println("DEBUG : nombre de joueurs traités : "+numJoueurPresente);
         frame.getContentPane().remove(score);
         frame.getContentPane().remove(c);
         for (JLabel lb : toutesMesCartes) {
@@ -460,7 +448,6 @@ public class TestPartie implements Observer {
         frame.getContentPane().revalidate();
         frame.getContentPane().repaint(); 
         if (numJoueurPresente<this.partie.getParticipants().size()) {
-            System.out.println("DEBUG : suivant");
             annonceScores();
         } else {
             annonceGagnants();
