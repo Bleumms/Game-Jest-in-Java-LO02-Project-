@@ -155,7 +155,6 @@ public class Partie extends Observable implements Serializable {
 	 * @param numCarte Le numéro de la carte prise
 	*/
 	public void aPrisUneCarte(Joueur jAJouer, Joueur jPersSaCarte, int numCarte){
-		System.out.println("DEBUG : "+jAJouer.getNom()+" a pris la carte "+numCarte+" de "+jPersSaCarte.getNom());
 		pasEncoreJoue.remove(jAJouer);
 		pasEncoreDeCartePrise.remove(jPersSaCarte);
 		Carte c = jPersSaCarte.recupererCarte(numCarte);
@@ -291,11 +290,9 @@ public class Partie extends Observable implements Serializable {
 	 * On enlève à chaque fois les cartes distribuées de la pioche, pour ne pas les redonner
 	*/
 	public void distribuer() {
-		//if (this.pioche.size() >= 2*this.participants.size()) { A FAIRE : PLUTOT CREER UNE EXCEPTION
 		for (int i = 0; i < participants.size(); i++) {
 			Joueur j = participants.get(i);
 			j.assignerCarteDistribuees(pioche.remove(0));
-			// j'en profite pour mettre les etats a l'inital
 			j.setEtat(EtatJoueur.Initial);
 		}
 		for (int i = 0; i < participants.size(); i++) {
@@ -373,93 +370,6 @@ public class Partie extends Observable implements Serializable {
 			System.out.println();
 		}
 	}
-
-	/*
-	 * Déroulement d'un tour de jeu complet
-	 * Retourne true si la partie est terminée, false sinon
-	*/	/*
-	public boolean faireUnTourDeJeu() {
-		if (this.pioche.size()<this.participants.size()){
-			return true;
-		}
-		// INITIALISATION DES VARS
-		// créer la liste des joueur pour lesquels on peut prendre une carte
-		List<Joueur> joueursDispo = new ArrayList<Joueur>(this.participants);
-		List<Joueur> joueursPasEncoreJoue = new ArrayList<Joueur>(this.participants);
-		Joueur jFaisSonChoix = null;
-		
-		//DISTRIBUER LES CARTES
-		this.distribuer();
-		
-		// CHACUNS LEURS OFFRES
-		for (int i=0;i<this.participants.size();i++) {
-			this.participants.get(i).faireUneOffre();
-		}
-		
-		// Affichage pour connaitre l'état de la table de jeu
-		this.affichageTable();
-				
-		while (joueursPasEncoreJoue.size()>0) {
-			// choisir le 1er joueur
-			if (jFaisSonChoix==null) {
-				jFaisSonChoix = definirJoueurSuivant();
-			} 
-			System.out.println("\nC'est à "+ jFaisSonChoix.getNom()+" de jouer");
-
-			List<Integer> resultat = jFaisSonChoix.choisirUneCarte(joueursDispo);
-			int numJoueur = resultat.get(0);
-			int numCarte = resultat.get(1);
-			
-			// Le joueur a qui on enleve une carte ne pourra pas avoir encore une autre carte de prise
-			Joueur joueurChoisi = joueursDispo.remove(numJoueur);
-			// on lui enlève la carte prise
-			Carte c = joueurChoisi.recupererCarte(numCarte);
-
-			if (jFaisSonChoix instanceof JoueurPhysique){
-				System.out.println("Vous avez choisi la carte "+c.getNom()+" de "+joueurChoisi.getNom());
-			}
-			if (numCarte==0){
-				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte visible : "+c.getNom()+" de "+joueurChoisi.getNom());
-
-			} else {
-				System.out.println("\n"+jFaisSonChoix.getNom()+" a choisi la carte cachée de "+joueurChoisi.getNom());
-			}
-
-			// et la donne a celui qui a fait son choix
-			jFaisSonChoix.ajouteASaCollection(c);
-			
-			// on retire de ceux qui n'ont pas encore joué
-			joueursPasEncoreJoue.remove(jFaisSonChoix);
-			
-			//c'est maintenant son tour de prendre une carte
-			//seulement si il n'en a pas déjà choisie une carte
-			if (joueursPasEncoreJoue.contains(joueurChoisi)) {
-				jFaisSonChoix=joueurChoisi;
-			} else {
-				jFaisSonChoix=null;
-			}
-		} 
-		
-		// on remet a la pioche seulement si on peut encore faire un tour
-		boolean finDePartie = false;
-		if (this.pioche.size()>=this.participants.size()){
-			// on récupère les cartes non choisies
-			List<Carte> recup = new ArrayList<Carte>();
-			for (int i=0;i<this.participants.size();i++) {
-				recup.add(this.participants.get(i).remiseALaPioche());
-			}
-			this.remiseALaPioche(recup);
-		} else {
-			for (int i=0;i<this.participants.size();i++) {
-				this.participants.get(i).recupFinDePartie();
-			}
-			finDePartie=true;
-		}
-		calculScore();
-		Partie.sauvegarder(this);
-		return finDePartie;
-	} */
-	
 
 	/*
 	 * Affiche les informations de la table de jeu
@@ -578,7 +488,6 @@ public class Partie extends Observable implements Serializable {
 	 * Si l'ID n'est pas défini, il est attribué automatiquement
 	 * @param p La partie à sauvegarder
 	*/
-	//SAUVEGARDE
 	public static void sauvegarder(Partie p) {
 		if (p.getID()==-1){
 			List<String> fichiers=null;
@@ -587,7 +496,7 @@ public class Partie extends Observable implements Serializable {
 			} catch (IOException e){
 				e.printStackTrace();
 			}
-			//dernier nom de sauvegarde
+			// Dernier nom de sauvegarde
 			int max = -1;
 			for (String s : fichiers) {
 				int x = Integer.parseInt(s.replace("Partie_", "").replace(".obj", ""));
@@ -661,7 +570,7 @@ public class Partie extends Observable implements Serializable {
 		String nomFichier = "Partie_" + ID + ".obj";
 		File f = new File(nomFichier);
 		if (f.exists()) {
-    	    return f.delete(); // true si suppression OK
+    	    return f.delete(); // true si suppression réussie
 		} else {
     	    return false; // fichier inexistant
 		}

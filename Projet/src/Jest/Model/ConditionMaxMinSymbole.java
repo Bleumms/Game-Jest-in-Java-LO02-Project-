@@ -56,10 +56,10 @@ public class ConditionMaxMinSymbole implements ConditionVictoire, Serializable {
         int indexJoueur=0;
 
         if (this.maxMin<0){
-            //on cherche le min
+            // On cherche le min
             extremum =10;
         } else {
-            // on cherche le max
+            // On cherche le max
             extremum=-10;
         }
 
@@ -69,13 +69,13 @@ public class ConditionMaxMinSymbole implements ConditionVictoire, Serializable {
                 if (c instanceof CarteClassique){
                     CarteClassique cc = (CarteClassique) c;
                     if (this.maxMin<0){
-                        //on cherche le min
+                        // On cherche le min
                         if (cc.getNumero() < extremum && cc.getSymbole()==s){
                             extremum = cc.getNumero();
                             indexJoueur = i;
                         }
                     } else {
-                        // on cherche le max
+                        // On cherche le max
                         if (cc.getNumero() > extremum && cc.getSymbole()==s){
                             extremum = cc.getNumero();
                             indexJoueur = i;

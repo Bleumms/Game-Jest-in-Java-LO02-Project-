@@ -44,7 +44,7 @@ public class StrategieIntelligent implements Strategie, Serializable{
 	public int executeFaireUneOffre(List<Carte> cartesDistribuées, List<Carte> cartesEnCollection) {
 		int numCarte = 0;
 		if (cartesDistribuées.get(0) instanceof Jocker){
-			// dans cette stratégie le Jocker reste toujours en carte cachée
+			// Dans cette stratégie, le Jocker reste toujours en carte cachée
 			numCarte = 1;
 		}
 		else if (cartesDistribuées.get(1) instanceof Jocker){
@@ -52,20 +52,20 @@ public class StrategieIntelligent implements Strategie, Serializable{
 		} else {
 			CarteClassique cc0 = (CarteClassique) cartesDistribuées.get(0);
 			CarteClassique cc1 = (CarteClassique) cartesDistribuées.get(1);
-			// si les deux sont des cartes noires
+			// Pour choisir, si les deux sont des cartes noires
 			if (Symbole.TREFLE.compareTo(cc0.getSymbole())>=0 && Symbole.TREFLE.compareTo(cc1.getSymbole())>=0){
 				if (cc0.getNumero()<cc1.getNumero()){
 					numCarte = 0;
 				}
 				numCarte = 1;
 			} else {
-				// sinon on rend visible celle avec le symbole le plus bas (forcément rouge)
+				// Rendre visible celle avec le symbole le plus bas (forcément rouge)
 				if (cc1.getSymbole().compareTo(cc0.getSymbole())<0){
 					numCarte=0;
 				} else if (cc1.getSymbole().compareTo(cc0.getSymbole())>0){
 					numCarte=1;
 				} else {
-					// si même symbole, forcément rouge, on montre le plus gros chiffre ( puisque points négatifs )
+					// Si même symbole, forcément rouge, on montre le plus gros chiffre ( puisque points négatifs )
 					if (cc0.getNumero()<cc1.getNumero()){
 						numCarte = 1;
 					} else {
@@ -99,7 +99,7 @@ public class StrategieIntelligent implements Strategie, Serializable{
 				}
 			}
 		}
-		// si j'ai un Jocker on évite les coeurs SAUF si j'ai déjà 3 coeurs
+		// Si j'ai un Jocker on évite les coeurs SAUF si j'ai déjà 3 coeurs
 		boolean interesseParCoeur = (aUnJocker && nbCoeurs==3);		
 
 		List<Integer> res = new ArrayList<Integer>();
@@ -108,14 +108,14 @@ public class StrategieIntelligent implements Strategie, Serializable{
 			res.add(executeChoisiUneDeSesCartes(moiMeme, aUnJocker, nbCoeurs, interesseParCoeur));
 		} else {
 			List <Joueur> joueursSansMoi = new ArrayList<Joueur>(joueurs);
-			// pour pas prendre dans sa propre offre
+			// Ne pas prendre dans sa propre offre
 			joueursSansMoi.remove(moiMeme);
 			
 			int numJoueur = 0;
 			int numCarte = 0;
 			Carte max = null;
 			int prioTrouvee = 10;
-			// on va chercher parmis les cartes visibles la carte qui correspond le plus aux priorités, sinon au hasard parmis les cachées
+			// On va chercher parmis les cartes visibles la carte qui correspond le plus aux priorités, sinon au hasard parmis les cachées
 			for (int i=0; i<joueursSansMoi.size(); i++){
 				Carte c = joueursSansMoi.get(i).getCarteVisible();
 				// PRIORITE 1 : si on a le jocker et qu'on peut finir la collection des coeurs
@@ -129,18 +129,18 @@ public class StrategieIntelligent implements Strategie, Serializable{
 				}
 				if (prioTrouvee>1){
 					// PRIORITE 2: si le jocker est intéressant à prendre on le prend.
-					if (c instanceof Jocker && nbCoeurs==0){ // seule possibilité pour qu'il veuille bien d'un jocker
+					if (c instanceof Jocker && nbCoeurs==0){ // seule possibilité pour choisir le jocker
 						max = c;
 						prioTrouvee = 2;
-						numJoueur = i; // ça sera ré-ajusté plus tard celon la position de "moi"
+						numJoueur = i;
 					}
 				}
 				if (prioTrouvee>2){
 					// PRIORITE 3: c'est une carte noire plus élevée que celle que j'ai potentionnellement
 					if (c instanceof CarteClassique){
 						CarteClassique cc = (CarteClassique) c;
-						if( Symbole.TREFLE.compareTo(cc.getSymbole())>=0){  //donc carte noire
-							if (max==null || prioTrouvee>3){ // pas défini ou défini mais un coeur
+						if( Symbole.TREFLE.compareTo(cc.getSymbole())>=0){
+							if (max==null || prioTrouvee>3){
 								max = c;
 								prioTrouvee = 3;
 								numJoueur = i;
@@ -155,14 +155,13 @@ public class StrategieIntelligent implements Strategie, Serializable{
 					}
 				}
 			}
-			// si on en trouvé aucune qui correspond on fait au piff
+			// Si on en trouvé aucune qui correspond on choisit au hasard
 			if (prioTrouvee==10){
 				numCarte=1;
 				double alea = Math.random()*joueursSansMoi.size();
 				numJoueur = Double.valueOf(alea).intValue();
 			}
 		
-			// récupère son ID 
 			int idJoueur = joueursSansMoi.get(numJoueur).getID();
 		
 			res.add(idJoueur);

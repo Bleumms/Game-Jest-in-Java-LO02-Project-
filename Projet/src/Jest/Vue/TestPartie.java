@@ -208,7 +208,7 @@ public class TestPartie implements Observer {
         Timer timer = new Timer(1000, e -> {
             try {
                 this.partie.prochainJoueur();
-                // attention cas où il a pas de prochain
+                // S'il a pas de prochain
                 if ( this.partie.getEtat()!=EtatPartie.ChoixFinis){
                     this.afficheProchainJoueur();
                 }
@@ -300,10 +300,7 @@ public class TestPartie implements Observer {
         panel.revalidate();
         panel.repaint();
 
-        // partie model
         this.partie.aPrisUneCarte(j, this.partie.getParticipants().get(choix.get(0)), choix.get(1));
-
-        // ensuite affiche le prochain joueur (avec un délais d'abord)
         pauseAvantProhainJoueur();
     }
 
@@ -311,10 +308,9 @@ public class TestPartie implements Observer {
     * Initialise l'affichage du prochain joueur qui doit jouer
     */
     private void initialiserAfficheProchainJoueur() throws IOException{
-        //qui joue ?
+        
+        // mettre a jour la position de la fleche
         Joueur j = this.partie.getfaisSonChoix();
-
-        // position
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
 
@@ -347,10 +343,9 @@ public class TestPartie implements Observer {
             }
         }
 
-        //qui joue ?
+        // mettre a jour la position de la fleche
         Joueur j = this.partie.getfaisSonChoix();
 
-        // position
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
 
@@ -466,20 +461,19 @@ public class TestPartie implements Observer {
     }
 
     /* 
-    * Donne les trophés aux joueurs qui les ont gagnés, avec un message explicatif
+    * Donne les trophés aux joueurs qui les ont gagnés
+    * Ajout du trophé à la collection visuellement
     */
     private void donnerLesTrophes (){
         Component[] components = this.panelTrophe.getComponents();
         int compte=0;
         List<JLabel> labels = new ArrayList<JLabel>();
         for (Component c : components){
-            //dans le modèle
             Carte trophe = this.partie.getTrophes().get(compte);
             int indexJ = trophe.JoueurGagnantCarte(this.partie.getParticipants());
             if (indexJ>=0){
                 Joueur gagnantTrophe = this.partie.getParticipants().get(indexJ);
 
-                // petit message explicatif 
                 JLabel labelTrophe = new JLabel("Le trophe "+trophe.getNom()+" est donné à "+gagnantTrophe.getNom()+ " car "+trophe.getConditionVictoire());
                 labelTrophe.setBounds(100, 275+(compte*30), 800, 20);
                 frame.getContentPane().add(labelTrophe);
@@ -557,7 +551,6 @@ public class TestPartie implements Observer {
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
 
-        // bouton faire mon offre
         JButton faireMonOffre = new JButton("Faire mon offre");
 		faireMonOffre.setBounds(positionCentre-75, 425, 150,25);
         faireMonOffre.addActionListener(event -> ajouterPageOffre(j));
@@ -577,8 +570,6 @@ public class TestPartie implements Observer {
         int numeroJ = j.getID();
         int positionCentre = 125+(225*numeroJ);
 
-        // pour le moment où les utilisateurs feront leur choix ce sont des boutons mais rien ne passe quand 
-        // on click dessus tant qu'on est pas au choix
         ButtonGroup offre = new ButtonGroup();
         //carte visible
         BufferedImage imgV = ImageIO.read(new File("Carte.png"));
@@ -598,7 +589,7 @@ public class TestPartie implements Observer {
 
         Container content = frame.getContentPane();
         content.add(btnCarteVisible);
-        content.setComponentZOrder(btnCarteVisible, 0); // devant
+        content.setComponentZOrder(btnCarteVisible, 0);
 
         //carte cachée
         BufferedImage imgC = ImageIO.read(new File("Carte_dos.png"));
@@ -614,7 +605,7 @@ public class TestPartie implements Observer {
         offre.add(btnCarteCachee);
 
         content.add(btnCarteCachee);
-        content.setComponentZOrder(btnCarteCachee, 0); // devant
+        content.setComponentZOrder(btnCarteCachee, 0);
         content.revalidate();
         content.repaint();    
         this.toutesLesOffres.set(j.getID(),offre);
@@ -634,7 +625,6 @@ public class TestPartie implements Observer {
     * Initialise et affiche la fenêtre de la table de jeu
     */
     private void interfaceTableDeJeu() throws IOException {
-        //Creating the Frame
         frame = new JFrame();
 		frame.setBounds(100, 60, 1000, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -690,7 +680,6 @@ public class TestPartie implements Observer {
             panelUnJoueur.add(nom);
             panelJoueurs.add(panelUnJoueur);
 
-            // j'en profite pour initialiser leur panels vide de collection
             JPanel panelCollectionJoueurs = new JPanel();
             panelCollectionJoueurs.setBounds(position+(225*i)+50, 520, 90, 45);
             panelCollectionJoueurs.setLayout(null);
@@ -699,7 +688,6 @@ public class TestPartie implements Observer {
         }
         frame.getContentPane().add(panelJoueurs);
 
-        // bouton Jouer
         jouer = new JButton("Jouer !");
 		jouer.setBounds(30, 60, 150,25);
 		frame.getContentPane().add(jouer);

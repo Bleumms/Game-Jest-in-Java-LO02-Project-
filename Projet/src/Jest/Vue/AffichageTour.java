@@ -37,7 +37,6 @@ public class AffichageTour {
     */
     private void attenteAvantFermeture(){
         // Pause VISUELLE de 1 seconde et demie, pour qu'on voit le message puis ça se ferme
-        System.out.println("DEBUG : petit message");
         Timer timer = new Timer(1500, e -> {
             fermer();
         });
@@ -57,8 +56,7 @@ public class AffichageTour {
     * Initialise et affiche la fenêtre indiquant le numéro du tour
     */
     private void affichage(){
-        //Creating the Frame
-    	frame = new JFrame();
+        frame = new JFrame();
 		frame.setBounds(200, 200, 180, 90);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

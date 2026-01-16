@@ -58,7 +58,6 @@ public class Menu extends Observable {
 	*
 	*/
 	public void validerPageCreerPartie(){
-		System.out.println("DEBUG : jeu selectionné :  "+jeuSelectionne+" ; nbJoueur selectionné : "+nbJoueursSelectionne);
 		String message="";
 		if (this.jeuSelectionne>=0 && this.jeuSelectionne<this.jeuxExistants.size() && (this.nbJoueursSelectionne==3  || this.nbJoueursSelectionne==4)){
 			this.etat=EtatMenu.SelectionnerPremierJoueur;
@@ -71,7 +70,6 @@ public class Menu extends Observable {
 			this.etat=EtatMenu.CreerPartieAvecErreur;
 			message="erreur settings en creant une partie";
 		}
-		System.out.println("DEBUG : partie :  "+this.partieEnCours);
 		this.setChanged();
 		this.notifyObservers(message);
 	}
@@ -98,7 +96,6 @@ public class Menu extends Observable {
 				j = new JoueurPhysique(nom, partieEnCours.getParticipants().size());
 			}
 			this.partieEnCours.ajouterUnJoueur(j);
-			System.out.println("DEBUG : partie :  "+this.partieEnCours);
 			if (this.partieEnCours.getParticipants().size()==nbJoueursSelectionne){
 				this.etat=EtatMenu.LancerPartie;
 				this.partieEnCours.initialiserLaPartie();
@@ -258,11 +255,11 @@ public class Menu extends Observable {
 	public Partie creerUnePartie() {
 		Partie p = new Partie();
 
-		// ajouter un jeu
+		// Ajouter un jeu
 		Jeu jeu = choixDuJeu(this.jeuxExistants);
 		p.choisirUnJeu(jeu);
 
-		// ajouter des joueurs
+		// Ajouter des joueurs
 		List<Joueur> joueurs = choixDesJoueurs(this.strategiesDisponibles);
 		for (int i=0; i<joueurs.size(); i++) {
 		p.ajouterUnJoueur(joueurs.get(i));
@@ -332,9 +329,9 @@ public class Menu extends Observable {
 			// Si reel
 			if (reelOuVirtu.equals("R")) {
 				joueurs.add(new JoueurPhysique(nom, partieEnCours.getParticipants().size()));
-				// Si virtu
+				// Si virtuel
 			} else {
-				// choix de la strat
+				// choix de la stratégie
 				boolean repValide = false;
 				int numero = 0;
 				while (repValide == false) {

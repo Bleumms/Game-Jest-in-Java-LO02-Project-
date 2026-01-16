@@ -43,12 +43,10 @@ public class MenuAjoutJoueurs implements Observer {
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné 
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueursAvecErreur){
-            System.out.println("DEBUG : Mal saisi!");
             this.ajoutMessageErreur();
 		}
         // Un nouveau joueur a été ajouté et il faut en recréer un
 		if (instanceObservable instanceof Menu && (((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueur || ((Menu)instanceObservable).getEtat()==EtatMenu.SelectionnerJoueurEncore)){
-            System.out.println("DEBUG : Encore un joueur : "+(compteNumeroJoueur+1));
             enleverMessageErreur();
             frame.dispose();
             compteNumeroJoueur++;
@@ -57,7 +55,6 @@ public class MenuAjoutJoueurs implements Observer {
 		}
         // Tous les joueurs ont étés ajoutés
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.LancerPartie){
-            System.out.println("DEBUG : J'ai tous les joueurs");
             frame.dispose();
             TestPartie window2 = new TestPartie(this.menu.getPartieEnCours());
 			window2.getFrame().setVisible(true);
@@ -74,9 +71,9 @@ public class MenuAjoutJoueurs implements Observer {
         label4.setBounds(50, 180, 350,20);
 		Container content = frame.getContentPane();
         content.add(label3);
-        content.setComponentZOrder(label3, 0); // devant
+        content.setComponentZOrder(label3, 0);
         content.add(label4);
-        content.setComponentZOrder(label4, 0); // devant
+        content.setComponentZOrder(label4, 0);
         content.repaint();
     }
 
@@ -89,8 +86,8 @@ public class MenuAjoutJoueurs implements Observer {
         for (Component c : components) {
             if (c instanceof JPanel) {
                 compteur ++;
-                if (compteur<=2){    // ça compte a partir du bas parce qu'on parcours les panels
-                    frame.getContentPane().remove(c); // supprime les boutons radios sauf ceux pour le type
+                if (compteur<=2){
+                    frame.getContentPane().remove(c);
                 }
             }
         }
@@ -149,7 +146,6 @@ public class MenuAjoutJoueurs implements Observer {
     */
 	private void interfaceAjouteUnJoueur() {
 
-		//Creating the Frame
     	frame = new JFrame();
 		frame.setBounds(100, 100, 400, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -182,7 +178,6 @@ public class MenuAjoutJoueurs implements Observer {
 
         jRadioButtonType2.addActionListener(event -> interfaceAjouteUnJoueurVirtuel());
 
-        // nom
         JLabel label2 = new JLabel("Nom :");
 		label2.setBounds(30, 60, 50, 20);
 		frame.getContentPane().add(label2);
@@ -205,7 +200,7 @@ public class MenuAjoutJoueurs implements Observer {
 			this.radiosBoutonsStrat.add(jRadioButtonStrat);
 		}	
 
-        // valider
+        // Validation
 		valider = new JButton("Valider");
 		valider.setBounds(125, 140, 150,25);
 		frame.getContentPane().add(valider);

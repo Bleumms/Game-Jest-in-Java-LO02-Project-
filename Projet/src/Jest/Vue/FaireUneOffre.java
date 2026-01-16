@@ -42,7 +42,6 @@ public class FaireUneOffre implements Observer {
     */
     public void update(Observable instanceObservable, Object arg1){
         if (instanceObservable instanceof Joueur && ((Joueur)instanceObservable).getEtat()==EtatJoueur.OffreFaite){
-            //System.out.println("DEBUG : UPDATE JOUEUR : joueur : "+((Joueur)instanceObservable).getNom()+" offre faite");
             frame.dispose();
         }
     }
@@ -76,7 +75,6 @@ public class FaireUneOffre implements Observer {
     * Initialise et affiche la fenêtre permettant au joueur de faire une offre en choisissant une carte à rendre visible
     */
     private void interfaceFaireUneOffre() throws IOException{
-        //Creating the Frame
         frame = new JFrame();
 		frame.setBounds(150, 110, 400, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

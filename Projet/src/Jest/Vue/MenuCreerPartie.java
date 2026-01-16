@@ -47,7 +47,6 @@ public class MenuCreerPartie implements Observer {
 	public void update(Observable instanceObservable, Object arg1){
 		// La validation n'a pas fonctionné
 		if (instanceObservable instanceof Menu && ((Menu)instanceObservable).getEtat()==EtatMenu.CreerPartieAvecErreur){
-            System.out.println("DEBUG : Mal saisi!");
             this.ajoutMessageErreur();
 		}
 
@@ -77,12 +76,11 @@ public class MenuCreerPartie implements Observer {
 	* Ajoute du message d'erreur à l'interface
 	*/
     private void ajoutMessageErreur(){
-        System.out.println("DEBUG : Mal saisi "+compte);
 		JLabel label5 = new JLabel("Attention, les informations sont mal remplis !");
 		label5.setBounds(70, compte-20, 300,20);
 		Container content = frame.getContentPane();
         content.add(label5);
-        content.setComponentZOrder(label5, 0); // devant
+        content.setComponentZOrder(label5, 0);
         content.repaint();
     }
 
@@ -101,7 +99,6 @@ public class MenuCreerPartie implements Observer {
 		label.setBounds(100, 30, 200, 20);
 		frame.getContentPane().add(label);
 
-		// le jeu
 		JLabel label2 = new JLabel("Quel jeu de carte vous intéresse ?");
 		label2.setBounds(75, 100, 250,20);
 		frame.getContentPane().add(label2);
@@ -119,7 +116,6 @@ public class MenuCreerPartie implements Observer {
 			compte++;
 		}
 
-		//Combien de joueurs
 		JLabel label3 = new JLabel("A combien de joueurs voulez vous jouer ?");
 		compte = 120 + 20*compte +30;
 		label3.setBounds(75, compte, 250,20);
@@ -140,7 +136,6 @@ public class MenuCreerPartie implements Observer {
 		frame.getContentPane().add(j4);
 		this.boutonsNbJoueurs.add(j4);
 
-		//Valider le choix
 		valider = new JButton("Valider");
 		compte = compte +70;
 		valider.setBounds(125, compte, 150,25);

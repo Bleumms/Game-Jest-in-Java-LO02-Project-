@@ -54,7 +54,7 @@ public class CalculateurScore implements Visitor{
 		int somme=0;
 		List<ValeurParCarte> valeurs = new ArrayList<ValeurParCarte>();
 		for (int c=0; c<collection.size(); c++) {
-			// chaque carte aura une valeur attitrée
+			// chaque carte a une valeur attitrée
 			ValeurParCarte val = new ValeurParCarte(collection.get(c));
 			valeurs.add(val);
 		}

@@ -186,7 +186,7 @@ public class Joueur extends Observable implements Visitable, Serializable{
 
 
 
-	// METHODES REDEFINIES ENSUITE
+	// METHODES REDEFINIES PAR LES CLASSES FILLES
 	/* 
 	 * Méthode pour faire l'offre de cartes aux autres joueurs
 	*/

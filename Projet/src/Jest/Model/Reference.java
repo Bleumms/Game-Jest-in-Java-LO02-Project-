@@ -27,7 +27,6 @@ public class Reference implements Serializable {
 		this.regles = new ArrayList<Regle>();
 	}
 	
-	// ajouter vérification qu'une regle n'est pas 2 fois dans la liste
 	/*
 	 * Ajoute une règle à la liste des règles
 	 * @param r La règle à ajouter

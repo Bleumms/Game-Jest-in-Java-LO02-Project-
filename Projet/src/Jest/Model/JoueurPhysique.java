@@ -53,7 +53,7 @@ public class JoueurPhysique extends Joueur{
 		@SuppressWarnings("resource")
 		Scanner clavier = new Scanner(System.in);
 		@SuppressWarnings("unused")
-		String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
+		String rep = clavier.nextLine(); // Attendre que je joueur soit prêt !
 		System.out.print("Voici vos deux cartes reçues :   ");
 		System.out.println("carte 1= " + this.getCartesDistribuees().get(0) + "  ;  carte 2= "
 				+ this.getCartesDistribuees().get(1));
@@ -121,7 +121,7 @@ public class JoueurPhysique extends Joueur{
 			@SuppressWarnings("resource")
 			Scanner clavier = new Scanner(System.in);
 			@SuppressWarnings("unused")
-			String rep = clavier.nextLine(); //juste pour attendre que je joueur soit prêt !
+			String rep = clavier.nextLine(); // Attendre que je joueur soit prêt !
 		
 			System.out.println("Vous pouvez choisir une carte parmis celle disponibles :   ");
 			int compte = 1;

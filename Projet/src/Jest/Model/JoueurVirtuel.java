@@ -56,7 +56,6 @@ public class JoueurVirtuel extends Joueur {
 		this.strat = stra;
 	}
 
-	// a changer avec strategie
 	/* 
 	 * Fait une offre en utilisant la stratégie définie.
 	*/

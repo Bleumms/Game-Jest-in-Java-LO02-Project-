@@ -56,7 +56,7 @@ public class StrategieRandom implements Strategie, Serializable{
 	public List<Integer> executeChoisirUneCarte(List <Joueur> joueurs, Joueur moiMeme) {
 		List<Integer> res = new ArrayList<Integer>();
 		if (joueurs.size() == 1 && joueurs.contains(moiMeme)) {
-			res.add(moiMeme.getID()); // de toute façon il y a qu'un joueur dans la liste donc c'est dans celui la qu'on prend la carte
+			res.add(moiMeme.getID());
 			res.add(this.executeChoisiUneDeSesCartes());
 		} else {
 			double aleaJoueur = Math.random();

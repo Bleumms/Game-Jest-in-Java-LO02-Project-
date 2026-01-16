@@ -77,7 +77,7 @@ public class ConditionMaxScore implements ConditionVictoire, Serializable {
 				}
 			} 
 		}
-		//egalité
+		//Cas d'égalité
 		if (jMaxScore.size()>1){
 			double alea = Math.random()*jMaxScore.size();
 			int aleaInt = Double.valueOf(alea).intValue();
