@@ -212,11 +212,10 @@ src/Jest/
 │   ├── Visitor.java     
 │   ├── Visitable.java
 │   │
-│   └── 📁 Enums/
-│       ├── Symbole.java
-│       ├── EtatJoueur.java
-│       ├── EtatPartie.java
-│       └── EtatMenu.java
+│   ├── Symbole.java
+│   ├── EtatJoueur.java
+│   ├── EtatPartie.java
+│   └── EtatMenu.java
 │
 ├── 📁 Vue/    
 │   ├── MenuPrincipal.java
