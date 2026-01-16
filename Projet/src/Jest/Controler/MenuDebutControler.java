@@ -1,3 +1,8 @@
+/*
+* MenuDebutControler : Controleur pour le menu de début de partie
+* @author Emeline et Nina
+*/
+
 package Jest.Controler;
 
 import  Jest.Model.Menu;
@@ -12,6 +17,12 @@ public class MenuDebutControler {
 	private JButton boutonCreer;
     private JButton boutonReprendre;
 	
+	/*	
+	* Constructeur du controleur pour le menu de début de partie (création ou reprise)
+	* @param m Le menu
+	* @param boutonC Le bouton de création de partie
+	* @param boutonR Le bouton de reprise de partie
+	*/
 	public MenuDebutControler (Menu m, JButton boutonC, JButton boutonR){
 		this.menu=m;
 		this.boutonCreer=boutonC;

@@ -1,3 +1,8 @@
+/*
+* MenuJoueursControler : Controleur pour la configuration des joueurs dans le menu
+* @author Emeline et Nina
+*/
+
 package Jest.Controler;
 
 import  Jest.Model.Menu;
@@ -12,7 +17,15 @@ import javax.swing.*;
 
 public class MenuJoueursControler {
     private Menu menu;
+
+    /*
+    * Les boutons radio pour le choix de la stratégie
+    */
 	private ButtonGroup radiosBoutonsStrat;
+
+    /*
+    * Les boutons radio pour le choix du type de joueur
+    */
     private ButtonGroup radiosBoutonsType;
     private JButton valider;
     private JTextField  zoneTexte;
@@ -21,6 +34,14 @@ public class MenuJoueursControler {
     private String typeJoueur;
     private String nom;
 
+    /*
+    * Constructeur du controleur pour la configuration des joueurs dans le menu
+    * @param m Le menu
+    * @param zoneTexte La zone de texte pour le nom du joueur
+    * @param valider Le bouton de validation de la configuration du joueur
+    * @param radiosBoutonsStrat Le groupe de boutons radio pour le choix de la stratégie
+    * @param radiosBoutonsType Le groupe de boutons radio pour le choix du type de joueur
+    */
 	public MenuJoueursControler (Menu m, JTextField  zoneTexte, JButton valider, ButtonGroup radiosBoutonsStrat, ButtonGroup radiosBoutonsType){
 		this.menu=m;
 		this.radiosBoutonsStrat=radiosBoutonsStrat;
@@ -36,9 +57,12 @@ public class MenuJoueursControler {
 		initRadioBoutonsType();
         intiZoneDeTexte();
         initValider();
- 
     }
 
+
+    /*
+    * Initialise les boutons radio pour le choix de la stratégie
+    */
     private void initRadioBoutonsStrat() {
         Enumeration<AbstractButton> buttons = this.radiosBoutonsStrat.getElements();
 
@@ -54,6 +78,9 @@ public class MenuJoueursControler {
         }
     }
 
+    /*
+    * Initialise les boutons radio pour le choix du type de joueur
+    */
     private void initRadioBoutonsType() {
         Enumeration<AbstractButton> buttons = this.radiosBoutonsType.getElements();
 
@@ -69,6 +96,9 @@ public class MenuJoueursControler {
         }
     }
 
+    /*
+    * Initialise la zone de texte pour le nom du joueur
+    */
     private void intiZoneDeTexte(){
         zoneTexte.addActionListener(e -> {
             String contenu = zoneTexte.getText();
@@ -77,6 +107,9 @@ public class MenuJoueursControler {
         });
     }
 
+    /*
+    * Initialise le bouton de validation de la configuration du joueur
+    */
 	private void initValider(){
 		this.valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
