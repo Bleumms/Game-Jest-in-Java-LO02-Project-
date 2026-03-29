@@ -6,7 +6,7 @@
 ![Maven](https://img.shields.io/badge/Maven-3.8+-blue?style=flat&logo=apachemaven)
 ![Last Commit](https://img.shields.io/github/last-commit/Bleumms/Game-Jest-in-Java-LO02-Project-?style=flat&logo=git)
 
-*Un jeu de cartes stratégique développé dans le cadre du projet LO02*
+*Un jeu de cartes stratégique développé numériquement dans le cadre du projet LO02*
 
 [Caractéristiques](#-caractéristiques) • [Installation](#-installation) • [Utilisation](#-utilisation) • [Architecture](#-architecture) • [Règles du Jeu](#-règles-du-jeu)
 
